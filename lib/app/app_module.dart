@@ -9,6 +9,7 @@ import 'package:simex_app/app/core/stores/auth_store.dart';
 import 'package:simex_app/app/modules/clients/clients_module.dart';
 import 'package:simex_app/app/modules/contatos/contatos_module.dart';
 import 'package:simex_app/app/modules/home/home_module.dart';
+import 'package:simex_app/app/modules/infoClient/infoClient_module.dart';
 import 'package:simex_app/app/modules/login/login_module.dart';
 import 'package:simex_app/app/modules/splash/splash_module.dart';
 
@@ -29,7 +30,8 @@ class AppModule extends MainModule {
         Router('/login', module: LoginModule()),
         Router('/home', module: HomeModule()),
         Router('/clients', module: ClientsModule()),
-        Router('/contacts', module: ContatosModule())
+        Router('/contacts', module: ContatosModule()),
+        Router('/info', module: InfoClientModule())
         
       ];
 

@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:simex_app/app/modules/clients/clients_store.dart';
 import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
 
 part 'clients_controller.g.dart';
@@ -6,18 +7,14 @@ part 'clients_controller.g.dart';
 class ClientsController = _ClientsControllerBase with _$ClientsController;
 
 abstract class _ClientsControllerBase with Store {
-  final ClientRepository clientRepository;
+  final ClientStore clientStore;
 
-  _ClientsControllerBase(this.clientRepository);
+  _ClientsControllerBase(this.clientStore);
 
 
   Future searchedUserByDoc(String doc) async {
-    return await clientRepository.searchedUserByDoc(doc);
+    return await clientStore.searchedUserByDoc(doc);
   }
 
-  @observable
-  String searchDoc;
 
-  @action
-  setSearch(String value) => searchDoc = value;
 }

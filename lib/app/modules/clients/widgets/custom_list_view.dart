@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:simex_app/app/models/client_model.dart';
+import 'package:simex_app/app/modules/infoClient/infoClient_page.dart';
 
 class CustomListView extends StatefulWidget {
   CustomListView({Key key, this.clientSearched}) : super(key: key);
-  final ClientModel clientSearched;
+  final List<ClientModel> clientSearched;
 
   @override
   _CustomListViewState createState() => _CustomListViewState();
@@ -15,7 +16,7 @@ class _CustomListViewState extends State<CustomListView> {
     return Expanded(
       child: SizedBox(
         child: ListView.builder(
-          itemCount: 1,
+          itemCount: widget.clientSearched.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -25,14 +26,34 @@ class _CustomListViewState extends State<CustomListView> {
                   child: ListTile(
                       title: Padding(
                         padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
-                        child: Text(
-                          'Nome : ' + widget.clientSearched.name,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Nome : ' + widget.clientSearched[index].name,
+                            ),
+                            Text(
+                              'CPF : ' + widget.clientSearched[index].cpf,
+                            ),
+                          ],
                         ),
                       ),
                       subtitle: Padding(
                         padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
-                        child: Text(
-                          "CPF/CNPJ : " + widget.clientSearched.cpf,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Endereço : " +
+                                  widget.clientSearched[index].adress,
+                            ),
+                            Text(
+                              "Cidade/UF : " +
+                                  widget.clientSearched[index].city +
+                                  "/" +
+                                  widget.clientSearched[index].state,
+                            ),
+                          ],
                         ),
                       ),
                       trailing: Row(
@@ -41,13 +62,22 @@ class _CustomListViewState extends State<CustomListView> {
                         children: <Widget>[
                           FlatButton(
                               onPressed: () {},
-                              child: Text('NOVO\nREGISTRO', textAlign: TextAlign.center,),
+                              child: Text(
+                                'NOVO\nREGISTRO',
+                                textAlign: TextAlign.center,
+                              ),
                               color: Colors.orangeAccent),
                           SizedBox(
                             width: 10,
                           ),
                           FlatButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => InfoClientPage(detailedClient: widget.clientSearched[index])),
+                                );
+                              },
                               child: Text('VER MAIS'),
                               color: Colors.blue),
                         ],

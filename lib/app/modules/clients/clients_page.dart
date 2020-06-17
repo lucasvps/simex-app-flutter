@@ -40,17 +40,17 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
               controller: controllerText,
               decoration: InputDecoration(
                 suffixIcon: IconButton(icon: Icon(Icons.search), onPressed: (){
-                  controller.setSearch(controllerText.text);
+                  controller.clientStore.setSearch(controllerText.text);
                   controllerText.text = '';
                 }),
-                  labelText: "Pesquisar cliente pelo cpf ou cnpj",
+                  labelText: "Pesquisar cliente pelo CPF",
                   border: OutlineInputBorder()),
             ),
           ),
           
           Observer(builder: (_) {
             return FutureBuilder(
-              future: controller.searchedUserByDoc(controller.searchDoc),
+              future: controller.searchedUserByDoc(controller.clientStore.searchDoc),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.active:

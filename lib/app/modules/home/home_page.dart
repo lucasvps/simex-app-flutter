@@ -39,7 +39,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
             onPressed: () {
               Modular.get<AppController>().currentUser();
             },
-            child: Text('bota'),
+            child: Text(''),
           ))
         ],
       ),
