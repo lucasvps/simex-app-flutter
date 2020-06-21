@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:simex_app/app/app_widget.dart';
 import 'package:simex_app/app/core/interfaces/auth_repository_interface.dart';
 import 'package:simex_app/app/core/interfaces/shared_local_storage_interface.dart';
+import 'package:simex_app/app/core/repositories/register_repository.dart';
 import 'package:simex_app/app/core/services/shared_local_storage_service.dart';
 import 'package:simex_app/app/core/stores/auth_store.dart';
 import 'package:simex_app/app/modules/clients/clients_module.dart';
@@ -12,6 +13,8 @@ import 'package:simex_app/app/modules/home/home_module.dart';
 import 'package:simex_app/app/modules/infoClient/infoClient_module.dart';
 import 'package:simex_app/app/modules/login/login_module.dart';
 import 'package:simex_app/app/modules/splash/splash_module.dart';
+import 'package:simex_app/app/modules/updateRegister/updateRegister_controller.dart';
+import 'package:simex_app/app/modules/updateRegister/updateRegister_store.dart';
 
 import 'core/repositories/auth_repository.dart';
 
@@ -21,7 +24,10 @@ class AppModule extends MainModule {
         Bind((i) => AppController(i.get())),
         Bind<IAuthRepository>((i) => AuthRepository(i.get())),
         Bind<ISharedLocalStorage>((i) => SharedLocalStorageService()),
-        Bind((i) => AuthStore(i.get()))
+        Bind((i) => AuthStore(i.get())),
+        Bind((i) => UpdateRegisterController(i.get())),
+        Bind((i) => UpdateRegisterStore(i.get())),
+        Bind((i) => RegisterRepository()),
       ];
 
   @override
@@ -31,7 +37,8 @@ class AppModule extends MainModule {
         Router('/home', module: HomeModule()),
         Router('/clients', module: ClientsModule()),
         Router('/contacts', module: ContatosModule()),
-        Router('/info', module: InfoClientModule())
+        Router('/info', module: InfoClientModule()),
+        //Router('/updateRegister', module: UpdateRegisterModule()),
         
       ];
 

@@ -4,12 +4,14 @@ import 'package:simex_app/app/modules/contatos/contatos_page.dart';
 import 'package:simex_app/app/modules/contatos/repositories/contacts_repository.dart';
 import 'package:simex_app/app/modules/registerInfo/registerInfo_controller.dart';
 
+
 class ContatosModule extends ChildModule {
   @override
   List<Bind> get binds => [
         Bind((i) => ContatosController(i.get())),
         Bind((i) => ContactsRepository()),
         Bind((i) => RegisterInfoController()),
+        
       ];
 
   @override
