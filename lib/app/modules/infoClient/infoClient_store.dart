@@ -103,6 +103,22 @@ abstract class _InfoClientStoreBase with Store {
   setTotalCombine(String value) => totalCombine = value;
 
 
+  clearField(){
+    name = null;
+    email = null;
+    phone = null;
+    cpf = null;
+    adress = null;
+    city = null;
+    state = null;
+    contactsDone = null;
+    cultureOne = null;
+    cultureTwo = null;
+    totalTractor = null;
+    totalCombine = null;
+  }
+
+
   String validateName() {
     if (name == null || name.isEmpty) {
       return 'Este campo não pode ficar vazio!';

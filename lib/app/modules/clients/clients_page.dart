@@ -41,7 +41,7 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
               decoration: InputDecoration(
                 suffixIcon: IconButton(icon: Icon(Icons.search), onPressed: (){
                   controller.clientStore.setSearch(controllerText.text);
-                  controllerText.text = '';
+                  
                 }),
                   labelText: "Pesquisar cliente pelo CPF",
                   border: OutlineInputBorder()),

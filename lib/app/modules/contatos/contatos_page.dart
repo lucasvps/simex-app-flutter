@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:simex_app/app/app_controller.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
+import 'package:simex_app/app/modules/registerInfo/registerInfo_page.dart';
 import 'contatos_controller.dart';
 
 class ContatosPage extends StatefulWidget {
@@ -61,11 +62,13 @@ class _ContatosPageState
                         break;
                       case ConnectionState.done:
                         if (snapshot.hasError) {
-                          return Text('Ocorreu um erro!');
+                          return Center(child: Text('Ocorreu um erro!'));
                         }
                         if (!snapshot.hasData) {
-                          return Text(
-                              'Você nao tem contatos pra serem feitos hoje!');
+                          return Center(
+                            child: Text(
+                                'Você nao tem contatos pra serem feitos hoje!'),
+                          );
                         }
 
                         if (snapshot.data.length == 0) {
@@ -95,18 +98,32 @@ class _ContatosPageState
               color: Colors.grey[200],
               child: ListTile(
                 trailing: FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterInfoPage(contactsModel: list[index])),
+                    );
+                  },
                   child: Text(
                     'VER\nREGISTRO',
                     textAlign: TextAlign.center,
                   ),
                   color: Colors.orange,
                 ),
-                title: Text('Nomes : ' +
-                    list[index].name +
-                    " / " +
-                    list[index].contactName),
-                subtitle: Text("Telefone : " + list[index].phone),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('Nome : ' + list[index].name),
+                    Text('Telefone : ' + list[index].phone),
+                  ],
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Produto : " + list[index].productName),
+                    Text("Valor : " + list[index].value.toString()),
+                  ],
+                ),
               ),
             ));
       },

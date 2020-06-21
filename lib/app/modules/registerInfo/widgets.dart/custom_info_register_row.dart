@@ -1,24 +1,16 @@
 import 'package:flutter/material.dart';
 
-class CustomInfoRow extends StatefulWidget {
-  CustomInfoRow(
-      {Key key,
-      this.field,
-      this.value,
-      this.onChanged,
-      this.errorText,
-      this.readOnly})
-      : super(key: key);
+class CustomInfoRegisterRow extends StatefulWidget {
+  CustomInfoRegisterRow({Key key, this.field, this.value, this.readOnly, this.onChanged}) : super(key: key);
   final String field, value;
-  final onChanged;
-  final String Function() errorText;
   final bool readOnly;
+  final onChanged;
 
   @override
-  _CustomInfoRowState createState() => _CustomInfoRowState();
+  _CustomInfoRegisterRowState createState() => _CustomInfoRegisterRowState();
 }
 
-class _CustomInfoRowState extends State<CustomInfoRow> {
+class _CustomInfoRegisterRowState extends State<CustomInfoRegisterRow> {
   @override
   Widget build(BuildContext context) {
     return Card(

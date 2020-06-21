@@ -35,6 +35,7 @@ class ClientRepository {
     return await dio.put(url, data: clientModel.toJson()).then((value){
       Modular.to.pushReplacementNamed('/home');
     }).catchError((err){
+      print('erro reposit' + err.toString());
       return err;
     });
 
