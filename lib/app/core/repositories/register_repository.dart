@@ -6,6 +6,7 @@ import 'package:simex_app/app/models/register_model.dart';
 class RegisterRepository {
   Future updateRegister(RegisterModel model, int id) async {
     String url = ApiEndpoints.MAIN_URL + ApiEndpoints.REGISTERS_URL + '/$id';
+    print(url);
 
     var dio = CustomDio.withAuthentication().instance;
 

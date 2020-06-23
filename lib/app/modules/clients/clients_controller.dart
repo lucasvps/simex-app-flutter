@@ -1,6 +1,5 @@
 import 'package:mobx/mobx.dart';
 import 'package:simex_app/app/modules/clients/clients_store.dart';
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
 
 part 'clients_controller.g.dart';
 

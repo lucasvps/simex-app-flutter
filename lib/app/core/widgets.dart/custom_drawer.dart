@@ -29,11 +29,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
               break;
             case ConnectionState.done:
               if (snapshot.hasError) {
-                Modular.to.pushNamedAndRemoveUntil('/login', ModalRoute.withName('/home'));
+                Modular.to.pushNamedAndRemoveUntil(
+                    '/login', ModalRoute.withName('/home'));
                 //Modular.get<AppController>().authStore.refresh();
               }
               if (!snapshot.hasData) {
-                Modular.to.pushNamedAndRemoveUntil('/login', ModalRoute.withName('/home'));
+                Modular.to.pushNamedAndRemoveUntil(
+                    '/login', ModalRoute.withName('/home'));
                 //Modular.get<AppController>().authStore.refresh();
               } else {
                 return UserAccountsDrawerHeader(
@@ -44,8 +46,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                 );
               }
+
               break;
           }
+          return Container();
         },
       ),
       customListTile(
@@ -61,8 +65,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
           subtitle: 'Todos os registros feitos.',
           pageTo: '/login'),
       customListTile(
-          title: 'Status de Hoje',
-          subtitle: 'Ver o status dos contatos feitos hoje.',
+          title: 'Produtos/Campanha',
+          subtitle: 'Ver e adicionar produtos/campanhas.',
           pageTo: '/login'),
     ]));
   }

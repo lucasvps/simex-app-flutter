@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'clients_controller.dart';
 import 'widgets/custom_list_view.dart';
 
@@ -23,6 +24,9 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
     super.initState();
   }
 
+  static var maskTextInputFormatter = MaskTextInputFormatter(
+      mask: "###.###.###-##", filter: {"#": RegExp(r'[0-9]')});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +40,7 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
-              
+              inputFormatters: [maskTextInputFormatter],
               controller: controllerText,
               decoration: InputDecoration(
                 suffixIcon: IconButton(icon: Icon(Icons.search), onPressed: (){
@@ -73,7 +77,10 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
                     }
                     break;
                 }
+                return Container();
               },
+
+              
             );
           })
         ],

@@ -17,4 +17,5 @@ abstract class _UpdateRegisterControllerBase with Store {
   Future updateRegister(RegisterModel model, int id) async {
     return await store.repository.updateRegister(model, id);
   }
+
 }

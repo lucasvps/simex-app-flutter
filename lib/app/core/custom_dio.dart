@@ -20,10 +20,13 @@ class CustomDio {
     if (e.response.statusCode == 401) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.clear();
-      prefs.commit();
+      //prefs.commit();
       //Modular.to.pushNamedAndRemoveUntil('/', ModalRoute.withName('/'));
     }
-
+    print('erro dio ' + e.error);
+    print('erro dio ' + e.type.toString());
+    print('erro dio ' + e.response.toString());
+    
     return e.type;
   }
 

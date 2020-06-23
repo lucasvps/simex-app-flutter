@@ -18,7 +18,6 @@ abstract class _UpdateRegisterStoreBase with Store {
   @observable
   bool pendingSell = false;
 
-
   @observable
   String status;
 
@@ -44,10 +43,67 @@ abstract class _UpdateRegisterStoreBase with Store {
   setReason(String value) => reason = value;
 
   @observable
+  String nextContact;
+
+  @action
+  setNextContact(String value) => nextContact = value;
+
+  @observable
+  String nextContactBR;
+
+  @action
+  setNextContactBr(String value) => nextContactBR = value;
+
+  @observable
   String contactFrom;
 
   @action
   setContactFrom(String value) => contactFrom = value;
 
+  //! **************************** VALIDAÇOES ****************************************
 
+  String validateContactFrom() {
+    if (contactFrom == null || contactFrom.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    return null;
+  }
+
+  String validateContactStatus() {
+    if (status == null || status.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    return null;
+  }
+
+  String validateReason() {
+    if (reason == null || reason.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    return null;
+  }
+
+
+  @computed
+  bool get notLostButtonValid{
+    return validateContactFrom() == null && validateContactStatus() == null;
+  }
+
+  @computed
+  bool get lostSellButtonValid{
+    return validateContactFrom() == null && validateContactStatus() == null && validateReason() == null;
+  }
+
+  cleanFields() {
+    setStatus(null);
+    setValueSold(null);
+    setReason(null);
+    setObservation(null);
+    setContactFrom(null);
+    setNextContactBr(null);
+    setNextContact(null);
+  }
 }

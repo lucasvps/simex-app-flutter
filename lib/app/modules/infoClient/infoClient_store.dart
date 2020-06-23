@@ -15,7 +15,6 @@ abstract class _InfoClientStoreBase with Store {
     return await clientRepository.updateClient(id, clientModel);
   }
 
-
   
   @observable
   String name;

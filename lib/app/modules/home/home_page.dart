@@ -35,12 +35,8 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
-              child: RaisedButton(
-            onPressed: () {
-              Modular.get<AppController>().currentUser();
-            },
             child: Text(''),
-          ))
+          )
         ],
       ),
     );

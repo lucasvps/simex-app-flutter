@@ -9,6 +9,21 @@ part of 'updateRegister_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
+  Computed<bool> _$notLostButtonValidComputed;
+
+  @override
+  bool get notLostButtonValid => (_$notLostButtonValidComputed ??=
+          Computed<bool>(() => super.notLostButtonValid,
+              name: '_UpdateRegisterStoreBase.notLostButtonValid'))
+      .value;
+  Computed<bool> _$lostSellButtonValidComputed;
+
+  @override
+  bool get lostSellButtonValid => (_$lostSellButtonValidComputed ??=
+          Computed<bool>(() => super.lostSellButtonValid,
+              name: '_UpdateRegisterStoreBase.lostSellButtonValid'))
+      .value;
+
   final _$lostSellAtom = Atom(name: '_UpdateRegisterStoreBase.lostSell');
 
   @override
@@ -85,6 +100,82 @@ mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
     });
   }
 
+  final _$observationAtom = Atom(name: '_UpdateRegisterStoreBase.observation');
+
+  @override
+  String get observation {
+    _$observationAtom.reportRead();
+    return super.observation;
+  }
+
+  @override
+  set observation(String value) {
+    _$observationAtom.reportWrite(value, super.observation, () {
+      super.observation = value;
+    });
+  }
+
+  final _$reasonAtom = Atom(name: '_UpdateRegisterStoreBase.reason');
+
+  @override
+  String get reason {
+    _$reasonAtom.reportRead();
+    return super.reason;
+  }
+
+  @override
+  set reason(String value) {
+    _$reasonAtom.reportWrite(value, super.reason, () {
+      super.reason = value;
+    });
+  }
+
+  final _$nextContactAtom = Atom(name: '_UpdateRegisterStoreBase.nextContact');
+
+  @override
+  String get nextContact {
+    _$nextContactAtom.reportRead();
+    return super.nextContact;
+  }
+
+  @override
+  set nextContact(String value) {
+    _$nextContactAtom.reportWrite(value, super.nextContact, () {
+      super.nextContact = value;
+    });
+  }
+
+  final _$nextContactBRAtom =
+      Atom(name: '_UpdateRegisterStoreBase.nextContactBR');
+
+  @override
+  String get nextContactBR {
+    _$nextContactBRAtom.reportRead();
+    return super.nextContactBR;
+  }
+
+  @override
+  set nextContactBR(String value) {
+    _$nextContactBRAtom.reportWrite(value, super.nextContactBR, () {
+      super.nextContactBR = value;
+    });
+  }
+
+  final _$contactFromAtom = Atom(name: '_UpdateRegisterStoreBase.contactFrom');
+
+  @override
+  String get contactFrom {
+    _$contactFromAtom.reportRead();
+    return super.contactFrom;
+  }
+
+  @override
+  set contactFrom(String value) {
+    _$contactFromAtom.reportWrite(value, super.contactFrom, () {
+      super.contactFrom = value;
+    });
+  }
+
   final _$_UpdateRegisterStoreBaseActionController =
       ActionController(name: '_UpdateRegisterStoreBase');
 
@@ -111,13 +202,75 @@ mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
   }
 
   @override
+  dynamic setObservation(String value) {
+    final _$actionInfo = _$_UpdateRegisterStoreBaseActionController.startAction(
+        name: '_UpdateRegisterStoreBase.setObservation');
+    try {
+      return super.setObservation(value);
+    } finally {
+      _$_UpdateRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setReason(String value) {
+    final _$actionInfo = _$_UpdateRegisterStoreBaseActionController.startAction(
+        name: '_UpdateRegisterStoreBase.setReason');
+    try {
+      return super.setReason(value);
+    } finally {
+      _$_UpdateRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setNextContact(String value) {
+    final _$actionInfo = _$_UpdateRegisterStoreBaseActionController.startAction(
+        name: '_UpdateRegisterStoreBase.setNextContact');
+    try {
+      return super.setNextContact(value);
+    } finally {
+      _$_UpdateRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setNextContactBr(String value) {
+    final _$actionInfo = _$_UpdateRegisterStoreBaseActionController.startAction(
+        name: '_UpdateRegisterStoreBase.setNextContactBr');
+    try {
+      return super.setNextContactBr(value);
+    } finally {
+      _$_UpdateRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setContactFrom(String value) {
+    final _$actionInfo = _$_UpdateRegisterStoreBaseActionController.startAction(
+        name: '_UpdateRegisterStoreBase.setContactFrom');
+    try {
+      return super.setContactFrom(value);
+    } finally {
+      _$_UpdateRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 lostSell: ${lostSell},
 efectiveSell: ${efectiveSell},
 pendingSell: ${pendingSell},
 status: ${status},
-valueSold: ${valueSold}
+valueSold: ${valueSold},
+observation: ${observation},
+reason: ${reason},
+nextContact: ${nextContact},
+nextContactBR: ${nextContactBR},
+contactFrom: ${contactFrom},
+notLostButtonValid: ${notLostButtonValid},
+lostSellButtonValid: ${lostSellButtonValid}
     ''';
   }
 }

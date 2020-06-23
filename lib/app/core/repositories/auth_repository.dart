@@ -42,8 +42,8 @@ class AuthRepository implements IAuthRepository {
     return await dio.get(url).then((value) async{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.clear();
-      prefs.commit();
-      Modular.to.pushNamedAndRemoveUntil('/', ModalRoute.withName(Modular.initialRoute));
+      //prefs.commit();
+      Modular.to.pushNamedAndRemoveUntil('/login', ModalRoute.withName(Modular.initialRoute));
     }).catchError((err){
       print(err.toString() + 'ERRO AQUI UHUUU');
     });
@@ -74,7 +74,7 @@ class AuthRepository implements IAuthRepository {
     return await dio.get(url).then((value) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.clear();
-      prefs.commit();
+      //prefs.commit();
       iSharedLocalStorage.put('token', value.data['token']);
 
     });

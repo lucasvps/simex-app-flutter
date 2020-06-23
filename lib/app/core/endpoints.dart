@@ -19,4 +19,6 @@ class ApiEndpoints {
 
   static const String CONTACTS_TODO_TODAY = '/registers/user/today/1';
 
+  static const String CONTACTS_DONE_TODAY = '/registers/user/contacts/today';
+
 }

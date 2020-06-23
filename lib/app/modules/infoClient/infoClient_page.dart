@@ -21,7 +21,8 @@ class _InfoClientPageState
           context: context,
           builder: (context) => new AlertDialog(
             title: new Text('ATENÇÃO!'),
-            content: new Text('Você pode ter alterações que não foram salvas, você realmente deseja sair?'),
+            content: new Text(
+                'Você pode ter alterações que não foram salvas, você realmente deseja sair?'),
             actions: <Widget>[
               new FlatButton(
                 onPressed: () => Navigator.of(context).pop(false),
@@ -159,66 +160,7 @@ class _InfoClientPageState
                     child: RaisedButton(
                       color: Colors.blue,
                       onPressed: () {
-                        int helpTractor;
-                        if (controller.infoClientStore.totalTractor == null &&
-                            widget.detailedClient.totalTractor == null) {
-                          helpTractor = 0;
-                        } else if (controller.infoClientStore.totalTractor ==
-                                null &&
-                            widget.detailedClient.totalTractor != null) {
-                          helpTractor = widget.detailedClient.totalTractor;
-                        } else if (controller.infoClientStore.totalTractor !=
-                            null) {
-                          helpTractor = int.parse(
-                              controller.infoClientStore.totalTractor);
-                        }
-
-                        int helpCombine;
-                        if (controller.infoClientStore.totalCombine == null &&
-                            widget.detailedClient.totalCombine == null) {
-                          helpCombine = 0;
-                        } else if (controller.infoClientStore.totalCombine ==
-                                null &&
-                            widget.detailedClient.totalCombine != null) {
-                          helpCombine = widget.detailedClient.totalCombine;
-                        } else if (controller.infoClientStore.totalCombine !=
-                            null) {
-                          helpCombine = int.parse(
-                              controller.infoClientStore.totalCombine);
-                        }
-
-                        var updateClient = ClientModel(
-                          code: widget.detailedClient.code,
-                          cpf: widget.detailedClient.cpf,
-                          id: widget.detailedClient.id,
-                          name: controller.infoClientStore.name ??=
-                              widget.detailedClient.name,
-                          email: controller.infoClientStore.email ??=
-                              widget.detailedClient.email,
-                          adress: controller.infoClientStore.adress ??=
-                              widget.detailedClient.adress,
-                          city: controller.infoClientStore.city ??=
-                              widget.detailedClient.city,
-                          state: controller.infoClientStore.state ??=
-                              widget.detailedClient.state,
-                          cultureOne: controller.infoClientStore.cultureOne ??=
-                              widget.detailedClient.cultureOne,
-                          cultureTwo: controller.infoClientStore.cultureTwo ??=
-                              widget.detailedClient.cultureTwo,
-                          phone: controller.infoClientStore.phone ??=
-                              widget.detailedClient.phone,
-                          store: controller.infoClientStore.store ??=
-                              widget.detailedClient.store,
-                          totalTractor: helpTractor,
-                          totalCombine: helpCombine,
-                          contactsDone: 14,
-                          lastContact: widget.detailedClient.lastContact,
-                          lastPurchase: widget.detailedClient.lastPurchase,
-                        );
-
-                        controller.infoClientStore.updateClient(
-                            widget.detailedClient.id, updateClient);
-                        controller.infoClientStore.clearField();
+                        updateClient();
                       },
                       child: Text(
                         'SALVAR',
@@ -260,5 +202,56 @@ class _InfoClientPageState
         ),
       ),
     );
+  }
+
+  updateClient() {
+    int helpTractor;
+    if (controller.infoClientStore.totalTractor == null &&
+        widget.detailedClient.totalTractor == null) {
+      helpTractor = 0;
+    } else if (controller.infoClientStore.totalTractor == null &&
+        widget.detailedClient.totalTractor != null) {
+      helpTractor = widget.detailedClient.totalTractor;
+    } else if (controller.infoClientStore.totalTractor != null) {
+      helpTractor = int.parse(controller.infoClientStore.totalTractor);
+    }
+
+    int helpCombine;
+    if (controller.infoClientStore.totalCombine == null &&
+        widget.detailedClient.totalCombine == null) {
+      helpCombine = 0;
+    } else if (controller.infoClientStore.totalCombine == null &&
+        widget.detailedClient.totalCombine != null) {
+      helpCombine = widget.detailedClient.totalCombine;
+    } else if (controller.infoClientStore.totalCombine != null) {
+      helpCombine = int.parse(controller.infoClientStore.totalCombine);
+    }
+
+    var updateClient = ClientModel(
+      code: widget.detailedClient.code,
+      cpf: widget.detailedClient.cpf,
+      id: widget.detailedClient.id,
+      name: controller.infoClientStore.name ??= widget.detailedClient.name,
+      email: controller.infoClientStore.email ??= widget.detailedClient.email,
+      adress: controller.infoClientStore.adress ??=
+          widget.detailedClient.adress,
+      city: controller.infoClientStore.city ??= widget.detailedClient.city,
+      state: controller.infoClientStore.state ??= widget.detailedClient.state,
+      cultureOne: controller.infoClientStore.cultureOne ??=
+          widget.detailedClient.cultureOne,
+      cultureTwo: controller.infoClientStore.cultureTwo ??=
+          widget.detailedClient.cultureTwo,
+      phone: controller.infoClientStore.phone ??= widget.detailedClient.phone,
+      store: controller.infoClientStore.store ??= widget.detailedClient.store,
+      totalTractor: helpTractor,
+      totalCombine: helpCombine,
+      contactsDone: widget.detailedClient.contactsDone ??= 0,
+      lastContact: widget.detailedClient.lastContact,
+      lastPurchase: widget.detailedClient.lastPurchase,
+    );
+
+    controller.infoClientStore
+        .updateClient(widget.detailedClient.id, updateClient);
+    controller.infoClientStore.clearField();
   }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
+import 'package:simex_app/app/models/register_model.dart';
 import 'package:simex_app/app/modules/registerInfo/widgets.dart/custom_info_register_row.dart';
-import 'package:simex_app/app/modules/updateRegister/updateRegister_module.dart';
 import 'package:simex_app/app/modules/updateRegister/updateRegister_page.dart';
 import 'registerInfo_controller.dart';
+import 'package:date_format/date_format.dart';
 
 class RegisterInfoPage extends StatefulWidget {
   final String title;
@@ -82,26 +84,15 @@ class _RegisterInfoPageState
                 CustomInfoRegisterRow(
                   field: 'Data do contato',
                   value: widget.contactsModel.dateContact,
-                  readOnly: false,
+                  readOnly: true,
                 ),
                 CustomInfoRegisterRow(
                   field: 'Tipo de Contato',
                   value: widget.contactsModel.contactFrom,
-                  readOnly: false,
+                  readOnly: true,
                 ),
                 SizedBox(
-                  height: 80,
-                ),
-                Container(
-                  width: double.maxFinite,
-                  child: RaisedButton(
-                    onPressed: () {
-                      // TODO: ABRIR O DATE PICKER LÁ E PA
-                    },
-                    child: Text(
-                        'CLIENTE NÃO ATENDEU, AGENDAR NOVA DATA PARA CONTATO.'),
-                    color: Colors.orange,
-                  ),
+                  height: 50,
                 ),
                 Container(
                   width: double.maxFinite,
@@ -119,11 +110,76 @@ class _RegisterInfoPageState
                         Text('CLIENTE ATENDEU, ATUALIZAR CONTATO REALIZADO.'),
                   ),
                 ),
+                Container(
+                  width: double.maxFinite,
+                  child: RaisedButton(
+                    onPressed: () {
+                      _selectDate(context);
+                    },
+                    child: Text(
+                        'CLIENTE NÃO ATENDEU, AGENDAR NOVA DATA PARA CONTATO.'),
+                    color: Colors.orange,
+                  ),
+                ),
+                Observer(builder: (_) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                      child: controller.store.nextContactBR != null
+                          ? Column(
+                              children: <Widget>[
+                                Text('Data Marcada Para Próximo Contato: ' +
+                                    controller.store.nextContactBR),
+                                RaisedButton(
+                                  
+                                  color: Colors.blue,
+                                  onPressed: () {
+                                    var updateRegister = RegisterModel(
+                                      id: widget.contactsModel.id,
+                                      idClient: widget.contactsModel.idClient,
+                                      idUser: widget.contactsModel.idUser,
+                                      clientName:widget.contactsModel.clientName,
+                                      contactFrom: widget.contactsModel.contactFrom,
+                                      dateContact: widget.contactsModel.dateContact,
+                                      observation: widget.contactsModel.observation ??= "",
+                                      productName: widget.contactsModel.productName,
+                                      reason: widget.contactsModel.reason ??= "",
+                                      status: widget.contactsModel.status,
+                                      value: widget.contactsModel.value.toDouble(),
+                                      valueSold: widget.contactsModel.valueSold.toDouble() ?? 0.0,
+                                      nextContact: controller.store.nextContact
+                                    );
+                                    controller.updateRegister(updateRegister, widget.contactsModel.id);
+                                  },
+                                  child: Text('SALVAR E SAIR'),
+                                )
+                              ],
+                            )
+                          : SizedBox(),
+                    ),
+                  );
+                }),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        //locale: Locale('pt'),
+        firstDate: DateTime.now().subtract(Duration(days: 1)),
+        lastDate: DateTime.now().add(Duration(days: 365)));
+
+    if (picked != null) {
+      var brDate = formatDate(picked, [dd, '/', mm, '/', yyyy]);
+      var usDate = formatDate(picked, [yyyy, '/', mm, '/', dd]);
+      controller.store.setNextContact(usDate);
+      controller.store.setNextContactBr(brDate);
+    }
   }
 }

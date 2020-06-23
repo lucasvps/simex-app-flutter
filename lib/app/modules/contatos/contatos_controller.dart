@@ -13,4 +13,8 @@ abstract class _ContatosControllerBase with Store {
   Future contactsToday(int id) async {
     return await contactsRepository.contactsToDotoday(id);
   }
+
+  Future contactsDoneToday() async {
+    return await contactsRepository.contactsDoneToday();
+  }
 }

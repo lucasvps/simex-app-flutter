@@ -11,10 +11,16 @@ abstract class _LoginStoreBase with Store {
   final IAuthRepository authRepository;
   _LoginStoreBase(this.authRepository);
 
+
+  @observable
+  bool isObscure = true;
+
+  @action
+  void changeObscure() => isObscure = !isObscure; 
+
   @observable
   String email;
 
-  
   @action
   setEmail(String value) => email = value;
 

@@ -17,6 +17,21 @@ mixin _$LoginStore on _LoginStoreBase, Store {
               name: '_LoginStoreBase.isLoginValid'))
           .value;
 
+  final _$isObscureAtom = Atom(name: '_LoginStoreBase.isObscure');
+
+  @override
+  bool get isObscure {
+    _$isObscureAtom.reportRead();
+    return super.isObscure;
+  }
+
+  @override
+  set isObscure(bool value) {
+    _$isObscureAtom.reportWrite(value, super.isObscure, () {
+      super.isObscure = value;
+    });
+  }
+
   final _$emailAtom = Atom(name: '_LoginStoreBase.email');
 
   @override
@@ -51,6 +66,17 @@ mixin _$LoginStore on _LoginStoreBase, Store {
       ActionController(name: '_LoginStoreBase');
 
   @override
+  void changeObscure() {
+    final _$actionInfo = _$_LoginStoreBaseActionController.startAction(
+        name: '_LoginStoreBase.changeObscure');
+    try {
+      return super.changeObscure();
+    } finally {
+      _$_LoginStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic setEmail(String value) {
     final _$actionInfo = _$_LoginStoreBaseActionController.startAction(
         name: '_LoginStoreBase.setEmail');
@@ -75,6 +101,7 @@ mixin _$LoginStore on _LoginStoreBase, Store {
   @override
   String toString() {
     return '''
+isObscure: ${isObscure},
 email: ${email},
 password: ${password},
 isLoginValid: ${isLoginValid}

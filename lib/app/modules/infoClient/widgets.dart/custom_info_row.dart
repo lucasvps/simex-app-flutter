@@ -18,6 +18,8 @@ class CustomInfoRow extends StatefulWidget {
   _CustomInfoRowState createState() => _CustomInfoRowState();
 }
 
+String patternError() => "";
+
 class _CustomInfoRowState extends State<CustomInfoRow> {
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class _CustomInfoRowState extends State<CustomInfoRow> {
                 onChanged: widget.onChanged,
                 decoration: InputDecoration(
                   isDense: true,
-                  //errorText: widget.errorText(),
+                  //errorText: widget.errorText() ?? patternError,
                   border: InputBorder.none,
                 ),
                 initialValue: widget.value.toString(),
