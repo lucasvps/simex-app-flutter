@@ -10,12 +10,21 @@ class RegisterRepository {
 
     var dio = CustomDio.withAuthentication().instance;
 
-    return await dio
-        .put(url, data: model.toJson())
-        .then((value) {
-          Modular.to.pushReplacementNamed('/home');
-        })
-        .catchError((err) {
+    return await dio.put(url, data: model.toJson()).then((value) {
+      Modular.to.pushReplacementNamed('/home');
+    }).catchError((err) {
+      return err;
+    });
+  }
+
+  Future createRegister(RegisterModel model) async {
+    String url = ApiEndpoints.MAIN_URL + ApiEndpoints.REGISTERS_URL;
+
+    var dio = CustomDio.withAuthentication().instance;
+
+    return await dio.post(url, data: model).then((value) {
+      Modular.to.pushReplacementNamed('/home');
+    }).catchError((err) {
       return err;
     });
   }

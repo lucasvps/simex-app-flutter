@@ -1,0 +1,5 @@
+lib/app/modules/newClient/new_client_module.dart
+lib/app/modules/newClient/new_client_page.dart
+test/app/modules/newClient/new_client_page_test.dart
+lib/app/modules/newClient/new_client_controller.dart
+test/app/modules/newClient/new_client_controller_test.dart

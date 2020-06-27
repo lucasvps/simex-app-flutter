@@ -118,34 +118,55 @@ class _UpdateRegisterPageState
                     ],
                   ),
                   SizedBox(height: 30),
+                  Container(
+                    width: double.maxFinite,
+                    child: controller.store.efectiveSell
+                        ? Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 10, 10, 10),
+                          child: Text(
+                              'Produto : ' +
+                                  widget.nextContactsModel.productName,
+                              style: TextStyle(fontSize: 20),
+                            ),
+                        )
+                        : SizedBox(),
+                  ),
+                  
                   Center(
                       child: controller.store.efectiveSell
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Flexible(
-                                    child: Text(
-                                  'Valor Total: ' +
-                                      "R\$" +
-                                      widget.nextContactsModel.value
-                                          .toDouble()
-                                          .toString(),
-                                  style: TextStyle(fontSize: 20),
-                                )),
-                                Flexible(
-                                  child: TextField(
-                                    onChanged: (value) => controller.store
-                                        .setValueSold(int.parse(value)),
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                        labelText: "Valor Vendido",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                ),
-                              ],
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextField(
+                                onChanged: (value) {
+                                  controller.store
+                                      .setAmountSold(int.parse(value));
+                                  controller.store.setValueSold(
+                                      controller.store.amountSold.toDouble() *
+                                          widget.nextContactsModel.price);
+                                },
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                    labelText: "Quantidade Vendida",
+                                    border: OutlineInputBorder()),
+                              ),
                             )
                           : SizedBox()),
-                  SizedBox(height: 30),
+                  Container(
+                      width: double.maxFinite,
+                      child: controller.store.efectiveSell &&
+                              controller.store.amountSold != null
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(8, 10, 10, 10),
+                              child: Text(
+                                "Valor Total da Venda: R\$ " +
+                                    (controller.store.amountSold.toDouble() *
+                                            widget.nextContactsModel.price)
+                                        .toString(),
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            )
+                          : SizedBox()),
                   Center(
                       child: controller.store.lostSell
                           ? Column(
@@ -174,14 +195,17 @@ class _UpdateRegisterPageState
                                 ),
                               ],
                             )
-                          : TextField(
-                              onChanged: controller.store.setObservation,
-                              decoration: InputDecoration(
-                                labelText: "Observação",
-                                border: OutlineInputBorder(),
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextField(
+                                onChanged: controller.store.setObservation,
+                                decoration: InputDecoration(
+                                  labelText: "Observação",
+                                  border: OutlineInputBorder(),
+                                ),
+                                expands: false,
+                                maxLines: 3,
                               ),
-                              expands: false,
-                              maxLines: 3,
                             )),
                   SizedBox(height: 30),
                   Center(
@@ -309,21 +333,21 @@ class _UpdateRegisterPageState
   }
 
   setRegisterModelToUpdate() {
-    print('entrou na function');
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy-MM-dd');
     String formatted = formatter.format(now);
 
     var registerModel = RegisterModel(
-        clientName: widget.nextContactsModel.clientName,
         id: widget.nextContactsModel.id,
         idClient: widget.nextContactsModel.idClient,
         idUser: widget.nextContactsModel.idUser,
-        productName: widget.nextContactsModel.productName,
         value: widget.nextContactsModel.value.toDouble(),
         dateContact: formatted,
-        nextContact: controller.store.pendingSell ? controller.store.nextContact : "",
+        nextContact:
+            controller.store.pendingSell ? controller.store.nextContact : "",
         observation: controller.store.observation ?? "",
+        productAmount: controller.store.amountSold ??=
+            widget.nextContactsModel.productAmount,
         reason: controller.store.reason ?? "",
         status: controller.store.efectiveSell
             ? "Venda Efetiva"
@@ -336,9 +360,6 @@ class _UpdateRegisterPageState
     print(registerModel.toJson());
     controller.updateRegister(registerModel, widget.nextContactsModel.id);
   }
-  
-
-
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(

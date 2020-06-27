@@ -30,6 +30,19 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Container(
+        height: 100,
+        width: 80,
+        child: FloatingActionButton(
+          onPressed: () {
+            Modular.to.pushNamed('/newClient');
+          },
+          child: Text(
+            'Novo Cliente',
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
       appBar: AppBar(
         title: Text('Clientes'),
         centerTitle: true,
@@ -43,18 +56,19 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
               inputFormatters: [maskTextInputFormatter],
               controller: controllerText,
               decoration: InputDecoration(
-                suffixIcon: IconButton(icon: Icon(Icons.search), onPressed: (){
-                  controller.clientStore.setSearch(controllerText.text);
-                  
-                }),
+                  suffixIcon: IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () {
+                        controller.clientStore.setSearch(controllerText.text);
+                      }),
                   labelText: "Pesquisar cliente pelo CPF",
                   border: OutlineInputBorder()),
             ),
           ),
-          
           Observer(builder: (_) {
             return FutureBuilder(
-              future: controller.searchedUserByDoc(controller.clientStore.searchDoc),
+              future: controller
+                  .searchedUserByDoc(controller.clientStore.searchDoc),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.active:
@@ -73,14 +87,14 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
                     if (!snapshot.hasData) {
                       return Text('Nenhum Cliente Encontrado!');
                     } else {
-                      return CustomListView(clientSearched: snapshot.data,);
+                      return CustomListView(
+                        clientSearched: snapshot.data,
+                      );
                     }
                     break;
                 }
                 return Container();
               },
-
-              
             );
           })
         ],

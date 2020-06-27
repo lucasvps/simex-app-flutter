@@ -67,14 +67,20 @@ class _RegisterInfoPageState
                       ),
                     ),
                     Flexible(
-                      flex: 2,
+                      flex: 3,
                       child: CustomInfoRegisterRow(
-                        field: 'Valor',
-                        value: widget.contactsModel.value.toString(),
+                        field: "Quantidade",
+                        value: widget.contactsModel.productAmount.toString(),
                         readOnly: true,
                       ),
                     )
                   ],
+                ),
+                CustomInfoRegisterRow(
+                  field: 'Valor Total',
+                  value:
+                      "R\$ " + widget.contactsModel.value.toDouble().toString(),
+                  readOnly: true,
                 ),
                 CustomInfoRegisterRow(
                   field: 'Observação',
@@ -131,25 +137,33 @@ class _RegisterInfoPageState
                                 Text('Data Marcada Para Próximo Contato: ' +
                                     controller.store.nextContactBR),
                                 RaisedButton(
-                                  
                                   color: Colors.blue,
                                   onPressed: () {
                                     var updateRegister = RegisterModel(
-                                      id: widget.contactsModel.id,
-                                      idClient: widget.contactsModel.idClient,
-                                      idUser: widget.contactsModel.idUser,
-                                      clientName:widget.contactsModel.clientName,
-                                      contactFrom: widget.contactsModel.contactFrom,
-                                      dateContact: widget.contactsModel.dateContact,
-                                      observation: widget.contactsModel.observation ??= "",
-                                      productName: widget.contactsModel.productName,
-                                      reason: widget.contactsModel.reason ??= "",
-                                      status: widget.contactsModel.status,
-                                      value: widget.contactsModel.value.toDouble(),
-                                      valueSold: widget.contactsModel.valueSold.toDouble() ?? 0.0,
-                                      nextContact: controller.store.nextContact
-                                    );
-                                    controller.updateRegister(updateRegister, widget.contactsModel.id);
+                                        id: widget.contactsModel.id,
+                                        idClient: widget.contactsModel.idClient,
+                                        idUser: widget.contactsModel.idUser,
+                                        contactFrom:
+                                            widget.contactsModel.contactFrom,
+                                        dateContact:
+                                            widget.contactsModel.dateContact,
+                                        observation: widget
+                                            .contactsModel.observation ??= "",
+                                        reason: widget.contactsModel.reason ??=
+                                            "",
+                                        status: widget.contactsModel.status,
+                                        productAmount: widget.contactsModel.productAmount,
+                                        productId: widget.contactsModel.productId,
+                                        value: widget.contactsModel.value
+                                            .toDouble(),
+                                        valueSold: widget
+                                                .contactsModel.valueSold
+                                                .toDouble() ??
+                                            0.0,
+                                        nextContact:
+                                            controller.store.nextContact);
+                                    controller.updateRegister(updateRegister,
+                                        widget.contactsModel.id);
                                   },
                                   child: Text('SALVAR E SAIR'),
                                 )

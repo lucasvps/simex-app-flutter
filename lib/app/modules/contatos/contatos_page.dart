@@ -203,7 +203,7 @@ class _ContatosPageState
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   'Valor de Venda : ' +
-                                      list[index].valueSold.toString(),
+                                      list[index].valueSold.toDouble().toString(),
                                 ),
                               ),
                   ],

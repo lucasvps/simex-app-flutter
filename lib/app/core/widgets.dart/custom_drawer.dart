@@ -63,7 +63,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       customListTile(
           title: 'Registros',
           subtitle: 'Todos os registros feitos.',
-          pageTo: '/login'),
+          pageTo: '/newRegister'),
       customListTile(
           title: 'Produtos/Campanha',
           subtitle: 'Ver e adicionar produtos/campanhas.',

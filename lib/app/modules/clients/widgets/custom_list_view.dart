@@ -61,7 +61,9 @@ class _CustomListViewState extends State<CustomListView> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           FlatButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                
+                              },
                               child: Text(
                                 'NOVO\nREGISTRO',
                                 textAlign: TextAlign.center,

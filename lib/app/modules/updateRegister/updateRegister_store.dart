@@ -25,10 +25,10 @@ abstract class _UpdateRegisterStoreBase with Store {
   setStatus(String value) => status = value;
 
   @observable
-  int valueSold;
+  double valueSold;
 
   @action
-  setValueSold(int value) => valueSold = value;
+  setValueSold(double value) => valueSold = value;
 
   @observable
   String observation;
@@ -60,7 +60,17 @@ abstract class _UpdateRegisterStoreBase with Store {
   @action
   setContactFrom(String value) => contactFrom = value;
 
+  @observable
+  int amountSold;
+
+  @action
+  setAmountSold(int value) {
+    amountSold = value;
+  }
+
   //! **************************** VALIDAÇOES ****************************************
+
+  
 
   String validateContactFrom() {
     if (contactFrom == null || contactFrom.isEmpty) {
@@ -86,15 +96,16 @@ abstract class _UpdateRegisterStoreBase with Store {
     return null;
   }
 
-
   @computed
-  bool get notLostButtonValid{
+  bool get notLostButtonValid {
     return validateContactFrom() == null && validateContactStatus() == null;
   }
 
   @computed
-  bool get lostSellButtonValid{
-    return validateContactFrom() == null && validateContactStatus() == null && validateReason() == null;
+  bool get lostSellButtonValid {
+    return validateContactFrom() == null &&
+        validateContactStatus() == null &&
+        validateReason() == null;
   }
 
   cleanFields() {
@@ -105,5 +116,6 @@ abstract class _UpdateRegisterStoreBase with Store {
     setContactFrom(null);
     setNextContactBr(null);
     setNextContact(null);
+    setAmountSold(null);
   }
 }

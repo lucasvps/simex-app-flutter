@@ -33,7 +33,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                   top: MediaQuery.of(context).size.height * 0.18,
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.green[50],
+                        color: Colors.white,
                         borderRadius: BorderRadius.only(
                             topRight: Radius.circular(80),
                             topLeft: Radius.circular(80))),

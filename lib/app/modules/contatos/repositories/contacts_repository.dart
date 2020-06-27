@@ -21,9 +21,8 @@ class ContactsRepository {
     });
   }
 
-  Future contactsDoneToday() async {
+  Future<List<ContactsDoneModel>> contactsDoneToday() async {
     String url = ApiEndpoints.MAIN_URL + ApiEndpoints.CONTACTS_DONE_TODAY;
-    print(url);
 
     var dio = CustomDio.withAuthentication().instance;
 
@@ -37,6 +36,7 @@ class ContactsRepository {
 
       return contactsDoneToday;
     }).catchError((err) {
+      print('repo erro ' + err.toString());
       return err;
     });
   }

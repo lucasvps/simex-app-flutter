@@ -18,7 +18,7 @@ class CustomInfoRow extends StatefulWidget {
   _CustomInfoRowState createState() => _CustomInfoRowState();
 }
 
-String patternError() => "";
+
 
 class _CustomInfoRowState extends State<CustomInfoRow> {
   @override

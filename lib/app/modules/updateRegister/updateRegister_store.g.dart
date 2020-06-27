@@ -88,13 +88,13 @@ mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
   final _$valueSoldAtom = Atom(name: '_UpdateRegisterStoreBase.valueSold');
 
   @override
-  int get valueSold {
+  double get valueSold {
     _$valueSoldAtom.reportRead();
     return super.valueSold;
   }
 
   @override
-  set valueSold(int value) {
+  set valueSold(double value) {
     _$valueSoldAtom.reportWrite(value, super.valueSold, () {
       super.valueSold = value;
     });
@@ -176,6 +176,21 @@ mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
     });
   }
 
+  final _$amountSoldAtom = Atom(name: '_UpdateRegisterStoreBase.amountSold');
+
+  @override
+  int get amountSold {
+    _$amountSoldAtom.reportRead();
+    return super.amountSold;
+  }
+
+  @override
+  set amountSold(int value) {
+    _$amountSoldAtom.reportWrite(value, super.amountSold, () {
+      super.amountSold = value;
+    });
+  }
+
   final _$_UpdateRegisterStoreBaseActionController =
       ActionController(name: '_UpdateRegisterStoreBase');
 
@@ -191,7 +206,7 @@ mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
   }
 
   @override
-  dynamic setValueSold(int value) {
+  dynamic setValueSold(double value) {
     final _$actionInfo = _$_UpdateRegisterStoreBaseActionController.startAction(
         name: '_UpdateRegisterStoreBase.setValueSold');
     try {
@@ -257,6 +272,17 @@ mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
   }
 
   @override
+  dynamic setAmountSold(int value) {
+    final _$actionInfo = _$_UpdateRegisterStoreBaseActionController.startAction(
+        name: '_UpdateRegisterStoreBase.setAmountSold');
+    try {
+      return super.setAmountSold(value);
+    } finally {
+      _$_UpdateRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 lostSell: ${lostSell},
@@ -269,6 +295,7 @@ reason: ${reason},
 nextContact: ${nextContact},
 nextContactBR: ${nextContactBR},
 contactFrom: ${contactFrom},
+amountSold: ${amountSold},
 notLostButtonValid: ${notLostButtonValid},
 lostSellButtonValid: ${lostSellButtonValid}
     ''';

@@ -1,9 +1,9 @@
 class ContactsDoneModel {
   String status;
   String name;
-  int valueSold;
+  double valueSold;
   String reason;
-  int value;
+  double value;
 
   ContactsDoneModel(
       {this.status, this.name, this.valueSold, this.reason, this.value});
