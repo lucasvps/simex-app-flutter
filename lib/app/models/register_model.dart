@@ -8,8 +8,8 @@ class RegisterModel {
   String status;
   String observation;
   int productAmount;
-  double value;
-  double valueSold;
+  
+  String valueSold;
   String reason;
   String nextContact;
 
@@ -23,7 +23,7 @@ class RegisterModel {
       this.status,
       this.observation,
       this.productAmount,
-      this.value,
+     
       this.valueSold,
       this.reason,
       this.nextContact});
@@ -38,7 +38,7 @@ class RegisterModel {
     status = json['status'];
     observation = json['observation'];
     productAmount = json['product_amount'];
-    value = json['value'];
+   
     valueSold = json['value_sold'];
     reason = json['reason'];
     nextContact = json['next_contact'];
@@ -55,7 +55,7 @@ class RegisterModel {
     data['status'] = this.status;
     data['observation'] = this.observation;
     data['product_amount'] = this.productAmount;
-    data['value'] = this.value;
+   
     data['value_sold'] = this.valueSold;
     data['reason'] = this.reason;
     data['next_contact'] = this.nextContact;

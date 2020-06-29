@@ -9,6 +9,21 @@ part of 'new_register_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$NewRegisterStore on _NewRegisterStoreBase, Store {
+  final _$currentUserIDAtom = Atom(name: '_NewRegisterStoreBase.currentUserID');
+
+  @override
+  int get currentUserID {
+    _$currentUserIDAtom.reportRead();
+    return super.currentUserID;
+  }
+
+  @override
+  set currentUserID(int value) {
+    _$currentUserIDAtom.reportWrite(value, super.currentUserID, () {
+      super.currentUserID = value;
+    });
+  }
+
   final _$efectiveSellAtom = Atom(name: '_NewRegisterStoreBase.efectiveSell');
 
   @override
@@ -57,13 +72,13 @@ mixin _$NewRegisterStore on _NewRegisterStoreBase, Store {
   final _$valueSoldAtom = Atom(name: '_NewRegisterStoreBase.valueSold');
 
   @override
-  double get valueSold {
+  String get valueSold {
     _$valueSoldAtom.reportRead();
     return super.valueSold;
   }
 
   @override
-  set valueSold(double value) {
+  set valueSold(String value) {
     _$valueSoldAtom.reportWrite(value, super.valueSold, () {
       super.valueSold = value;
     });
@@ -208,6 +223,17 @@ mixin _$NewRegisterStore on _NewRegisterStoreBase, Store {
       ActionController(name: '_NewRegisterStoreBase');
 
   @override
+  dynamic setCurrentUserID(int value) {
+    final _$actionInfo = _$_NewRegisterStoreBaseActionController.startAction(
+        name: '_NewRegisterStoreBase.setCurrentUserID');
+    try {
+      return super.setCurrentUserID(value);
+    } finally {
+      _$_NewRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic setStatus(String value) {
     final _$actionInfo = _$_NewRegisterStoreBaseActionController.startAction(
         name: '_NewRegisterStoreBase.setStatus');
@@ -219,7 +245,7 @@ mixin _$NewRegisterStore on _NewRegisterStoreBase, Store {
   }
 
   @override
-  dynamic setValueSold(double value) {
+  dynamic setValueSold(String value) {
     final _$actionInfo = _$_NewRegisterStoreBaseActionController.startAction(
         name: '_NewRegisterStoreBase.setValueSold');
     try {
@@ -331,6 +357,7 @@ mixin _$NewRegisterStore on _NewRegisterStoreBase, Store {
   @override
   String toString() {
     return '''
+currentUserID: ${currentUserID},
 efectiveSell: ${efectiveSell},
 pendingSell: ${pendingSell},
 status: ${status},

@@ -160,7 +160,7 @@ class _ContatosPageState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text("Produto : " + list[index].productName),
-                    Text("Valor : " + list[index].value.toString()),
+                    Text("Valor : R\$" + double.parse(list[index].price).toString()),
                   ],
                 ),
               ),
@@ -195,15 +195,14 @@ class _ContatosPageState
                           )
                         : list[index].status == "Venda Pendente"
                             ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                    'Valor : ' + list[index].value.toDouble().toString()),
-                              )
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Observação : ' + list[index].observation),
+                            )
                             : Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   'Valor de Venda : ' +
-                                      list[index].valueSold.toDouble().toString(),
+                                      double.parse(list[index].valueSold).toString(),
                                 ),
                               ),
                   ],

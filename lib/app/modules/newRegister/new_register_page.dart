@@ -1,15 +1,21 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:intl/intl.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/product_model.dart';
+import 'package:simex_app/app/models/register_model.dart';
+import '../../app_controller.dart';
 import 'new_register_controller.dart';
 
 class NewRegisterPage extends StatefulWidget {
   final String title;
-  const NewRegisterPage({Key key, this.title = "NewRegister", this.clientModel})
+  const NewRegisterPage(
+      {Key key, this.title = "NewRegister", this.clientModel, this.idClient})
       : super(key: key);
   final ClientModel clientModel;
+  final String idClient;
 
   @override
   _NewRegisterPageState createState() => _NewRegisterPageState();
@@ -20,10 +26,20 @@ class _NewRegisterPageState
   //use 'controller' variable to access controller
 
   @override
+  void initState() {
+    Modular.get<AppController>().authStore.getCurrentUser().then((value) async {
+      await controller.store.setCurrentUserID(value['id']);
+      print(controller.store.currentUserID);
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text('Novo Registro'),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -120,6 +136,7 @@ class _NewRegisterPageState
                         }
                         break;
                     }
+                    return Container();
                   },
                 ),
               ),
@@ -150,17 +167,65 @@ class _NewRegisterPageState
                 return Padding(
                     padding: EdgeInsets.all(8),
                     child: controller.store.efectiveSell &&
+                            controller.store.amountSold != 0 &&
                             controller.store.amountSold != null
                         ? Text(
                             "Valor final da Venda : R\$" +
-                                (controller.store.amountSold.toDouble() *
+                                (controller.store.amountSold *
                                         double.parse(
                                             controller.store.productPrice))
                                     .toString(),
                             style: TextStyle(fontSize: 20),
                           )
                         : SizedBox());
-              })
+              }),
+
+              Observer(builder: (_) {
+                return controller.store.pendingSell
+                    ? Container(
+                        width: double.maxFinite,
+                        child: RaisedButton(
+                          color: Colors.blue,
+                          onPressed: () {
+                            _selectDate(context);
+                          },
+                          child: Text('Agendar próximo contato!'),
+                        ),
+                      )
+                    : SizedBox();
+              }),
+              SizedBox(
+                height: 20,
+              ),
+              Observer(builder: (_) {
+                return Container(
+                  child: controller.store.nextContactBR != null &&
+                          controller.store.pendingSell
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Próximo contato marcado para : " +
+                                controller.store.nextContactBR,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        )
+                      : SizedBox(),
+                );
+              }),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                  width: double.maxFinite,
+                  child: RaisedButton(
+                    color: Colors.green,
+                    onPressed: () {
+                      //print(controller.store.amountSold);
+                      //print(controller.store.productPrice);
+                      setRegisterModelToCreate();
+                    },
+                    child: Text('SALVAR'),
+                  ))
             ],
           ),
         ));
@@ -179,7 +244,7 @@ class _NewRegisterPageState
             groupValue: controller.store.status,
             onChanged: (value) {
               controller.store.setStatus(value);
-              controller.store.setValueSold(0);
+              controller.store.setValueSold('0');
 
               if (controller.store.status == "Venda Pendente") {
                 controller.store.pendingSell = true;
@@ -220,6 +285,22 @@ class _NewRegisterPageState
         ],
       ));
     });
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        //locale: Locale('pt'),
+        firstDate: DateTime.now().subtract(Duration(days: 1)),
+        lastDate: DateTime.now().add(Duration(days: 365)));
+
+    if (picked != null) {
+      var brDate = formatDate(picked, [dd, '/', mm, '/', yyyy]);
+      var usDate = formatDate(picked, [yyyy, '/', mm, '/', dd]);
+      controller.store.setNextContact(usDate);
+      controller.store.setNextContactBr(brDate);
+    }
   }
 
   Widget dropDownMenu(List<ProductModel> products) {
@@ -284,5 +365,34 @@ class _NewRegisterPageState
         ),
       );
     });
+  }
+
+  setRegisterModelToCreate() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formatted = formatter.format(now);
+
+    print('amount ' + controller.store.amountSold.toString());
+
+    var registerModel = RegisterModel(
+        idClient: int.parse(widget.idClient),
+        idUser: controller.store.currentUserID,
+        productId: int.parse(controller.store.prodID),
+        dateContact: formatted,
+        nextContact:
+            controller.store.pendingSell ? controller.store.nextContact : "",
+        observation: controller.store.observation ?? "",
+        productAmount: controller.store.amountSold ?? "",
+        reason: "",
+        status:
+            controller.store.efectiveSell ? "Venda Efetiva" : "Venda Pendente",
+        valueSold: controller.store.amountSold != null
+            ? (double.parse(controller.store.productPrice) * controller.store.amountSold.toDouble())
+                .toString()
+            : '0.0',
+        contactFrom: controller.store.contactFrom);
+
+    print(registerModel.toJson());
+    controller.store.repository.createRegister(registerModel);
   }
 }

@@ -77,12 +77,6 @@ class _RegisterInfoPageState
                   ],
                 ),
                 CustomInfoRegisterRow(
-                  field: 'Valor Total',
-                  value:
-                      "R\$ " + widget.contactsModel.value.toDouble().toString(),
-                  readOnly: true,
-                ),
-                CustomInfoRegisterRow(
                   field: 'Observação',
                   value: widget.contactsModel.observation,
                   readOnly: true,
@@ -152,14 +146,14 @@ class _RegisterInfoPageState
                                         reason: widget.contactsModel.reason ??=
                                             "",
                                         status: widget.contactsModel.status,
-                                        productAmount: widget.contactsModel.productAmount,
-                                        productId: widget.contactsModel.productId,
-                                        value: widget.contactsModel.value
-                                            .toDouble(),
-                                        valueSold: widget
-                                                .contactsModel.valueSold
-                                                .toDouble() ??
-                                            0.0,
+                                        productAmount:
+                                            widget.contactsModel.productAmount,
+                                        productId:
+                                            widget.contactsModel.productId,
+                                        valueSold: double.parse(widget
+                                                    .contactsModel.valueSold)
+                                                .toString() ??
+                                            '0.0',
                                         nextContact:
                                             controller.store.nextContact);
                                     controller.updateRegister(updateRegister,

@@ -1,19 +1,19 @@
 class ContactsDoneModel {
   String status;
   String name;
-  double valueSold;
+  String valueSold;
   String reason;
-  double value;
+  String observation;
 
   ContactsDoneModel(
-      {this.status, this.name, this.valueSold, this.reason, this.value});
+      {this.status, this.name, this.valueSold, this.reason, this.observation});
 
   ContactsDoneModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     name = json['name'];
     valueSold = json['value_sold'];
     reason = json['reason'];
-    value = json['value'];
+    observation = json['observation'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,7 +22,7 @@ class ContactsDoneModel {
     data['name'] = this.name;
     data['value_sold'] = this.valueSold;
     data['reason'] = this.reason;
-    data['value'] = this.value;
+    data['observation'] = this.observation;
     return data;
   }
 }

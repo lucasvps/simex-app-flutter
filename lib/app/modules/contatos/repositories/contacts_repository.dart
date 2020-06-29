@@ -18,6 +18,8 @@ class ContactsRepository {
       }
 
       return contactsToday;
+    }).catchError((err){
+      print('repo error : ' + err.toString());
     });
   }
 
@@ -36,7 +38,7 @@ class ContactsRepository {
 
       return contactsDoneToday;
     }).catchError((err) {
-      print('repo erro ' + err.toString());
+      //print('repo erro ' + err.toString());
       return err;
     });
   }

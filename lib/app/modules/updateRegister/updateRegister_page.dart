@@ -142,7 +142,7 @@ class _UpdateRegisterPageState
                                       .setAmountSold(int.parse(value));
                                   controller.store.setValueSold(
                                       controller.store.amountSold.toDouble() *
-                                          widget.nextContactsModel.price);
+                                          double.parse(widget.nextContactsModel.price)).toString();
                                 },
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
@@ -161,7 +161,7 @@ class _UpdateRegisterPageState
                               child: Text(
                                 "Valor Total da Venda: R\$ " +
                                     (controller.store.amountSold.toDouble() *
-                                            widget.nextContactsModel.price)
+                                            double.parse(widget.nextContactsModel.price))
                                         .toString(),
                                 style: TextStyle(fontSize: 20),
                               ),
@@ -341,7 +341,8 @@ class _UpdateRegisterPageState
         id: widget.nextContactsModel.id,
         idClient: widget.nextContactsModel.idClient,
         idUser: widget.nextContactsModel.idUser,
-        value: widget.nextContactsModel.value.toDouble(),
+        productId: widget.nextContactsModel.productId,
+        
         dateContact: formatted,
         nextContact:
             controller.store.pendingSell ? controller.store.nextContact : "",
@@ -353,8 +354,8 @@ class _UpdateRegisterPageState
             ? "Venda Efetiva"
             : controller.store.pendingSell ? "Venda Pendente" : "Venda Perdida",
         valueSold: controller.store.valueSold != null
-            ? controller.store.valueSold.toDouble()
-            : 0.0,
+            ? controller.store.valueSold.toDouble().toString()
+            : '0.0',
         contactFrom: controller.store.contactFrom);
 
     print(registerModel.toJson());

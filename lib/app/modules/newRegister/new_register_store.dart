@@ -12,6 +12,11 @@ abstract class _NewRegisterStoreBase with Store {
 
   _NewRegisterStoreBase(this.repository, this.productRepository);
 
+  @observable
+  int currentUserID;
+
+  @action
+  setCurrentUserID(int value) => currentUserID = value;
 
   @observable
   bool efectiveSell = false;
@@ -26,10 +31,10 @@ abstract class _NewRegisterStoreBase with Store {
   setStatus(String value) => status = value;
 
   @observable
-  double valueSold;
+  String valueSold;
 
   @action
-  setValueSold(double value) => valueSold = value;
+  setValueSold(String value) => valueSold = value;
 
 
   @observable
@@ -78,12 +83,10 @@ abstract class _NewRegisterStoreBase with Store {
   }
 
   @observable
-  String productPrice;
+  String productPrice = "";
 
   @action
-  setProductPrice(String value) {
-    productPrice = value;
-  }
+  setProductPrice(String value) => productPrice = value;
 
   @observable
   String prodID;

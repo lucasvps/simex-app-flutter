@@ -17,7 +17,7 @@ class NewRegisterModule extends ChildModule {
 
   @override
   List<Router> get routers => [
-        Router('/', child: (_, args) => NewRegisterPage()),
+        Router('/:idClient', child: (_, args) => NewRegisterPage(idClient: args.params['idClient'],)),
       ];
 
   static Inject get to => Inject<NewRegisterModule>.of();

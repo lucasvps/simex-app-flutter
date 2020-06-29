@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/modules/infoClient/infoClient_page.dart';
 
@@ -62,7 +63,8 @@ class _CustomListViewState extends State<CustomListView> {
                         children: <Widget>[
                           FlatButton(
                               onPressed: () {
-                                
+                                //print('${widget.clientSearched[index].id}');
+                                Modular.to.pushNamed('/newRegister/${widget.clientSearched[index].id}');
                               },
                               child: Text(
                                 'NOVO\nREGISTRO',

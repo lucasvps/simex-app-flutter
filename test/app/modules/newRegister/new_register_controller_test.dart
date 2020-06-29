@@ -1,7 +1,6 @@
 import 'package:flutter_modular/flutter_modular_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:simex_app/app/modules/newRegister/new_register_controller.dart';
 import 'package:simex_app/app/modules/newRegister/new_register_module.dart';
 
 void main() {

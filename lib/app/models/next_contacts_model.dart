@@ -8,8 +8,8 @@ class NextContactsModel {
   String status;
   String observation;
   int productAmount;
-  double value;
-  double valueSold;
+  String value;
+  String valueSold;
   String reason;
   String nextContact;
   String phone;
@@ -18,7 +18,7 @@ class NextContactsModel {
   String store;
   String name;
   String productName;
-  double price;
+  String price;
 
   NextContactsModel(
       {this.id,
