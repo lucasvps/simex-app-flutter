@@ -81,6 +81,17 @@ abstract class _NewProductStoreBase with Store {
 
   @computed
   bool get isButtonValid {
-    return validateProdName() == null && validateProdPrice() == null && validateInitialDate() == null && validateFinalDate() == null;
+    return validateProdName() == null &&
+        validateProdPrice() == null &&
+        validateInitialDate() == null &&
+        validateFinalDate() == null;
+  }
+
+  cleanFields() {
+    
+    setInitialDateBR(null);
+    setInitialDate(null);
+    setFinalDateBR(null);
+    setFinalDate(null);
   }
 }

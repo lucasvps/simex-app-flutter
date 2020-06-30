@@ -7,6 +7,7 @@ import 'package:simex_app/app/core/interfaces/shared_local_storage_interface.dar
 import 'package:simex_app/app/core/repositories/register_repository.dart';
 import 'package:simex_app/app/core/services/shared_local_storage_service.dart';
 import 'package:simex_app/app/core/stores/auth_store.dart';
+import 'package:simex_app/app/modules/activesProducts/actives_products_module.dart';
 import 'package:simex_app/app/modules/clients/clients_module.dart';
 import 'package:simex_app/app/modules/contatos/contatos_module.dart';
 import 'package:simex_app/app/modules/home/home_module.dart';
@@ -15,6 +16,7 @@ import 'package:simex_app/app/modules/login/login_module.dart';
 import 'package:simex_app/app/modules/newClient/new_client_module.dart';
 import 'package:simex_app/app/modules/newProduct/new_product_module.dart';
 import 'package:simex_app/app/modules/newRegister/new_register_module.dart';
+import 'package:simex_app/app/modules/registersDone/registers_done_module.dart';
 import 'package:simex_app/app/modules/splash/splash_module.dart';
 import 'package:simex_app/app/modules/updateRegister/updateRegister_controller.dart';
 import 'package:simex_app/app/modules/updateRegister/updateRegister_store.dart';
@@ -44,6 +46,8 @@ class AppModule extends MainModule {
         Router('/newClient', module: NewClientModule()),
         Router('/newRegister', module: NewRegisterModule()),
         Router('/newProduct', module: NewProductModule()),
+        Router('/activesProduct', module: ActivesProductsModule()),
+        Router('/registersDone', module: RegistersDoneModule()),
         //Router('/updateRegister', module: UpdateRegisterModule()),
         
       ];

@@ -104,14 +104,14 @@ class _ContatosPageState
                         if (!snapshot.hasData) {
                           return Center(
                             child: Text(
-                                'Você nao tem contatos pra serem feitos hoje!'),
+                                'Você nao realizou contatos hoje!'),
                           );
                         }
 
                         if (snapshot.data.length == 0) {
                           return Center(
                             child: Text(
-                                'Você nao tem contatos pra serem feitos hoje!'),
+                                'Você nao realizou contatos hoje!'),
                           );
                         }
 

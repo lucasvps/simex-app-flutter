@@ -11,6 +11,8 @@ class ApiEndpoints {
 
   static const String REGISTERS_URL = '/registers';
 
+  static const String REGISTERS_DONE = '/registers/user';
+
   static const String CURRENT_USER_INFO = '/currentUser/info';
 
   static const String SEARCHED_CLIENT_INFO = '/search/clients';
