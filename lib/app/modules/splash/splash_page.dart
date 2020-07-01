@@ -20,7 +20,7 @@ class _SplashPageState extends ModularState<SplashPage, SplashController> {
       
 
       if (value['email'] != null) {
-        Modular.to.pushReplacementNamed('/home');
+        Modular.to.pushReplacementNamed('/contacts');
       } else {
         Modular.to.pushReplacementNamed('/login');
       }

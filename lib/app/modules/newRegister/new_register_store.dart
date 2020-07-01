@@ -13,6 +13,12 @@ abstract class _NewRegisterStoreBase with Store {
   _NewRegisterStoreBase(this.repository, this.productRepository);
 
   @observable
+  int currentStep = 0;
+
+  @action
+  setCurrentStep(int value) => currentStep = value;
+
+  @observable
   int currentUserID;
 
   @action

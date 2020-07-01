@@ -33,7 +33,7 @@ class ClientRepository {
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.put(url, data: clientModel.toJson()).then((value) {
-      Modular.to.pushReplacementNamed('/home');
+      Modular.to.pushReplacementNamed('/contacts');
     }).catchError((err) {
       print('erro reposit' + err.toString());
       return err;
@@ -47,7 +47,7 @@ class ClientRepository {
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.post(url, data: clientModel.toJson()).then((value){
-      Modular.to.pushReplacementNamed('/home');
+      Modular.to.pushReplacementNamed('/contacts');
     }).catchError((err){
       return err;
     });

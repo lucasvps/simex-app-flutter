@@ -14,6 +14,7 @@ class _CustomInfoRegisterRowState extends State<CustomInfoRegisterRow> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 5,
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.only(left: 8),

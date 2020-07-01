@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:simex_app/app/app_controller.dart';
+import 'package:simex_app/app/core/widgets.dart/custom_drawer.dart';
 import 'package:simex_app/app/models/contacts_done_model.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
 import 'package:simex_app/app/modules/registerInfo/registerInfo_page.dart';
@@ -33,16 +34,29 @@ class _ContatosPageState
     return DefaultTabController(
         length: 2,
         child: Scaffold(
+            drawer: SafeArea(child: CustomDrawer()),
+            backgroundColor: Colors.white,
+            
             appBar: AppBar(
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    Modular.get<AppController>().authStore.logout();
+                  },
+                  child: Icon(Icons.exit_to_app, color: Colors.white,)
+                )
+              ],
               bottom: TabBar(tabs: [
                 Tab(
-                  child: Text('Contatos a fazer hoje'),
+                  text: 'Contatos a fazer hoje',
+                  icon: Icon(Icons.contact_phone),
                 ),
                 Tab(
-                  child: Text('Contatos realizados'),
+                  text: 'Contatos realizados hoje',
+                  icon: Icon(Icons.contacts),
                 ),
               ]),
-              title: Text("Contatos de Hoje"),
+              title: Text("NOME DO APLICATIVO AQUI"),
               centerTitle: true,
             ),
             body: TabBarView(
@@ -66,15 +80,43 @@ class _ContatosPageState
                         }
                         if (!snapshot.hasData) {
                           return Center(
-                            child: Text(
-                                'Você nao tem contatos pra serem feitos hoje!'),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                    'Você nao tem contatos pra serem feitos hoje!',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                                Center(
+                                    child: Image.asset(
+                                        'lib/assets/images/empty.png')),
+                              ],
+                            ),
                           );
                         }
 
                         if (snapshot.data.length == 0) {
                           return Center(
-                            child: Text(
-                                'Você nao tem contatos pra serem feitos hoje!'),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                    'Você nao tem contatos pra serem feitos hoje!',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                                Center(
+                                    child: Image.asset(
+                                        'lib/assets/images/empty.png')),
+                              ],
+                            ),
                           );
                         }
 
@@ -103,15 +145,43 @@ class _ContatosPageState
                         }
                         if (!snapshot.hasData) {
                           return Center(
-                            child: Text(
-                                'Você nao realizou contatos hoje!'),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                     'Você não realizou contatos hoje!',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                                Center(
+                                    child: Image.asset(
+                                        'lib/assets/images/empty.png')),
+                              ],
+                            ),
                           );
                         }
 
                         if (snapshot.data.length == 0) {
                           return Center(
-                            child: Text(
-                                'Você nao realizou contatos hoje!'),
+                            child:Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                    'Você não realizou contatos hoje!',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                                Center(
+                                    child: Image.asset(
+                                        'lib/assets/images/empty.png')),
+                              ],
+                            ),
                           );
                         }
 
@@ -132,9 +202,12 @@ class _ContatosPageState
         return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
-              color: Colors.grey[200],
+              elevation: 20,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(12))),
+              color: Colors.white,
               child: ListTile(
-                trailing: FlatButton(
+                trailing: RaisedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -144,23 +217,45 @@ class _ContatosPageState
                     );
                   },
                   child: Text(
-                    'VER\nREGISTRO',
+                    'VISUALIZAR\nREGISTRO',
                     textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
                   ),
-                  color: Colors.orange,
+                  color: Color(0xff0D47A1),
                 ),
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Nome : ' + list[index].name),
-                    Text('Telefone : ' + list[index].phone),
-                  ],
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text("Produto : " + list[index].productName),
-                    Text("Valor : R\$" + double.parse(list[index].price).toString()),
+                    Text(
+                      'Nome : ' + list[index].name,
+                      style:
+                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      'Telefone : ' + list[index].phone,
+                      style:
+                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      "Produto : " + list[index].productName,
+                      style:
+                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      "Valor : R\$" +
+                          double.parse(list[index].price).toString(),
+                      style:
+                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    ),
                   ],
                 ),
               ),
@@ -176,35 +271,85 @@ class _ContatosPageState
         return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
-                color: Colors.grey[200],
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                elevation: 20,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12))),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Status : ' + list[index].status),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Cliente : ' + list[index].name),
-                    ),
-                    list[index].status == "Venda Perdida"
-                        ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Razão : ' + list[index].reason),
-                          )
-                        : list[index].status == "Venda Pendente"
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Text(
+                            'Cliente : ' + list[index].name,
+                            style: TextStyle(
+                                fontSize: 18, fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Text(
+                            'Status : ' + list[index].status,
+                            style: TextStyle(
+                                fontSize: 18, fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                        list[index].status == "Venda Perdida"
                             ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Observação : ' + list[index].observation),
-                            )
-                            : Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(6.0),
                                 child: Text(
-                                  'Valor de Venda : ' +
-                                      double.parse(list[index].valueSold).toString(),
+                                  'Razão : ' + list[index].reason,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontStyle: FontStyle.italic),
                                 ),
-                              ),
+                              )
+                            : list[index].status == "Venda Pendente"
+                                ? Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Text(
+                                      list[index].observation != null
+                                          ? 'Observação : ' +
+                                              list[index].observation
+                                          : "Nenhuma observação!",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Text(
+                                      'Valor de Venda : ' +
+                                          double.parse(list[index].valueSold)
+                                              .toString(),
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ),
+                      ],
+                    ),
+                    Container(
+                        child: list[index].status == "Venda Efetiva"
+                            ? Icon(
+                                Icons.check_circle_outline,
+                                size: 80,
+                              )
+                            : list[index].status == 'Venda Pendente'
+                                ? Icon(
+                                    Icons.remove_circle_outline,
+                                    size: 80,
+                                    color: Colors.orange,
+                                  )
+                                : Icon(
+                                    Icons.close,
+                                    color: Colors.red,
+                                    size: 80,
+                                  )),
                   ],
                 )));
       },

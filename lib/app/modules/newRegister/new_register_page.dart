@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
+import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/product_model.dart';
 import 'package:simex_app/app/models/register_model.dart';
@@ -36,200 +37,98 @@ class _NewRegisterPageState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Novo Registro'),
-          centerTitle: true,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              //Text('Cliente : ' + widget.clientModel.name),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: double.maxFinite,
-                child: Center(
-                    child: Container(
-                  color: Colors.black,
-                  width: double.maxFinite,
-                  child: Text(
-                    'Tipo de contato realizado',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 25, color: Colors.white),
-                  ),
-                )),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    contactFromRadioButton('Telefone Ativo', 'Telefone Ativo'),
-                    contactFromRadioButton('Visita Externa', 'Visita Externa'),
-                    contactFromRadioButton(
-                        'Telefone Recebido', 'Telefone Recebido'),
-                    contactFromRadioButton('Balcao', 'Balcao'),
-                  ],
-                ),
-              ),
-              Center(
-                  child: Container(
-                color: Colors.black,
-                width: double.maxFinite,
-                child: Text(
-                  'Status do Contato Realizado',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, color: Colors.white),
-                ),
-              )),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: <Widget>[
-                    statusRadioButton('Venda Efetiva', 'Venda Efetiva'),
-                    statusRadioButton('Venda Pendente', 'Venda Pendente'),
-                  ],
-                ),
-              ),
-              Center(
-                  child: Container(
-                color: Colors.black,
-                width: double.maxFinite,
-                child: Text(
-                  'Produto e Quantidade',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, color: Colors.white),
-                ),
-              )),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FutureBuilder(
-                  future: controller.store.productRepository.getProducts(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.active:
-                      case ConnectionState.waiting:
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                        break;
-                      case ConnectionState.none:
-                        return Text("No connection has been made");
-                        break;
-                      case ConnectionState.done:
-                        if (snapshot.hasError) {
-                          return Text(snapshot.error.toString());
-                        }
-                        if (!snapshot.hasData) {
-                          return Text("No data");
-                        } else {
-                          return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                dropDownMenu(snapshot.data),
-                              ],
-                            ),
-                          );
-                        }
-                        break;
-                    }
-                    return Container();
-                  },
-                ),
-              ),
-
-              Observer(builder: (context) {
-                return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: controller.store.efectiveSell &&
-                            controller.store.productPrice != null
-                        ? TextFormField(
-                            onChanged: (value) => controller.store
-                                .setAmountSold(int.parse(value)),
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                                labelText: "Quantidade Vendida",
-                                border: OutlineInputBorder()),
-                          )
-                        : TextFormField(
-                            onChanged: controller.store.setObservation,
-                            maxLines: 3,
-                            decoration: InputDecoration(
-                                labelText: "Observação",
-                                border: OutlineInputBorder()),
-                          ));
-              }),
-
-              Observer(builder: (_) {
-                return Padding(
-                    padding: EdgeInsets.all(8),
-                    child: controller.store.efectiveSell &&
-                            controller.store.amountSold != 0 &&
-                            controller.store.amountSold != null
-                        ? Text(
-                            "Valor final da Venda : R\$" +
-                                (controller.store.amountSold *
-                                        double.parse(
-                                            controller.store.productPrice))
-                                    .toString(),
-                            style: TextStyle(fontSize: 20),
-                          )
-                        : SizedBox());
-              }),
-
-              Observer(builder: (_) {
-                return controller.store.pendingSell
-                    ? Container(
-                        width: double.maxFinite,
-                        child: RaisedButton(
-                          color: Colors.blue,
-                          onPressed: () {
-                            _selectDate(context);
-                          },
-                          child: Text('Agendar próximo contato!'),
-                        ),
-                      )
-                    : SizedBox();
-              }),
-              SizedBox(
-                height: 20,
-              ),
-              Observer(builder: (_) {
-                return Container(
-                  child: controller.store.nextContactBR != null &&
-                          controller.store.pendingSell
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Próximo contato marcado para : " +
-                                controller.store.nextContactBR,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        )
-                      : SizedBox(),
-                );
-              }),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                  width: double.maxFinite,
-                  child: RaisedButton(
-                    color: Colors.green,
-                    onPressed: () {
-                      //print(controller.store.amountSold);
-                      //print(controller.store.productPrice);
-                      setRegisterModelToCreate();
-                    },
-                    child: Text('SALVAR'),
-                  ))
-            ],
+    return Observer(builder: (context) {
+      return Scaffold(
+          appBar: AppBar(
+            title: Text('Novo Registro'),
+            centerTitle: true,
           ),
-        ));
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Stepper(
+                  onStepTapped: (step) {
+                    controller.store.setCurrentStep(step);
+                  },
+                  onStepContinue:
+                      controller.store.currentStep < this._mySteps().length - 1
+                          ? () {
+                              if (controller.store.currentStep <
+                                  this._mySteps().length - 1) {
+                                controller.store.setCurrentStep(
+                                    controller.store.currentStep + 1);
+                              } else {}
+                            }
+                          : null,
+                  onStepCancel: () {
+                    if (controller.store.currentStep > 0) {
+                      controller.store
+                          .setCurrentStep(controller.store.currentStep - 1);
+                    } else {}
+                  },
+                  steps: _mySteps(),
+                  currentStep: controller.store.currentStep,
+                ),
+                Observer(builder: (_) {
+                  return Padding(
+                      padding: EdgeInsets.all(8),
+                      child: controller.store.efectiveSell &&
+                              controller.store.amountSold != 0 &&
+                              controller.store.amountSold != null
+                          ? Text(
+                              "Valor final da Venda : R\$" +
+                                  (controller.store.amountSold *
+                                          double.parse(
+                                              controller.store.productPrice))
+                                      .toString(),
+                              style: TextStyle(fontSize: 20),
+                            )
+                          : SizedBox());
+                }),
+                Observer(builder: (_) {
+                  return Card(
+                    elevation: 20,
+                    child: controller.store.nextContactBR != null &&
+                            controller.store.pendingSell
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Próximo contato marcado para : " +
+                                  controller.store.nextContactBR,
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        : SizedBox(),
+                  );
+                }),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                      width: double.infinity,
+                      height: 50,
+                      child: RaisedButton(
+                        color: AppThemeLight().getTheme().primaryColor,
+                        onPressed: () {
+                          setRegisterModelToCreate();
+                        },
+                        child: Text('SALVAR',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18)),
+                      )),
+                )
+              ],
+            ),
+          ));
+    });
   }
+
+  // ***********************************************************************************
 
   Widget statusRadioButton(String value, String text) {
     return Observer(builder: (context) {
@@ -237,7 +136,7 @@ class _NewRegisterPageState
         child: ListTile(
           title: Text(
             text,
-            style: TextStyle(fontSize: 14),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           leading: Radio(
             value: value,
@@ -265,6 +164,8 @@ class _NewRegisterPageState
     });
   }
 
+  // ***********************************************************************************
+
   Widget contactFromRadioButton(String value, String text) {
     return Observer(builder: (context) {
       return Flexible(
@@ -272,7 +173,10 @@ class _NewRegisterPageState
         children: <Widget>[
           Text(
             text,
-            style: TextStyle(fontSize: 14),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 10,
           ),
           Radio(
             value: value,
@@ -286,6 +190,8 @@ class _NewRegisterPageState
       ));
     });
   }
+
+  // ***********************************************************************************
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -303,6 +209,8 @@ class _NewRegisterPageState
     }
   }
 
+  // ***********************************************************************************
+
   Widget dropDownMenu(List<ProductModel> products) {
     return Observer(builder: (context) {
       return Padding(
@@ -313,28 +221,26 @@ class _NewRegisterPageState
           ),
           child: Center(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 DropdownButtonHideUnderline(
                   child: DropdownButton(
                     items: products.map((item) {
                       return DropdownMenuItem(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.80,
-                          child: Text(
-                            item.productName + " / Valor : R\$" + item.price,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
+                        child: Text(
+                          item.productName + " / Valor : R\$" + item.price,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
                           ),
                         ),
                         value: item.id.toString(),
                       );
                     }).toList(),
                     hint: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.80,
+                      width: MediaQuery.of(context).size.width * 0.60,
                       child: Center(
-                        child: Text("Lista de Produtos/Campanhas",
+                        child: Text("Produtos",
                             style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
@@ -367,6 +273,152 @@ class _NewRegisterPageState
     });
   }
 
+  // ***********************************************************************************
+
+  List<Step> _mySteps() {
+    List<Step> _steps = [
+      Step(
+        title: Text('Tipo de contato realizado'),
+        content: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              contactFromRadioButton('Telefone Ativo', 'Telefone Ativo'),
+              contactFromRadioButton('Visita Externa', 'Visita Externa'),
+              contactFromRadioButton('Telefone Recebido', 'Telefone Recebido'),
+              contactFromRadioButton('Balcao', 'Balcao'),
+            ],
+          ),
+        ),
+        isActive: controller.store.currentStep >= 0,
+      ),
+      Step(
+        title: Text('Status do Contato Realizado'),
+        content: controller.store.contactFrom != null
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: <Widget>[
+                    statusRadioButton('Venda Efetiva', 'Venda Efetiva'),
+                    statusRadioButton('Venda Pendente', 'Venda Pendente'),
+                  ],
+                ),
+              )
+            : Text('Marque a opção anterior.'),
+        isActive: controller.store.currentStep >= 1,
+      ),
+      Step(
+        title: Text('Produto/Campanha'),
+        isActive: controller.store.currentStep >= 2,
+        content: controller.store.status != null
+            ? FutureBuilder(
+                future: controller.store.productRepository.currentProducts(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.active:
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                      break;
+                    case ConnectionState.none:
+                      return Text("No connection has been made");
+                      break;
+                    case ConnectionState.done:
+                      if (snapshot.hasError) {
+                        return Text(snapshot.error.toString());
+                      }
+                      if (!snapshot.hasData) {
+                        return Text("No data");
+                      } else {
+                        return Center(
+                          child: SingleChildScrollView(
+                              child: dropDownMenu(snapshot.data)),
+                        );
+                      }
+                      break;
+                  }
+                  return Container();
+                },
+              )
+            : Text('Marque a opção anterior.'),
+      ),
+      Step(
+        title: Text(controller.store.status == "Venda Efetiva"
+            ? "Quantidade Vendida"
+            : "Observação"),
+        isActive: controller.store.currentStep >= 3,
+        content: controller.store.productName != null
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: controller.store.efectiveSell &&
+                        controller.store.productPrice != null
+                    ? TextFormField(
+                        onChanged: (value) =>
+                            controller.store.setAmountSold(int.parse(value)),
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                            labelText: "Quantidade Vendida",
+                            border: OutlineInputBorder()),
+                      )
+                    : TextFormField(
+                        onChanged: controller.store.setObservation,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                            labelText: "Observação",
+                            border: OutlineInputBorder()),
+                      ))
+            : Text('Marque a opçao anterior.'),
+      ),
+      Step(
+          isActive: controller.store.currentStep >= 4,
+          title: Text(controller.store.status == "Venda Pendente"
+              ? "Marcar Data Para Próximo Contato"
+              : "Salvar"),
+          content: controller.store.status == "Venda Pendente"
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: double.maxFinite,
+                    height: 50,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      color: AppThemeLight().getTheme().primaryColor,
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                      child: Text(
+                        'Agendar próximo contato!',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox()),
+      Step(
+        title: Text('testando'),
+        isActive: controller.store.currentStep >= 5,
+        content: TextFormField()
+      ),
+      Step(
+        title: Text('testando 2'),
+        isActive: controller.store.currentStep >= 6,
+        content: TextFormField()
+      ),
+      Step(
+        title: Text('testando 3'),
+        isActive: controller.store.currentStep >= 7,
+        content: TextFormField()
+      )
+    ];
+    return _steps;
+  }
+
+  // ***********************************************************************************
+
   setRegisterModelToCreate() {
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy-MM-dd');
@@ -387,7 +439,8 @@ class _NewRegisterPageState
         status:
             controller.store.efectiveSell ? "Venda Efetiva" : "Venda Pendente",
         valueSold: controller.store.amountSold != null
-            ? (double.parse(controller.store.productPrice) * controller.store.amountSold.toDouble())
+            ? (double.parse(controller.store.productPrice) *
+                    controller.store.amountSold.toDouble())
                 .toString()
             : '0.0',
         contactFrom: controller.store.contactFrom);

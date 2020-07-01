@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
+import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
 import 'package:simex_app/app/models/register_model.dart';
 import 'updateRegister_controller.dart';
@@ -59,180 +60,83 @@ class _UpdateRegisterPageState
         ),
         body: SingleChildScrollView(
           child: Observer(builder: (_) {
-            return Card(
-              child: Column(
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(height: 15),
-                      Container(
-                        width: double.maxFinite,
-                        child: Center(
-                            child: Container(
-                          color: Colors.black,
-                          width: double.maxFinite,
-                          child: Text(
-                            'Tipo de contato realizado',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 25, color: Colors.white),
-                          ),
-                        )),
-                      ),
-                      SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          contactFromRadioButton(
-                              'Telefone Ativo', 'Telefone Ativo'),
-                          contactFromRadioButton(
-                              'Visita Externa', 'Visita Externa'),
-                          contactFromRadioButton(
-                              'Telefone Recebido', 'Telefone Recebido'),
-                          contactFromRadioButton('Balcao', 'Balcao'),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30),
-                  Column(
-                    children: <Widget>[
-                      Center(
-                          child: Container(
-                        color: Colors.black,
-                        width: double.maxFinite,
-                        child: Text(
-                          'Status do Contato Realizado',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 25, color: Colors.white),
-                        ),
-                      )),
-                      SizedBox(height: 30),
-                      Row(
-                        children: <Widget>[
-                          statusRadioButton('Venda Efetiva', 'Venda Efetiva'),
-                          statusRadioButton('Venda Pendente', 'Venda Pendente'),
-                          statusRadioButton('Venda Perdida', 'Venda Perdida'),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30),
-                  Container(
+            return Column(
+              children: <Widget>[
+                Stepper(
+                  onStepTapped: (step) {
+                    controller.store.setCurrentStep(step);
+                  },
+                  onStepContinue:
+                      controller.store.currentStep < this._mySteps().length - 1
+                          ? () {
+                              if (controller.store.currentStep <
+                                  this._mySteps().length - 1) {
+                                controller.store.setCurrentStep(
+                                    controller.store.currentStep + 1);
+                              } else {}
+                            }
+                          : null,
+                  onStepCancel: () {
+                    if (controller.store.currentStep > 0) {
+                      controller.store
+                          .setCurrentStep(controller.store.currentStep - 1);
+                    } else {}
+                  },
+                  steps: _mySteps(),
+                  currentStep: controller.store.currentStep,
+                ),
+                Container(
                     width: double.maxFinite,
-                    child: controller.store.efectiveSell
+                    child: controller.store.efectiveSell &&
+                            controller.store.amountSold != null
                         ? Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 10, 10, 10),
-                          child: Text(
-                              'Produto : ' +
-                                  widget.nextContactsModel.productName,
+                            padding: const EdgeInsets.fromLTRB(8, 10, 10, 10),
+                            child: Text(
+                              "Valor Total da Venda: R\$ " +
+                                  (controller.store.amountSold.toDouble() *
+                                          double.parse(
+                                              widget.nextContactsModel.price))
+                                      .toString(),
                               style: TextStyle(fontSize: 20),
                             ),
+                          )
+                        : SizedBox()),
+                Card(
+                  elevation: 20,
+                  child: controller.store.nextContactBR != null &&
+                          controller.store.pendingSell
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Próximo contato marcado para : " +
+                                controller.store.nextContactBR,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
                         )
-                        : SizedBox(),
-                  ),
-                  
-                  Center(
-                      child: controller.store.efectiveSell
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextField(
-                                onChanged: (value) {
-                                  controller.store
-                                      .setAmountSold(int.parse(value));
-                                  controller.store.setValueSold(
-                                      controller.store.amountSold.toDouble() *
-                                          double.parse(widget.nextContactsModel.price)).toString();
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                    labelText: "Quantidade Vendida",
-                                    border: OutlineInputBorder()),
-                              ),
-                            )
-                          : SizedBox()),
-                  Container(
-                      width: double.maxFinite,
-                      child: controller.store.efectiveSell &&
-                              controller.store.amountSold != null
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(8, 10, 10, 10),
-                              child: Text(
-                                "Valor Total da Venda: R\$ " +
-                                    (controller.store.amountSold.toDouble() *
-                                            double.parse(widget.nextContactsModel.price))
-                                        .toString(),
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            )
-                          : SizedBox()),
-                  Center(
-                      child: controller.store.lostSell
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Center(
-                                    child: Container(
-                                  color: Colors.black,
-                                  width: double.maxFinite,
-                                  child: Text(
-                                    'Motivo da Venda Perdida',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 25, color: Colors.white),
-                                  ),
-                                )),
-                                SizedBox(height: 30),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    reasonRadioButton('Estoque', 'Estoque'),
-                                    reasonRadioButton('Interesse', 'Interesse'),
-                                    reasonRadioButton('Preço', 'Preço'),
-                                  ],
-                                ),
-                              ],
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextField(
-                                onChanged: controller.store.setObservation,
-                                decoration: InputDecoration(
-                                  labelText: "Observação",
-                                  border: OutlineInputBorder(),
-                                ),
-                                expands: false,
-                                maxLines: 3,
-                              ),
-                            )),
-                  SizedBox(height: 30),
-                  Center(
-                      child: controller.store.pendingSell
-                          ? Container(
-                              width: double.maxFinite,
-                              child: RaisedButton(
-                                color: Colors.blue,
-                                onPressed: () {
-                                  _selectDate(context);
-                                },
-                                child: Text('Agendar Próximo Contato'),
-                              ))
-                          : SizedBox()),
-                  Container(
-                    width: double.maxFinite,
+                      : SizedBox(),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
                     child: RaisedButton(
-                      color: Colors.green,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18)),
+                      color: AppThemeLight().getTheme().primaryColor,
                       onPressed: () {
                         setRegisterModelToUpdate();
                         controller.store.cleanFields();
                       },
                       child: Text('SALVAR'),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             );
           }),
         ),
@@ -244,40 +148,45 @@ class _UpdateRegisterPageState
     return Observer(
       builder: (_) {
         return Flexible(
-          child: ListTile(
-            title: Text(
-              text,
-              style: TextStyle(fontSize: 14),
-            ),
-            leading: Radio(
-              value: value,
-              groupValue: controller.store.status,
-              onChanged: (value) {
-                controller.store.setStatus(value);
-                controller.store.setValueSold(0);
+          child: Column(
+            children: <Widget>[
+              Text(
+                text,
+                style: TextStyle(fontSize: 14),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Radio(
+                value: value,
+                groupValue: controller.store.status,
+                onChanged: (value) {
+                  controller.store.setStatus(value);
+                  controller.store.setValueSold(0);
 
-                if (controller.store.status == "Venda Perdida") {
-                  controller.store.lostSell = true;
-                  controller.store.setObservation('');
-                } else {
-                  controller.store.lostSell = false;
-                }
+                  if (controller.store.status == "Venda Perdida") {
+                    controller.store.lostSell = true;
+                    controller.store.setObservation('');
+                  } else {
+                    controller.store.lostSell = false;
+                  }
 
-                if (controller.store.status == "Venda Pendente") {
-                  controller.store.pendingSell = true;
-                  controller.store.setReason('');
-                } else {
-                  controller.store.pendingSell = false;
-                }
+                  if (controller.store.status == "Venda Pendente") {
+                    controller.store.pendingSell = true;
+                    controller.store.setReason('');
+                  } else {
+                    controller.store.pendingSell = false;
+                  }
 
-                if (controller.store.status == "Venda Efetiva") {
-                  controller.store.efectiveSell = true;
-                  controller.store.setReason('');
-                } else {
-                  controller.store.efectiveSell = false;
-                }
-              },
-            ),
+                  if (controller.store.status == "Venda Efetiva") {
+                    controller.store.efectiveSell = true;
+                    controller.store.setReason('');
+                  } else {
+                    controller.store.efectiveSell = false;
+                  }
+                },
+              ),
+            ],
           ),
         );
       },
@@ -342,7 +251,6 @@ class _UpdateRegisterPageState
         idClient: widget.nextContactsModel.idClient,
         idUser: widget.nextContactsModel.idUser,
         productId: widget.nextContactsModel.productId,
-        
         dateContact: formatted,
         nextContact:
             controller.store.pendingSell ? controller.store.nextContact : "",
@@ -376,5 +284,107 @@ class _UpdateRegisterPageState
       controller.store.setNextContact(usDate);
       controller.store.setNextContactBr(brDate);
     }
+  }
+
+  List<Step> _mySteps() {
+    List<Step> _steps = [
+      Step(
+        title: Text('Tipo de contato realizado'),
+        content: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              contactFromRadioButton('Telefone Ativo', 'Telefone Ativo'),
+              contactFromRadioButton('Visita Externa', 'Visita Externa'),
+              contactFromRadioButton('Telefone Recebido', 'Telefone Recebido'),
+              contactFromRadioButton('Balcao', 'Balcao'),
+            ],
+          ),
+        ),
+        isActive: controller.store.currentStep >= 0,
+      ),
+      Step(
+        title: Text('Status do Contato Realizado'),
+        content: controller.store.contactFrom != null
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    statusRadioButton('Venda Efetiva', 'Venda Efetiva'),
+                    statusRadioButton('Venda Pendente', 'Venda Pendente'),
+                    statusRadioButton('Venda Perdida', 'Venda Perdida'),
+                  ],
+                ),
+              )
+            : Text('Marque a opção anterior.'),
+        isActive: controller.store.currentStep >= 1,
+      ),
+      Step(
+          title: Text(controller.store.efectiveSell
+              ? "Quantidade Vendida"
+              : controller.store.pendingSell
+                  ? "Observação"
+                  : "Motiva da venda perdida"),
+          isActive: controller.store.currentStep >= 3,
+          content: controller.store.status != null
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: controller.store.efectiveSell
+                      ? TextFormField(
+                          onChanged: (value) =>
+                              controller.store.setAmountSold(int.parse(value)),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                              labelText: "Quantidade Vendida",
+                              border: OutlineInputBorder()),
+                        )
+                      : controller.store.pendingSell
+                          ? TextFormField(
+                              onChanged: controller.store.setObservation,
+                              maxLines: 3,
+                              decoration: InputDecoration(
+                                  labelText: "Observação",
+                                  border: OutlineInputBorder()),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                reasonRadioButton('Estoque', 'Estoque'),
+                                reasonRadioButton('Interesse', 'Interesse'),
+                                reasonRadioButton('Preço', 'Preço'),
+                              ],
+                            ))
+              : Text('Marque a opção anterior.')),
+      Step(
+          isActive: controller.store.currentStep >= 4,
+          title: Text(controller.store.status == "Venda Pendente"
+              ? "Marcar Data Para Próximo Contato"
+              : "Salvar"),
+          content: controller.store.status == "Venda Pendente"
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: double.maxFinite,
+                    height: 50,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      color: AppThemeLight().getTheme().primaryColor,
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                      child: Text(
+                        'Agendar próximo contato!',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox()),
+    ];
+    return _steps;
   }
 }

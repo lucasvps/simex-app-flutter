@@ -53,31 +53,45 @@ class _CustomDrawerState extends State<CustomDrawer> {
         },
       ),
       customListTile(
+          icon: Icons.people,
           title: 'Clientes',
           subtitle: 'Buscar ou registrar novo cliente.',
           pageTo: '/clients'),
       customListTile(
-          title: 'Contatos Hoje',
-          subtitle: 'Contatos que devem ser feitos hoje.',
-          pageTo: '/contacts'),
-      customListTile(
+          icon: Icons.folder,
           title: 'Registros',
           subtitle: 'Todos os registros feitos.',
           pageTo: '/registersDone'),
       customListTile(
+          icon: Icons.build,
           title: 'Produtos/Campanha',
           subtitle: 'Ver e adicionar produtos/campanhas.',
           pageTo: '/activesProduct'),
     ]));
   }
 
-  Widget customListTile({String title, String subtitle, String pageTo}) {
-    return ListTile(
-      title: Text(title),
-      subtitle: Text(subtitle),
-      onTap: () {
-        Modular.to.pushNamed(pageTo);
-      },
+  Widget customListTile(
+      {String title, String subtitle, String pageTo, IconData icon}) {
+    return Card(
+      color: Color(0xffFFF176).withOpacity(0.9),
+      child: ListTile(
+        dense: true,
+        leading: Icon(
+          icon,
+          color: Colors.black,
+        ),
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 16),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        ),
+        onTap: () {
+          Modular.to.pushNamed(pageTo);
+        },
+      ),
     );
   }
 }

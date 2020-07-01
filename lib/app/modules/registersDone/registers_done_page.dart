@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/registers_done_model.dart';
 import 'registers_done_controller.dart';
 
@@ -64,22 +65,47 @@ class _RegistersDonePageState
         itemCount: registers.length,
         itemBuilder: (context, index) {
           return Card(
+            elevation: 20,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12))),
             child: ListTile(
-              leading: Icon(
-                Icons.toys,
-                color: Colors.green,
-              ),
+              trailing: registers[index].status == "Venda Efetiva"
+                  ? Icon(
+                      Icons.check_circle_outline,
+                      size: 35,
+                      color: AppThemeLight().getTheme().primaryColor,
+                    )
+                  : registers[index].status == 'Venda Pendente'
+                      ? Icon(
+                          Icons.remove_circle_outline,
+                          size: 35,
+                          color: Colors.orange,
+                        )
+                      : Icon(
+                          Icons.close,
+                          color: Colors.red,
+                          size: 35,
+                        ),
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Cliente : ' + registers[index].name),
-                  Text('Status : ' + registers[index].status),
+                  Text(
+                    'Cliente : ' + registers[index].name,
+                    style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                  ),
+                  Text(
+                    'Status : ' + registers[index].status,
+                    style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                  ),
                 ],
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Data de Contato : ' + registers[index].dateContact),
+                  Text(
+                    'Data de Contato : ' + registers[index].dateContact,
+                    style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                  ),
                 ],
               ),
             ),

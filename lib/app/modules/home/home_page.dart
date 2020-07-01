@@ -25,7 +25,13 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
             onPressed: () {
               Modular.get<AppController>().authStore.logout();
             },
-            child: Text('Sair'),
+            child: Text(
+              'Sair',
+              style: TextStyle(
+                color: Colors.white,
+                backgroundColor: Colors.grey.withOpacity(0.2),
+              ),
+            ),
           )
         ],
         title: Text('Nome do aplicativo'),

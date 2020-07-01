@@ -12,7 +12,7 @@ class RegisterRepository {
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.put(url, data: model.toJson()).then((value) {
-      Modular.to.pushReplacementNamed('/home');
+      Modular.to.pushReplacementNamed('/contacts');
     }).catchError((err) {
       return err;
     });
@@ -24,7 +24,7 @@ class RegisterRepository {
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.post(url, data: model).then((value) {
-      Modular.to.pushReplacementNamed('/home');
+      Modular.to.pushReplacementNamed('/contacts');
     }).catchError((err) {
       return err;
     });

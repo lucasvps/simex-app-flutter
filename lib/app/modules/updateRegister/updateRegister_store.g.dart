@@ -24,6 +24,21 @@ mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
               name: '_UpdateRegisterStoreBase.lostSellButtonValid'))
       .value;
 
+  final _$currentStepAtom = Atom(name: '_UpdateRegisterStoreBase.currentStep');
+
+  @override
+  int get currentStep {
+    _$currentStepAtom.reportRead();
+    return super.currentStep;
+  }
+
+  @override
+  set currentStep(int value) {
+    _$currentStepAtom.reportWrite(value, super.currentStep, () {
+      super.currentStep = value;
+    });
+  }
+
   final _$lostSellAtom = Atom(name: '_UpdateRegisterStoreBase.lostSell');
 
   @override
@@ -195,6 +210,17 @@ mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
       ActionController(name: '_UpdateRegisterStoreBase');
 
   @override
+  dynamic setCurrentStep(int value) {
+    final _$actionInfo = _$_UpdateRegisterStoreBaseActionController.startAction(
+        name: '_UpdateRegisterStoreBase.setCurrentStep');
+    try {
+      return super.setCurrentStep(value);
+    } finally {
+      _$_UpdateRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic setStatus(String value) {
     final _$actionInfo = _$_UpdateRegisterStoreBaseActionController.startAction(
         name: '_UpdateRegisterStoreBase.setStatus');
@@ -285,6 +311,7 @@ mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
   @override
   String toString() {
     return '''
+currentStep: ${currentStep},
 lostSell: ${lostSell},
 efectiveSell: ${efectiveSell},
 pendingSell: ${pendingSell},

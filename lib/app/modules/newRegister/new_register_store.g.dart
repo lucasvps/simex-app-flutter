@@ -9,6 +9,21 @@ part of 'new_register_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$NewRegisterStore on _NewRegisterStoreBase, Store {
+  final _$currentStepAtom = Atom(name: '_NewRegisterStoreBase.currentStep');
+
+  @override
+  int get currentStep {
+    _$currentStepAtom.reportRead();
+    return super.currentStep;
+  }
+
+  @override
+  set currentStep(int value) {
+    _$currentStepAtom.reportWrite(value, super.currentStep, () {
+      super.currentStep = value;
+    });
+  }
+
   final _$currentUserIDAtom = Atom(name: '_NewRegisterStoreBase.currentUserID');
 
   @override
@@ -223,6 +238,17 @@ mixin _$NewRegisterStore on _NewRegisterStoreBase, Store {
       ActionController(name: '_NewRegisterStoreBase');
 
   @override
+  dynamic setCurrentStep(int value) {
+    final _$actionInfo = _$_NewRegisterStoreBaseActionController.startAction(
+        name: '_NewRegisterStoreBase.setCurrentStep');
+    try {
+      return super.setCurrentStep(value);
+    } finally {
+      _$_NewRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic setCurrentUserID(int value) {
     final _$actionInfo = _$_NewRegisterStoreBaseActionController.startAction(
         name: '_NewRegisterStoreBase.setCurrentUserID');
@@ -357,6 +383,7 @@ mixin _$NewRegisterStore on _NewRegisterStoreBase, Store {
   @override
   String toString() {
     return '''
+currentStep: ${currentStep},
 currentUserID: ${currentUserID},
 efectiveSell: ${efectiveSell},
 pendingSell: ${pendingSell},

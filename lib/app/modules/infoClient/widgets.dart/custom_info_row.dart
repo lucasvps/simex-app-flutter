@@ -18,23 +18,22 @@ class CustomInfoRow extends StatefulWidget {
   _CustomInfoRowState createState() => _CustomInfoRowState();
 }
 
-
-
 class _CustomInfoRowState extends State<CustomInfoRow> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 5,
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.only(left: 8),
         child: Row(
           children: <Widget>[
             Flexible(
-              flex: 0,
+                flex: 0,
                 child: Text(
-              '${widget.field.toString()} : ',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            )),
+                  '${widget.field.toString()} : ',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                )),
             Expanded(
               flex: 3,
               child: TextFormField(

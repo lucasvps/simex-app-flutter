@@ -9,6 +9,13 @@ abstract class _UpdateRegisterStoreBase with Store {
   final RegisterRepository repository;
   _UpdateRegisterStoreBase(this.repository);
 
+
+  @observable
+  int currentStep = 0;
+
+  @action
+  setCurrentStep(int value) => currentStep = value;
+
   @observable
   bool lostSell = false;
 

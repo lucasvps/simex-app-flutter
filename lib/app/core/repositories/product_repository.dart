@@ -1,5 +1,4 @@
 //import 'package:flutter/material.dart';
-import 'package:date_format/date_format.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
 import 'package:simex_app/app/core/custom_dio.dart';
@@ -13,7 +12,7 @@ class ProductRepository {
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.post(url, data: model.toJson()).then((value) {
-      Modular.to.pushReplacementNamed('/home');
+      Modular.to.pushReplacementNamed('/contacts');
     }).catchError((err) {
       return err;
     });

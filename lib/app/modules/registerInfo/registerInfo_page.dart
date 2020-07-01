@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
 import 'package:simex_app/app/models/register_model.dart';
 import 'package:simex_app/app/modules/registerInfo/widgets.dart/custom_info_register_row.dart';
@@ -31,107 +32,131 @@ class _RegisterInfoPageState
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 50),
-          child: Card(
-            child: Column(
-              children: <Widget>[
-                CustomInfoRegisterRow(
-                  field: 'Cliente',
-                  value: widget.contactsModel.name,
-                  readOnly: true,
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height * 0.25,
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('lib/assets/images/personal.png'),
+              )),
+            ),
+            CustomInfoRegisterRow(
+              field: 'CLIENTE',
+              value: widget.contactsModel.name,
+              readOnly: true,
+            ),
+            CustomInfoRegisterRow(
+              field: 'TELEFONE',
+              value: widget.contactsModel.phone,
+              readOnly: true,
+            ),
+            CustomInfoRegisterRow(
+              field: 'EMAIL',
+              value: widget.contactsModel.email,
+              readOnly: true,
+            ),
+            CustomInfoRegisterRow(
+              field: 'LOJA',
+              value: widget.contactsModel.store,
+              readOnly: true,
+            ),
+            CustomInfoRegisterRow(
+              field: 'PRODUTO',
+              value: widget.contactsModel.productName,
+              readOnly: true,
+            ),
+            CustomInfoRegisterRow(
+              field: 'OBSERVAÇÃO',
+              value: widget.contactsModel.observation,
+              readOnly: true,
+            ),
+            CustomInfoRegisterRow(
+              field: 'DATA DO CONTATO',
+              value: widget.contactsModel.dateContact,
+              readOnly: true,
+            ),
+            CustomInfoRegisterRow(
+              field: 'TIPO DE CONTATO',
+              value: widget.contactsModel.contactFrom,
+              readOnly: true,
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 50,
+                width: double.infinity,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18)),
+                  color: AppThemeLight().getTheme().primaryColor,
+                  onPressed: () {
+                    //Modular.to.pushNamed('/info/update');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UpdateRegisterPage(
+                                nextContactsModel: widget.contactsModel)));
+                  },
+                  child: Text('CLIENTE ATENDEU, ATUALIZAR CONTATO REALIZADO.'),
                 ),
-                CustomInfoRegisterRow(
-                  field: 'Telefone',
-                  value: widget.contactsModel.phone,
-                  readOnly: true,
+              ),
+            ),
+            
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Container(
+                height: 50,
+                width: double.infinity,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18)),
+                  onPressed: () {
+                    _selectDate(context);
+                  },
+                  child: Text(
+                      'CLIENTE NÃO ATENDEU, AGENDAR NOVA DATA PARA CONTATO.'),
+                  color: Color(0xffFFF176).withOpacity(0.9),
                 ),
-                CustomInfoRegisterRow(
-                  field: 'Email',
-                  value: widget.contactsModel.email,
-                  readOnly: true,
-                ),
-                CustomInfoRegisterRow(
-                  field: 'Loja',
-                  value: widget.contactsModel.store,
-                  readOnly: true,
-                ),
-                Row(
-                  children: <Widget>[
-                    Flexible(
-                      flex: 3,
-                      child: CustomInfoRegisterRow(
-                        field: 'Produto',
-                        value: widget.contactsModel.productName,
-                        readOnly: true,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 3,
-                      child: CustomInfoRegisterRow(
-                        field: "Quantidade",
-                        value: widget.contactsModel.productAmount.toString(),
-                        readOnly: true,
-                      ),
-                    )
-                  ],
-                ),
-                CustomInfoRegisterRow(
-                  field: 'Observação',
-                  value: widget.contactsModel.observation,
-                  readOnly: true,
-                ),
-                CustomInfoRegisterRow(
-                  field: 'Data do contato',
-                  value: widget.contactsModel.dateContact,
-                  readOnly: true,
-                ),
-                CustomInfoRegisterRow(
-                  field: 'Tipo de Contato',
-                  value: widget.contactsModel.contactFrom,
-                  readOnly: true,
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                Container(
-                  width: double.maxFinite,
-                  child: RaisedButton(
-                    color: Colors.green,
-                    onPressed: () {
-                      //Modular.to.pushNamed('/info/update');
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UpdateRegisterPage(
-                                  nextContactsModel: widget.contactsModel)));
-                    },
-                    child:
-                        Text('CLIENTE ATENDEU, ATUALIZAR CONTATO REALIZADO.'),
-                  ),
-                ),
-                Container(
-                  width: double.maxFinite,
-                  child: RaisedButton(
-                    onPressed: () {
-                      _selectDate(context);
-                    },
-                    child: Text(
-                        'CLIENTE NÃO ATENDEU, AGENDAR NOVA DATA PARA CONTATO.'),
-                    color: Colors.orange,
-                  ),
-                ),
-                Observer(builder: (_) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Center(
-                      child: controller.store.nextContactBR != null
-                          ? Column(
-                              children: <Widget>[
-                                Text('Data Marcada Para Próximo Contato: ' +
-                                    controller.store.nextContactBR),
-                                RaisedButton(
-                                  color: Colors.blue,
+              ),
+            ),
+            Observer(builder: (_) {
+              return Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Center(
+                  child: controller.store.nextContactBR != null
+                      ? Column(
+                          children: <Widget>[
+                            Card(
+                              elevation: 20,
+                              child: controller.store.nextContactBR != null
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Próximo contato marcado para : " +
+                                            controller.store.nextContactBR,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  : SizedBox(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Container(
+                                height: 50,
+                                width: double.infinity,
+                                child: RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18)),
+                                  color:
+                                      AppThemeLight().getTheme().primaryColor,
                                   onPressed: () {
                                     var updateRegister = RegisterModel(
                                         id: widget.contactsModel.id,
@@ -160,16 +185,16 @@ class _RegisterInfoPageState
                                         widget.contactsModel.id);
                                   },
                                   child: Text('SALVAR E SAIR'),
-                                )
-                              ],
+                                ),
+                              ),
                             )
-                          : SizedBox(),
-                    ),
-                  );
-                }),
-              ],
-            ),
-          ),
+                          ],
+                        )
+                      : SizedBox(),
+                ),
+              );
+            }),
+          ],
         ),
       ),
     );
