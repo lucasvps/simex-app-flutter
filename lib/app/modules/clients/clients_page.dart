@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/client_model.dart';
@@ -48,77 +49,65 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
         ),
       ),
       appBar: AppBar(
-        title: Text('Clientes'),
+        title: Text(
+          'Clientes',
+          style: GoogleFonts.montserrat(),
+        ),
         centerTitle: true,
       ),
-      body: Container(
-        height: double.maxFinite,
-        width: double.maxFinite,
-        child: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextField(
-                    inputFormatters: [maskTextInputFormatter],
-                    controller: controllerText,
-                    decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                            icon: Icon(Icons.search),
-                            onPressed: () {
-                              controller.clientStore
-                                  .setSearch(controllerText.text);
-                            }),
-                        labelText: "Pesquisar cliente pelo CPF",
-                        border: OutlineInputBorder()),
-                  ),
-                ),
-                Observer(builder: (_) {
-                  return Expanded(
-                    child: SizedBox(
-                      child: FutureBuilder(
-                        future: controller.searchedUserByDoc(
-                            controller.clientStore.searchDoc),
-                        builder: (context, snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.active:
-                            case ConnectionState.waiting:
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                              break;
-                            case ConnectionState.none:
-                              return Text('erro 1');
-                              break;
-                            case ConnectionState.done:
-                              if (snapshot.hasError) {
-                                return Text('');
-                              }
-                              if (!snapshot.hasData) {
-                                return Text('Nenhum Cliente Encontrado!');
-                              } else {
-                                return listView(snapshot.data);
-
-                                // CustomListView(
-                                //   clientSearched: snapshot.data,
-                                // );
-                              }
-                              break;
-                          }
-                          return Container();
-                        },
-                      ),
-                    ),
-                  );
-                }),
-                
-              ],
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              inputFormatters: [maskTextInputFormatter],
+              controller: controllerText,
+              decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () {
+                        controller.clientStore.setSearch(controllerText.text);
+                      }),
+                  labelText: "Pesquisar cliente pelo CPF",
+                  border: OutlineInputBorder()),
             ),
           ),
-        ),
+          Observer(builder: (_) {
+            return Flexible(
+              child: SizedBox(
+                child: FutureBuilder(
+                  future: controller
+                      .searchedUserByDoc(controller.clientStore.searchDoc),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.active:
+                      case ConnectionState.waiting:
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                        break;
+                      case ConnectionState.none:
+                        return Text('erro 1');
+                        break;
+                      case ConnectionState.done:
+                        if (snapshot.hasError) {
+                          return Text('');
+                        }
+                        if (!snapshot.hasData) {
+                          return Text('Nenhum Cliente Encontrado!');
+                        } else {
+                          return listView(snapshot.data);
+                        }
+                        break;
+                    }
+                    return Container();
+                  },
+                ),
+              ),
+            );
+          }),
+        ],
       ),
     );
   }
@@ -135,96 +124,100 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
                 borderRadius: BorderRadius.all(Radius.circular(12))),
             color: Colors.white,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                ListTile(
-                    title: Padding(
-                      padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(2),
-                            child: Text(
-                              'Nome : ' + clients[index].name,
-                              style: TextStyle(
-                                  fontSize: 18, fontStyle: FontStyle.italic),
-                            ),
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    'NOME : ' + clients[index].name,
+                    style: GoogleFonts.pangolin(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    'CPF : ' + clients[index].cpf,
+                    style: GoogleFonts.pangolin(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    "ENDEREÇO : " + clients[index].adress,
+                    style: GoogleFonts.pangolin(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    "Cidade/UF : " +
+                        clients[index].city +
+                        "/" +
+                        clients[index].state,
+                    style: GoogleFonts.pangolin(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Row(
+                  //mainAxisSize: MainAxisSize.min,
+                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: RaisedButton(
+                        onPressed: () {
+                          //print('${widget.clientSearched[index].id}');
+                          Modular.to
+                              .pushNamed('/newRegister/${clients[index].id}');
+                        },
+                        child: Text(
+                          'NOVO REGISTRO',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.lato(
+                            color: Colors.white,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(2),
-                            child: Text(
-                              'CPF : ' + clients[index].cpf,
-                              style: TextStyle(
-                                  fontSize: 18, fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(2),
-                            child: Text(
-                              "Endereço : " + clients[index].adress,
-                              style: TextStyle(
-                                  fontSize: 18, fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(2),
-                            child: Text(
-                              "Cidade/UF : " +
-                                  clients[index].city +
-                                  "/" +
-                                  clients[index].state,
-                              style: TextStyle(
-                                  fontSize: 18, fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                        ],
+                        ),
+                        color: Color(0xff0D47A1),
                       ),
                     ),
-                    trailing: Column(
-                      children: <Widget>[
-                        Expanded(
-                          child: ButtonTheme(
-                            minWidth: MediaQuery.of(context).size.width * 0.40,
-                            child: RaisedButton(
-                              onPressed: () {
-                                //print('${widget.clientSearched[index].id}');
-                                Modular.to.pushNamed(
-                                    '/newRegister/${clients[index].id}');
-                              },
-                              child: Text(
-                                'NOVO REGISTRO',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              color: Color(0xff0D47A1),
-                            ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => InfoClientPage(
+                                    detailedClient: clients[index])),
+                          );
+                        },
+                        child: Text(
+                          'VER MAIS',
+                          style: GoogleFonts.lato(
+                            color: Colors.white,
                           ),
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Expanded(
-                          child: ButtonTheme(
-                            minWidth: MediaQuery.of(context).size.width * 0.40,
-                            child: RaisedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => InfoClientPage(
-                                          detailedClient: clients[index])),
-                                );
-                              },
-                              child: Text(
-                                'VER MAIS',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              color: Color(0xff0D47A1),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
+                        color: Color(0xff0D47A1),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                  ],
+                )
               ],
             ),
           ),

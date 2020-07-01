@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/client_model.dart';
@@ -29,7 +30,7 @@ class _NewClientPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registro de Novo Cliente'),
+        title: Text('Registro de Novo Cliente', style: GoogleFonts.montserrat(),),
         centerTitle: true,
       ),
       body: Observer(builder: (context) {
@@ -47,7 +48,6 @@ class _NewClientPageState
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: TextFormField(
-                          
                           inputFormatters: [maskTextInputFormatterCPF],
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -174,7 +174,10 @@ class _NewClientPageState
                           : null,
                       child: Text(
                         'REGISTRAR',
-                        style: TextStyle(fontSize: 20),
+                        style: GoogleFonts.lato(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18)),

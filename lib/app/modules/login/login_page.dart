@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:simex_app/app/models/user_model.dart';
 import 'login_controller.dart';
 
@@ -20,7 +21,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
     return Scaffold(
         //backgroundColor: Color(0xffBBDEFB),
         appBar: AppBar(
-          title: Text('Realizar Login'),
+          title: Text('Realizar Login', style: GoogleFonts.montserrat(),),
           centerTitle: true,
         ),
         body: Observer(builder: (_) {
@@ -98,7 +99,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                             }
                           : null,
                       child: Text('LOGIN',
-                          style: TextStyle(
+                          style: GoogleFonts.lato(
                               fontWeight: FontWeight.bold, fontSize: 20)),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),

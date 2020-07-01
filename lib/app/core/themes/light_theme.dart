@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AppThemeLight {
-  
   ThemeData getTheme() {
     // Implementar temas especializados.
     return ThemeData(
@@ -11,12 +10,8 @@ class AppThemeLight {
         // Cards
         cardTheme: CardTheme(color: Colors.white),
         buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
-
-        iconTheme: IconThemeData(
-          color: Color(0xff0D47A1)
-        ),
         
-        
+        iconTheme: IconThemeData(color: Color(0xff0D47A1)),
 
         //App Bar
         appBarTheme: AppBarTheme(

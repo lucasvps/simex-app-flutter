@@ -99,4 +99,14 @@ abstract class _NewRegisterStoreBase with Store {
 
   @action
   setProdId(String value) => prodID = value;
+
+  cleanFields() {
+    setStatus(null);
+    setValueSold(null);
+    setObservation(null);
+    setContactFrom(null);
+    setNextContactBr(null);
+    setNextContact(null);
+    setAmountSold(null);
+  }
 }

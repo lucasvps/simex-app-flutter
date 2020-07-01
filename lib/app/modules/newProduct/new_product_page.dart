@@ -1,7 +1,12 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:simex_app/app/core/services/currency_input_formatter.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/product_model.dart';
 import 'new_product_controller.dart';
@@ -18,11 +23,16 @@ class _NewProductPageState
     extends ModularState<NewProductPage, NewProductController> {
   //use 'controller' variable to access controller
 
+  //FlutterMoneyFormatter fmf = FlutterMoneyFormatter(amount: 12345678.9012345);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Novo Produto'),
+        title: Text(
+          'Novo Produto',
+          style: GoogleFonts.montserrat(),
+        ),
         centerTitle: true,
       ),
       body: Observer(builder: (context) {
@@ -47,6 +57,10 @@ class _NewProductPageState
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   onChanged: controller.store.setProductPrice,
+                  inputFormatters: [
+                    WhitelistingTextInputFormatter.digitsOnly,
+                    CurrencyInputFormatter()
+                  ],
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                       errorText: controller.store.validateProdPrice(),
@@ -69,10 +83,9 @@ class _NewProductPageState
                         _selectInitalDate(context);
                       },
                       color: AppThemeLight().getTheme().primaryColor,
-                      child: Text(
-                        'Marcar Data de Início da Campanha',
-                        style: TextStyle(fontSize: 20),
-                      ),
+                      child: Text('Marcar Data de Início da Campanha',
+                          style: GoogleFonts.lato(
+                              fontWeight: FontWeight.bold, fontSize: 20)),
                     ),
                   )),
               Padding(
@@ -95,10 +108,9 @@ class _NewProductPageState
                         _selectFinalDate(context);
                       },
                       color: AppThemeLight().getTheme().primaryColor,
-                      child: Text(
-                        'Marcar Data Final da Campanha',
-                        style: TextStyle(fontSize: 20),
-                      ),
+                      child: Text('Marcar Data Final da Campanha',
+                          style: GoogleFonts.lato(
+                              fontWeight: FontWeight.bold, fontSize: 20)),
                     ),
                   )),
               Padding(
@@ -121,7 +133,7 @@ class _NewProductPageState
                           ? () {
                               var product = ProductModel(
                                   productName: controller.store.name,
-                                  price: controller.store.price,
+                                  price:controller.store.price,
                                   initialDate: controller.store.initialDate,
                                   finalDate: controller.store.finalDate);
 
@@ -134,12 +146,14 @@ class _NewProductPageState
                           : null,
                       child: Text(
                         "SALVAR",
-                        style: TextStyle(fontSize: 20),
+                        style: GoogleFonts.lato(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       color: AppThemeLight().getTheme().primaryColor,
                     ),
                   )),
-              
             ],
           ),
         );

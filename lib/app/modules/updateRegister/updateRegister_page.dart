@@ -2,6 +2,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
@@ -55,7 +56,7 @@ class _UpdateRegisterPageState
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Atualização de Registro'),
+          title: Text('Atualização de Registro', style: GoogleFonts.montserrat(),),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -63,6 +64,7 @@ class _UpdateRegisterPageState
             return Column(
               children: <Widget>[
                 Stepper(
+                  physics: NeverScrollableScrollPhysics(),
                   onStepTapped: (step) {
                     controller.store.setCurrentStep(step);
                   },
@@ -85,57 +87,6 @@ class _UpdateRegisterPageState
                   steps: _mySteps(),
                   currentStep: controller.store.currentStep,
                 ),
-                Container(
-                    width: double.maxFinite,
-                    child: controller.store.efectiveSell &&
-                            controller.store.amountSold != null
-                        ? Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 10, 10, 10),
-                            child: Text(
-                              "Valor Total da Venda: R\$ " +
-                                  (controller.store.amountSold.toDouble() *
-                                          double.parse(
-                                              widget.nextContactsModel.price))
-                                      .toString(),
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          )
-                        : SizedBox()),
-                Card(
-                  elevation: 20,
-                  child: controller.store.nextContactBR != null &&
-                          controller.store.pendingSell
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Próximo contato marcado para : " +
-                                controller.store.nextContactBR,
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      : SizedBox(),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: double.infinity,
-                    height: 50,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18)),
-                      color: AppThemeLight().getTheme().primaryColor,
-                      onPressed: () {
-                        setRegisterModelToUpdate();
-                        controller.store.cleanFields();
-                      },
-                      child: Text('SALVAR'),
-                    ),
-                  ),
-                )
               ],
             );
           }),
@@ -152,7 +103,7 @@ class _UpdateRegisterPageState
             children: <Widget>[
               Text(
                 text,
-                style: TextStyle(fontSize: 14),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 width: 10,
@@ -173,14 +124,15 @@ class _UpdateRegisterPageState
 
                   if (controller.store.status == "Venda Pendente") {
                     controller.store.pendingSell = true;
-                    controller.store.setReason('');
+                    controller.store.setReason(null);
+                    controller.store.setAmountSold(null);
                   } else {
                     controller.store.pendingSell = false;
                   }
 
                   if (controller.store.status == "Venda Efetiva") {
                     controller.store.efectiveSell = true;
-                    controller.store.setReason('');
+                    controller.store.setReason(null);
                   } else {
                     controller.store.efectiveSell = false;
                   }
@@ -225,7 +177,7 @@ class _UpdateRegisterPageState
           children: <Widget>[
             Text(
               text,
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
             Radio(
               value: value,
@@ -324,9 +276,7 @@ class _UpdateRegisterPageState
       Step(
           title: Text(controller.store.efectiveSell
               ? "Quantidade Vendida"
-              : controller.store.pendingSell
-                  ? "Observação"
-                  : "Motiva da venda perdida"),
+              : "Observação"),
           isActive: controller.store.currentStep >= 3,
           content: controller.store.status != null
               ? Padding(
@@ -340,50 +290,119 @@ class _UpdateRegisterPageState
                               labelText: "Quantidade Vendida",
                               border: OutlineInputBorder()),
                         )
-                      : controller.store.pendingSell
-                          ? TextFormField(
-                              onChanged: controller.store.setObservation,
-                              maxLines: 3,
-                              decoration: InputDecoration(
-                                  labelText: "Observação",
-                                  border: OutlineInputBorder()),
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                reasonRadioButton('Estoque', 'Estoque'),
-                                reasonRadioButton('Interesse', 'Interesse'),
-                                reasonRadioButton('Preço', 'Preço'),
-                              ],
-                            ))
+                      : TextFormField(
+                          onChanged: controller.store.setObservation,
+                          maxLines: 3,
+                          decoration: InputDecoration(
+                              labelText: "Observação",
+                              border: OutlineInputBorder()),
+                        ))
               : Text('Marque a opção anterior.')),
       Step(
           isActive: controller.store.currentStep >= 4,
-          title: Text(controller.store.status == "Venda Pendente"
+          title: Text(controller.store.pendingSell
               ? "Marcar Data Para Próximo Contato"
-              : "Salvar"),
-          content: controller.store.status == "Venda Pendente"
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: double.maxFinite,
-                    height: 50,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
+              : controller.store.efectiveSell
+                  ? "Valor Final da Venda"
+                  : "Motivo da Venda Perdida"),
+          content: controller.store.pendingSell
+              ? Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: double.maxFinite,
+                        height: 50,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          color: AppThemeLight().getTheme().primaryColor,
+                          onPressed: () {
+                            _selectDate(context);
+                          },
+                          child: Text(
+                            'Agendar próximo contato!',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
                       ),
-                      color: AppThemeLight().getTheme().primaryColor,
-                      onPressed: () {
-                        _selectDate(context);
-                      },
+                    ),
+                    Observer(builder: (_) {
+                      return Card(
+                        elevation: 20,
+                        child: controller.store.nextContactBR != null &&
+                                controller.store.pendingSell
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Próximo contato marcado para : " +
+                                      controller.store.nextContactBR,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            : SizedBox(),
+                      );
+                    }),
+                  ],
+                )
+              : controller.store.efectiveSell &&
+                      controller.store.amountSold != null
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 10, 10, 10),
                       child: Text(
-                        'Agendar próximo contato!',
+                        "Valor Total da Venda: R\$ " +
+                            (controller.store.amountSold.toDouble() *
+                                    double.parse(
+                                        widget.nextContactsModel.price))
+                                .toString(),
                         style: TextStyle(fontSize: 20),
+                      ),
+                    )
+                  : controller.store.lostSell
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            reasonRadioButton('Estoque', 'Estoque'),
+                            reasonRadioButton('Interesse', 'Interesse'),
+                            reasonRadioButton('Preço', 'Preço'),
+                          ],
+                        )
+                      : SizedBox()),
+      Step(
+        title: Text('Salvar'),
+        isActive: controller.store.currentStep >= 5,
+        content: (controller.store.reason != null ||
+                controller.store.nextContact != null ||
+                (controller.store.amountSold != null &&
+                    controller.store.amountSold > 0))
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: double.infinity,
+                  height: 50,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18)),
+                    color: AppThemeLight().getTheme().primaryColor,
+                    onPressed: () {
+                      setRegisterModelToUpdate();
+                      controller.store.cleanFields();
+                    },
+                    child: Text(
+                      'SALVAR',
+                      style: GoogleFonts.lato(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                )
-              : SizedBox()),
+                ),
+              )
+            : Text('Marque a opção anterior.'),
+      )
     ];
     return _steps;
   }

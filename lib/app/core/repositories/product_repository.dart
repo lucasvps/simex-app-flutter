@@ -58,7 +58,7 @@ class ProductRepository {
 
         //formatDate(picked, [dd, '/', mm, '/', yyyy]);
 
-        if (difInitial < 0 && difFinal > 0) {
+        if (difInitial <= 0 && difFinal >= 0) {
           products.add(productModel);
         }
       }

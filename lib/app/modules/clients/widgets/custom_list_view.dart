@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/modules/infoClient/infoClient_page.dart';
 
@@ -37,8 +38,7 @@ class _CustomListViewState extends State<CustomListView> {
                               Padding(
                                 padding: const EdgeInsets.all(2),
                                 child: Text(
-                                  'Nome : ' +
-                                      widget.clientSearched[index].name,
+                                  'Nome : ' + widget.clientSearched[index].name,
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontStyle: FontStyle.italic),
@@ -47,18 +47,7 @@ class _CustomListViewState extends State<CustomListView> {
                               Padding(
                                 padding: const EdgeInsets.all(2),
                                 child: Text(
-                                  'CPF : ' +
-                                      widget.clientSearched[index].cpf,
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontStyle: FontStyle.italic),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(2),
-                                child: Text(
-                                  "Endereço : " +
-                                      widget.clientSearched[index].adress,
+                                  'CPF : ' + widget.clientSearched[index].cpf,
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontStyle: FontStyle.italic),
@@ -84,8 +73,7 @@ class _CustomListViewState extends State<CustomListView> {
                             Expanded(
                               child: ButtonTheme(
                                 minWidth:
-                                    MediaQuery.of(context).size.width *
-                                        0.40,
+                                    MediaQuery.of(context).size.width * 0.40,
                                 child: RaisedButton(
                                   onPressed: () {
                                     //print('${widget.clientSearched[index].id}');
@@ -95,7 +83,11 @@ class _CustomListViewState extends State<CustomListView> {
                                   child: Text(
                                     'NOVO REGISTRO',
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.white),
+                                    style: GoogleFonts.lato(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white
+                                    ),
                                   ),
                                   color: Color(0xff0D47A1),
                                 ),
@@ -107,23 +99,24 @@ class _CustomListViewState extends State<CustomListView> {
                             Expanded(
                               child: ButtonTheme(
                                 minWidth:
-                                    MediaQuery.of(context).size.width *
-                                        0.40,
+                                    MediaQuery.of(context).size.width * 0.40,
                                 child: RaisedButton(
                                   onPressed: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              InfoClientPage(
-                                                  detailedClient:
-                                                      widget.clientSearched[
-                                                          index])),
+                                          builder: (context) => InfoClientPage(
+                                              detailedClient: widget
+                                                  .clientSearched[index])),
                                     );
                                   },
                                   child: Text(
                                     'VER MAIS',
-                                    style: TextStyle(color: Colors.white),
+                                    style: GoogleFonts.lato(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white
+                                    ),
                                   ),
                                   color: Color(0xff0D47A1),
                                 ),

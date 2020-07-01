@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:simex_app/app/app_controller.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -39,8 +40,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 //Modular.get<AppController>().authStore.refresh();
               } else {
                 return UserAccountsDrawerHeader(
-                  accountName: Text(snapshot.data['name']),
-                  accountEmail: Text(snapshot.data['email']),
+                  accountName: Text(
+                    snapshot.data['name'],
+                    style: GoogleFonts.pangolin(
+                      fontSize: 18,
+                    ),
+                  ),
+                  accountEmail: Text(
+                    snapshot.data['email'],
+                    style: GoogleFonts.yanoneKaffeesatz(
+                      fontSize: 18,
+                    ),
+                  ),
                   currentAccountPicture: CircleAvatar(
                     backgroundColor: Colors.black,
                   ),
@@ -82,11 +93,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
         ),
         title: Text(
           title,
-          style: TextStyle(fontSize: 16),
+          style: GoogleFonts.yanoneKaffeesatz(
+            fontSize: 20,
+          ),
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          style: GoogleFonts.yanoneKaffeesatz(
+              fontSize: 18, fontWeight: FontWeight.bold),
         ),
         onTap: () {
           Modular.to.pushNamed(pageTo);

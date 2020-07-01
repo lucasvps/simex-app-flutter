@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:simex_app/app/app_controller.dart';
 import 'package:simex_app/app/core/widgets.dart/custom_drawer.dart';
 import 'package:simex_app/app/models/contacts_done_model.dart';
@@ -36,27 +37,38 @@ class _ContatosPageState
         child: Scaffold(
             drawer: SafeArea(child: CustomDrawer()),
             backgroundColor: Colors.white,
-            
             appBar: AppBar(
               actions: <Widget>[
                 FlatButton(
-                  onPressed: () {
-                    Modular.get<AppController>().authStore.logout();
-                  },
-                  child: Icon(Icons.exit_to_app, color: Colors.white,)
-                )
+                    onPressed: () {
+                      Modular.get<AppController>().authStore.logout();
+                    },
+                    child: Icon(
+                      Icons.exit_to_app,
+                      color: Colors.white,
+                    ))
               ],
               bottom: TabBar(tabs: [
                 Tab(
-                  text: 'Contatos a fazer hoje',
+                  child: Text(
+                    'Contatos a fazer hoje',
+                    style: GoogleFonts.yanoneKaffeesatz(
+                      fontSize: 18,
+                    ),
+                  ),
                   icon: Icon(Icons.contact_phone),
                 ),
                 Tab(
-                  text: 'Contatos realizados hoje',
+                  child: Text(
+                    'Contatos realizados hoje',
+                    style: GoogleFonts.yanoneKaffeesatz(
+                      fontSize: 18,
+                    ),
+                  ),
                   icon: Icon(Icons.contacts),
                 ),
               ]),
-              title: Text("NOME DO APLICATIVO AQUI"),
+              title: Text("NOME DO APLICATIVO AQUI", style: GoogleFonts.montserrat(),),
               centerTitle: true,
             ),
             body: TabBarView(
@@ -152,7 +164,7 @@ class _ContatosPageState
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Text(
-                                     'Você não realizou contatos hoje!',
+                                    'Você não realizou contatos hoje!',
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 ),
@@ -166,7 +178,7 @@ class _ContatosPageState
 
                         if (snapshot.data.length == 0) {
                           return Center(
-                            child:Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
@@ -228,24 +240,27 @@ class _ContatosPageState
                   children: <Widget>[
                     Text(
                       'Nome : ' + list[index].name,
-                      style:
-                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                      style: GoogleFonts.pangolin(
+                        fontSize: 18,
+                      ),
                     ),
                     SizedBox(
                       height: 3,
                     ),
                     Text(
                       'Telefone : ' + list[index].phone,
-                      style:
-                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                      style: GoogleFonts.pangolin(
+                        fontSize: 18,
+                      ),
                     ),
                     SizedBox(
                       height: 3,
                     ),
                     Text(
                       "Produto : " + list[index].productName,
-                      style:
-                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                      style: GoogleFonts.pangolin(
+                        fontSize: 18,
+                      ),
                     ),
                     SizedBox(
                       height: 3,
@@ -253,8 +268,9 @@ class _ContatosPageState
                     Text(
                       "Valor : R\$" +
                           double.parse(list[index].price).toString(),
-                      style:
-                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                      style: GoogleFonts.pangolin(
+                        fontSize: 18,
+                      ),
                     ),
                   ],
                 ),
@@ -285,16 +301,18 @@ class _ContatosPageState
                           padding: const EdgeInsets.all(6.0),
                           child: Text(
                             'Cliente : ' + list[index].name,
-                            style: TextStyle(
-                                fontSize: 18, fontStyle: FontStyle.italic),
+                            style: GoogleFonts.pangolin(
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(6.0),
                           child: Text(
                             'Status : ' + list[index].status,
-                            style: TextStyle(
-                                fontSize: 18, fontStyle: FontStyle.italic),
+                            style: GoogleFonts.pangolin(
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                         list[index].status == "Venda Perdida"
@@ -302,9 +320,9 @@ class _ContatosPageState
                                 padding: const EdgeInsets.all(6.0),
                                 child: Text(
                                   'Razão : ' + list[index].reason,
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontStyle: FontStyle.italic),
+                                  style: GoogleFonts.pangolin(
+                                    fontSize: 18,
+                                  ),
                                 ),
                               )
                             : list[index].status == "Venda Pendente"
@@ -315,9 +333,9 @@ class _ContatosPageState
                                           ? 'Observação : ' +
                                               list[index].observation
                                           : "Nenhuma observação!",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontStyle: FontStyle.italic),
+                                      style: GoogleFonts.pangolin(
+                                        fontSize: 18,
+                                      ),
                                     ),
                                   )
                                 : Padding(
@@ -326,9 +344,9 @@ class _ContatosPageState
                                       'Valor de Venda : ' +
                                           double.parse(list[index].valueSold)
                                               .toString(),
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontStyle: FontStyle.italic),
+                                      style: GoogleFonts.pangolin(
+                                        fontSize: 18,
+                                      ),
                                     ),
                                   ),
                       ],

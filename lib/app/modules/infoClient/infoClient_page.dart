@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'infoClient_controller.dart';
@@ -45,7 +46,7 @@ class _InfoClientPageState
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Código do cliente : " + widget.detailedClient.code),
+          title: Text("Código do cliente : " + widget.detailedClient.code, style: GoogleFonts.montserrat(),),
           centerTitle: true,
         ),
         body: Container(
@@ -56,7 +57,7 @@ class _InfoClientPageState
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.35,
                     width: double.maxFinite,
                     decoration: BoxDecoration(
                         image: DecorationImage(

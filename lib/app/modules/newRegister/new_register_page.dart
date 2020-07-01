@@ -2,6 +2,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/client_model.dart';
@@ -40,13 +41,14 @@ class _NewRegisterPageState
     return Observer(builder: (context) {
       return Scaffold(
           appBar: AppBar(
-            title: Text('Novo Registro'),
+            title: Text('Novo Registro', style: GoogleFonts.montserrat(),),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 Stepper(
+                  physics: NeverScrollableScrollPhysics(),
                   onStepTapped: (step) {
                     controller.store.setCurrentStep(step);
                   },
@@ -69,59 +71,6 @@ class _NewRegisterPageState
                   steps: _mySteps(),
                   currentStep: controller.store.currentStep,
                 ),
-                Observer(builder: (_) {
-                  return Padding(
-                      padding: EdgeInsets.all(8),
-                      child: controller.store.efectiveSell &&
-                              controller.store.amountSold != 0 &&
-                              controller.store.amountSold != null
-                          ? Text(
-                              "Valor final da Venda : R\$" +
-                                  (controller.store.amountSold *
-                                          double.parse(
-                                              controller.store.productPrice))
-                                      .toString(),
-                              style: TextStyle(fontSize: 20),
-                            )
-                          : SizedBox());
-                }),
-                Observer(builder: (_) {
-                  return Card(
-                    elevation: 20,
-                    child: controller.store.nextContactBR != null &&
-                            controller.store.pendingSell
-                        ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Próximo contato marcado para : " +
-                                  controller.store.nextContactBR,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        : SizedBox(),
-                  );
-                }),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                      width: double.infinity,
-                      height: 50,
-                      child: RaisedButton(
-                        color: AppThemeLight().getTheme().primaryColor,
-                        onPressed: () {
-                          setRegisterModelToCreate();
-                        },
-                        child: Text('SALVAR',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20)),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18)),
-                      )),
-                )
               ],
             ),
           ));
@@ -136,7 +85,7 @@ class _NewRegisterPageState
         child: ListTile(
           title: Text(
             text,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
           leading: Radio(
             value: value,
@@ -173,7 +122,7 @@ class _NewRegisterPageState
         children: <Widget>[
           Text(
             text,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
           SizedBox(
             height: 10,
@@ -372,47 +321,97 @@ class _NewRegisterPageState
             : Text('Marque a opçao anterior.'),
       ),
       Step(
-          isActive: controller.store.currentStep >= 4,
-          title: Text(controller.store.status == "Venda Pendente"
-              ? "Marcar Data Para Próximo Contato"
-              : "Salvar"),
-          content: controller.store.status == "Venda Pendente"
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: double.maxFinite,
-                    height: 50,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      color: AppThemeLight().getTheme().primaryColor,
-                      onPressed: () {
-                        _selectDate(context);
-                      },
-                      child: Text(
-                        'Agendar próximo contato!',
-                        style: TextStyle(fontSize: 20),
+        isActive: controller.store.currentStep >= 4,
+        title: Text(controller.store.status == "Venda Pendente"
+            ? "Marcar Data Para Próximo Contato"
+            : "Valor Final da Venda"),
+        content: controller.store.status == "Venda Pendente"
+            ? Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: double.maxFinite,
+                      height: 50,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        color: AppThemeLight().getTheme().primaryColor,
+                        onPressed: () {
+                          _selectDate(context);
+                        },
+                        child: Text(
+                          'Agendar próximo contato!',
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
                     ),
                   ),
+                  Observer(builder: (_) {
+                    return Card(
+                      elevation: 20,
+                      child: controller.store.nextContactBR != null &&
+                              controller.store.pendingSell
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Próximo contato marcado para : " +
+                                    controller.store.nextContactBR,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          : SizedBox(),
+                    );
+                  }),
+                ],
+              )
+            : Observer(builder: (_) {
+                return Padding(
+                    padding: EdgeInsets.all(8),
+                    child: controller.store.efectiveSell &&
+                            controller.store.amountSold != 0 &&
+                            controller.store.amountSold != null
+                        ? Text(
+                            "R\$" +
+                                (controller.store.amountSold *
+                                        double.parse(
+                                            controller.store.productPrice))
+                                    .toString(),
+                            style: TextStyle(fontSize: 20),
+                          )
+                        : SizedBox());
+              }),
+      ),
+      Step(
+          isActive: controller.store.currentStep >= 5,
+          title: Text('Salvar'),
+          content: (controller.store.nextContact != null ||
+                  (controller.store.amountSold != null &&
+                      controller.store.amountSold > 0))
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                      width: double.infinity,
+                      height: 50,
+                      child: RaisedButton(
+                        color: AppThemeLight().getTheme().primaryColor,
+                        onPressed: () {
+                          setRegisterModelToCreate();
+                        },
+                        child: Text(
+                          'SALVAR',
+                          style: GoogleFonts.lato(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18)),
+                      )),
                 )
-              : SizedBox()),
-      Step(
-        title: Text('testando'),
-        isActive: controller.store.currentStep >= 5,
-        content: TextFormField()
-      ),
-      Step(
-        title: Text('testando 2'),
-        isActive: controller.store.currentStep >= 6,
-        content: TextFormField()
-      ),
-      Step(
-        title: Text('testando 3'),
-        isActive: controller.store.currentStep >= 7,
-        content: TextFormField()
-      )
+              : Text('Marque a opção anterior.')),
     ];
     return _steps;
   }
@@ -423,8 +422,6 @@ class _NewRegisterPageState
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy-MM-dd');
     String formatted = formatter.format(now);
-
-    print('amount ' + controller.store.amountSold.toString());
 
     var registerModel = RegisterModel(
         idClient: int.parse(widget.idClient),
@@ -445,7 +442,8 @@ class _NewRegisterPageState
             : '0.0',
         contactFrom: controller.store.contactFrom);
 
-    print(registerModel.toJson());
+    //print(registerModel.toJson());
     controller.store.repository.createRegister(registerModel);
+    controller.store.cleanFields();
   }
 }

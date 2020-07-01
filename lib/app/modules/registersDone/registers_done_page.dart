@@ -1,5 +1,8 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/registers_done_model.dart';
 import 'registers_done_controller.dart';
@@ -21,7 +24,7 @@ class _RegistersDonePageState
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Seu histórico de registros feitos'),
+          title: Text('Seu histórico de registros feitos', style: GoogleFonts.montserrat(),),
           centerTitle: true,
         ),
         body: Container(
@@ -91,11 +94,15 @@ class _RegistersDonePageState
                 children: <Widget>[
                   Text(
                     'Cliente : ' + registers[index].name,
-                    style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    style: GoogleFonts.pangolin(
+                      fontSize: 18,
+                    ),
                   ),
                   Text(
                     'Status : ' + registers[index].status,
-                    style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    style: GoogleFonts.pangolin(
+                      fontSize: 18,
+                    ),
                   ),
                 ],
               ),
@@ -103,8 +110,15 @@ class _RegistersDonePageState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Data de Contato : ' + registers[index].dateContact,
-                    style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    'Data de Contato : ' +
+                        formatDate(
+                            DateFormat("yyyy-MM-dd").parse(
+                              registers[index].dateContact,
+                            ),
+                            [dd, '/', mm, '/', yyyy]).toString(),
+                    style: GoogleFonts.pangolin(
+                      fontSize: 18,
+                    ),
                   ),
                 ],
               ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
 import 'package:simex_app/app/models/register_model.dart';
@@ -28,14 +30,14 @@ class _RegisterInfoPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Informações do Registro'),
+        title: Text('Informações do Registro', style: GoogleFonts.montserrat(),),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Container(
-              height: MediaQuery.of(context).size.height * 0.25,
+              height: MediaQuery.of(context).size.height * 0.3,
               width: double.maxFinite,
               decoration: BoxDecoration(
                   image: DecorationImage(
@@ -75,7 +77,7 @@ class _RegisterInfoPageState
             ),
             CustomInfoRegisterRow(
               field: 'DATA DO CONTATO',
-              value: widget.contactsModel.dateContact,
+              value: formatDate(DateFormat("yyyy-MM-dd").parse(widget.contactsModel.dateContact), [dd, '/', mm, '/', yyyy]).toString(),
               readOnly: true,
             ),
             CustomInfoRegisterRow(
