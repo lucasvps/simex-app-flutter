@@ -8,11 +8,9 @@ import 'package:simex_app/app/core/interfaces/shared_local_storage_interface.dar
 import 'package:simex_app/app/models/user_model.dart';
 
 class AuthRepository implements IAuthRepository {
-
   final ISharedLocalStorage iSharedLocalStorage;
 
   AuthRepository(this.iSharedLocalStorage);
-
 
   @override
   Future login(UserModel userModel) async {
@@ -23,8 +21,8 @@ class AuthRepository implements IAuthRepository {
     return await dio
         .post(url, data: userModel.toJsonLogin())
         .then((value) async {
-          iSharedLocalStorage.put('token', value.data['token']);
-          print(iSharedLocalStorage.get('token'));
+      iSharedLocalStorage.put('token', value.data['token']);
+      print(iSharedLocalStorage.get('token'));
       // var preferences = await SharedPreferences.getInstance();
       // preferences.setString('token', value.data['token']);
       print(value.data);
@@ -39,12 +37,13 @@ class AuthRepository implements IAuthRepository {
 
     var dio = CustomDio.withAuthentication().instance;
 
-    return await dio.get(url).then((value) async{
+    return await dio.get(url).then((value) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.clear();
       //prefs.commit();
-      Modular.to.pushNamedAndRemoveUntil('/login', ModalRoute.withName(Modular.initialRoute));
-    }).catchError((err){
+      Modular.to.pushNamedAndRemoveUntil(
+          '/login', ModalRoute.withName('/home'));
+    }).catchError((err) {
       print(err.toString() + 'ERRO AQUI UHUUU');
     });
   }
@@ -55,11 +54,10 @@ class AuthRepository implements IAuthRepository {
 
     var dio = CustomDio.withAuthentication().instance;
 
-    return await dio.get(url).then((value){
-      if (value.data['email'] != null){
-         return value.data;
+    return await dio.get(url).then((value) {
+      if (value.data['email'] != null) {
+        return value.data;
       }
-      Modular.to.pushReplacementNamed('/login');
     }).catchError((err) {
       return err;
     });
@@ -76,9 +74,7 @@ class AuthRepository implements IAuthRepository {
       prefs.clear();
       //prefs.commit();
       iSharedLocalStorage.put('token', value.data['token']);
-
+      print('novo token : ' + value.data['token']);
     });
   }
-
-  
 }

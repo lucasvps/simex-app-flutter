@@ -59,14 +59,10 @@ class _ActivesProductsPageState
                     break;
                   case ConnectionState.done:
                     if (snapshot.hasError) {
-                      Modular.to.pushNamedAndRemoveUntil(
-                          '/login', ModalRoute.withName('/home'));
-                      //Modular.get<AppController>().authStore.refresh();
+                      Text('Ocorreu um erro, recarregue a página!');
                     }
                     if (!snapshot.hasData) {
-                      Modular.to.pushNamedAndRemoveUntil(
-                          '/login', ModalRoute.withName('/home'));
-                      //Modular.get<AppController>().authStore.refresh();
+                      Text('Não foram encontrados campanhas ativas!');
                     } else {
                       return customList(snapshot.data);
                     }
@@ -79,6 +75,8 @@ class _ActivesProductsPageState
           ),
         ));
   }
+
+  
 
   Widget customList(List<ProductModel> products) {
     return ListView.builder(
@@ -103,8 +101,12 @@ class _ActivesProductsPageState
                       fontSize: 18,
                     ),
                   ),
+                  // Text(
+                  //   'next = ' + products[index].nextPageUrl
+                  // ),
+                  
                   Text(
-                    'Preço : R\$' + products[index].price,
+                    'Preço : ' + NumberFormat.simpleCurrency(locale: 'pt_Br').format(double.parse(products[index].price)),
                     style: GoogleFonts.pangolin(
                       fontSize: 18,
                     ),

@@ -3,6 +3,7 @@ import 'package:simex_app/app/core/custom_dio.dart';
 import 'package:simex_app/app/core/endpoints.dart';
 import 'package:simex_app/app/models/register_model.dart';
 import 'package:simex_app/app/models/registers_done_model.dart';
+import 'package:simex_app/app/modules/registersDone/registers_done_store.dart';
 
 class RegisterRepository {
   Future updateRegister(RegisterModel model, int id) async {
@@ -30,16 +31,19 @@ class RegisterRepository {
     });
   }
 
-
-  Future registersDoneByUser() async {
-    String url = ApiEndpoints.MAIN_URL + ApiEndpoints.REGISTERS_DONE;
+  Future registersDoneByUser([String page]) async {
+    String url =
+        ApiEndpoints.MAIN_URL + ApiEndpoints.REGISTERS_DONE + "?page=$page";
 
     var dio = CustomDio.withAuthentication().instance;
 
-    return await dio.get(url).then((value){
+    return await dio.get(url).then((value) {
       List<RegistersDone> registers = [];
 
-      for (var item in value.data){
+      Modular.get<RegistersDoneStore>()
+          .setLastPage(value.data['last_page'].toString());
+
+      for (var item in value.data['data']) {
         RegistersDone done = RegistersDone.fromJson(item);
 
         registers.add(done);

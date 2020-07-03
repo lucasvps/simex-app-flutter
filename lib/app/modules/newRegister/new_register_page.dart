@@ -27,6 +27,32 @@ class _NewRegisterPageState
     extends ModularState<NewRegisterPage, NewRegisterController> {
   //use 'controller' variable to access controller
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('ATENÇÃO!'),
+            content: new Text(
+                'Você pode ter alterações que não foram salvas, você realmente deseja sair?'),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('Não'),
+              ),
+              new FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                  controller.store.cleanFields();
+                  controller.store.setCurrentStep(0);
+                },
+                child: new Text('Sair'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   @override
   void initState() {
     Modular.get<AppController>().authStore.getCurrentUser().then((value) async {
@@ -39,41 +65,47 @@ class _NewRegisterPageState
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
-      return Scaffold(
-          appBar: AppBar(
-            title: Text('Novo Registro', style: GoogleFonts.montserrat(),),
-            centerTitle: true,
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Stepper(
-                  physics: NeverScrollableScrollPhysics(),
-                  onStepTapped: (step) {
-                    controller.store.setCurrentStep(step);
-                  },
-                  onStepContinue:
-                      controller.store.currentStep < this._mySteps().length - 1
-                          ? () {
-                              if (controller.store.currentStep <
-                                  this._mySteps().length - 1) {
-                                controller.store.setCurrentStep(
-                                    controller.store.currentStep + 1);
-                              } else {}
-                            }
-                          : null,
-                  onStepCancel: () {
-                    if (controller.store.currentStep > 0) {
-                      controller.store
-                          .setCurrentStep(controller.store.currentStep - 1);
-                    } else {}
-                  },
-                  steps: _mySteps(),
-                  currentStep: controller.store.currentStep,
-                ),
-              ],
+      return WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Novo Registro',
+                style: GoogleFonts.montserrat(),
+              ),
+              centerTitle: true,
             ),
-          ));
+            body: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Stepper(
+                    physics: NeverScrollableScrollPhysics(),
+                    onStepTapped: (step) {
+                      controller.store.setCurrentStep(step);
+                    },
+                    onStepContinue: controller.store.currentStep <
+                            this._mySteps().length - 1
+                        ? () {
+                            if (controller.store.currentStep <
+                                this._mySteps().length - 1) {
+                              controller.store.setCurrentStep(
+                                  controller.store.currentStep + 1);
+                            } else {}
+                          }
+                        : null,
+                    onStepCancel: () {
+                      if (controller.store.currentStep > 0) {
+                        controller.store
+                            .setCurrentStep(controller.store.currentStep - 1);
+                      } else {}
+                    },
+                    steps: _mySteps(),
+                    currentStep: controller.store.currentStep,
+                  ),
+                ],
+              ),
+            )),
+      );
     });
   }
 
@@ -177,7 +209,12 @@ class _NewRegisterPageState
                     items: products.map((item) {
                       return DropdownMenuItem(
                         child: Text(
-                          item.productName + " / Valor : R\$" + item.price,
+                          item.productName +
+                              " / " +
+                              NumberFormat.simpleCurrency(locale: 'pt_Br')
+                                  .format(
+                                double.parse(item.price),
+                              ),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 15,
@@ -374,11 +411,10 @@ class _NewRegisterPageState
                             controller.store.amountSold != 0 &&
                             controller.store.amountSold != null
                         ? Text(
-                            "R\$" +
-                                (controller.store.amountSold *
-                                        double.parse(
-                                            controller.store.productPrice))
-                                    .toString(),
+                            NumberFormat.simpleCurrency(locale: 'pt_Br').format(
+                                controller.store.amountSold *
+                                    double.parse(
+                                        controller.store.productPrice)),
                             style: TextStyle(fontSize: 20),
                           )
                         : SizedBox());

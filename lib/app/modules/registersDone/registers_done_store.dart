@@ -9,4 +9,17 @@ abstract class _RegistersDoneStoreBase with Store {
   final RegisterRepository registerRepository;
 
   _RegistersDoneStoreBase(this.registerRepository);
+
+
+  @observable
+  String currentPage = '1';
+
+  @action
+  setCurrentPage(String value) => currentPage = value;
+
+  @observable
+  String lastPage;
+
+  @action
+  setLastPage(String value) => lastPage = value;
 }

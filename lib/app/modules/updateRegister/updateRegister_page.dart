@@ -41,6 +41,7 @@ class _UpdateRegisterPageState
                 onPressed: () {
                   Navigator.of(context).pop(true);
                   controller.store.cleanFields();
+                  controller.store.setCurrentStep(0);
                 },
                 child: new Text('Sair'),
               ),
@@ -56,7 +57,10 @@ class _UpdateRegisterPageState
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Atualização de Registro', style: GoogleFonts.montserrat(),),
+          title: Text(
+            'Atualização de Registro',
+            style: GoogleFonts.montserrat(),
+          ),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -353,11 +357,11 @@ class _UpdateRegisterPageState
                   ? Padding(
                       padding: const EdgeInsets.fromLTRB(8, 10, 10, 10),
                       child: Text(
-                        "Valor Total da Venda: R\$ " +
-                            (controller.store.amountSold.toDouble() *
+                        "Valor Total da Venda: " +
+                            NumberFormat.simpleCurrency(locale: 'pt_Br').format(
+                                controller.store.amountSold *
                                     double.parse(
-                                        widget.nextContactsModel.price))
-                                .toString(),
+                                        widget.nextContactsModel.price)),
                         style: TextStyle(fontSize: 20),
                       ),
                     )

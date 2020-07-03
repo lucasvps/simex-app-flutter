@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/user_model.dart';
 import 'login_controller.dart';
 
@@ -16,12 +17,18 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends ModularState<LoginPage, LoginController> {
   //use 'controller' variable to access controller
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         //backgroundColor: Color(0xffBBDEFB),
         appBar: AppBar(
-          title: Text('Realizar Login', style: GoogleFonts.montserrat(),),
+          title: Text(
+            'Realizar Login',
+            style: GoogleFonts.montserrat(),
+          ),
           centerTitle: true,
         ),
         body: Observer(builder: (_) {
@@ -94,7 +101,11 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                               controller.login(userLogin).then((value) {
                                 Modular.to.pushReplacementNamed('/contacts');
                               }).catchError((err) {
-                                print(err.toString());
+                                Components.alert(
+                                  context,
+                                  'Não foi possivel realizar login!',
+                                  'Email ou senha estão incorretos, tente novamente!',
+                                );
                               });
                             }
                           : null,

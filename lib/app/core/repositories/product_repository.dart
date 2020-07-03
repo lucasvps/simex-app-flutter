@@ -35,13 +35,16 @@ class ProductRepository {
     });
   }
 
-  Future<List<ProductModel>> currentProducts() async {
-    String url = ApiEndpoints.MAIN_URL + ApiEndpoints.PRODUCTS_URL;
+  Future<List<ProductModel>> currentProducts([String page]) async {
+    String url = ApiEndpoints.MAIN_URL + ApiEndpoints.PRODUCTS_URL;// + "?page=$page";
 
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.get(url).then((value) {
       List<ProductModel> products = [];
+      
+
+      //print(value.data['data']);
 
       for (var item in value.data) {
         ProductModel productModel = ProductModel.fromJson(item);

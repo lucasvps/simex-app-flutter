@@ -7,12 +7,14 @@ import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/modules/infoClient/infoClient_page.dart';
 import 'clients_controller.dart';
-import 'widgets/custom_list_view.dart';
+
 
 class ClientsPage extends StatefulWidget {
   final String title;
   const ClientsPage({Key key, this.title = "Clients"}) : super(key: key);
 
+
+  
   @override
   _ClientsPageState createState() => _ClientsPageState();
 }
@@ -20,16 +22,19 @@ class ClientsPage extends StatefulWidget {
 class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
   //use 'controller' variable to access controller
 
+  
   TextEditingController controllerText = TextEditingController();
 
   @override
   void initState() {
-    controllerText.text = null;
+    controllerText.text = "";
     super.initState();
   }
 
   static var maskTextInputFormatter = MaskTextInputFormatter(
       mask: "###.###.###-##", filter: {"#": RegExp(r'[0-9]')});
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +65,17 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: TextField(
+            child: TextFormField(
               inputFormatters: [maskTextInputFormatter],
+              // initialValue: "",
               controller: controllerText,
+              //onChanged: controller.clientStore.setSearch,
               decoration: InputDecoration(
                   suffixIcon: IconButton(
                       icon: Icon(Icons.search),
                       onPressed: () {
                         controller.clientStore.setSearch(controllerText.text);
+                        controllerText.text = '';
                       }),
                   labelText: "Pesquisar cliente pelo CPF",
                   border: OutlineInputBorder()),

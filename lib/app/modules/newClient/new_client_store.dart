@@ -13,9 +13,23 @@ _NewClientStoreBase(this.repository);
 Future registerClient(ClientModel model) async {
   return repository.createClient(model);
 }
-  
 
-@observable
+  cleanFields(){
+    setName(null);
+    setPhone(null);
+    setEmail(null);
+    setState(null);
+    setStore(null);
+    setCity(null);
+    setAdress(null);
+    setCPF(null);
+    setCultureOne(null);
+    setCultureTwo(null);
+    setTotalCombine(null);
+    setTotalTractor(null);
+  }
+
+  @observable
   String name;
 
   @action

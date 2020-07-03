@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:simex_app/app/app_controller.dart';
 import 'package:simex_app/app/core/widgets.dart/custom_drawer.dart';
 import 'package:simex_app/app/models/contacts_done_model.dart';
@@ -68,7 +69,10 @@ class _ContatosPageState
                   icon: Icon(Icons.contacts),
                 ),
               ]),
-              title: Text("NOME DO APLICATIVO AQUI", style: GoogleFonts.montserrat(),),
+              title: Text(
+                "NOME DO APLICATIVO AQUI",
+                style: GoogleFonts.montserrat(),
+              ),
               centerTitle: true,
             ),
             body: TabBarView(
@@ -266,8 +270,10 @@ class _ContatosPageState
                       height: 3,
                     ),
                     Text(
-                      "Valor : R\$" +
-                          double.parse(list[index].price).toString(),
+                      "Valor :" +
+                          NumberFormat.simpleCurrency(locale: 'pt_Br').format(
+                            double.parse(list[index].price),
+                          ),
                       style: GoogleFonts.pangolin(
                         fontSize: 18,
                       ),
@@ -342,8 +348,11 @@ class _ContatosPageState
                                     padding: const EdgeInsets.all(6.0),
                                     child: Text(
                                       'Valor de Venda : ' +
-                                          double.parse(list[index].valueSold)
-                                              .toString(),
+                                          NumberFormat.simpleCurrency(
+                                                  locale: 'pt_Br')
+                                              .format(
+                                            double.parse(list[index].valueSold),
+                                          ),
                                       style: GoogleFonts.pangolin(
                                         fontSize: 18,
                                       ),

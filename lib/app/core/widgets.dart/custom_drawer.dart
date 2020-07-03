@@ -30,14 +30,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
               break;
             case ConnectionState.done:
               if (snapshot.hasError) {
-                Modular.to.pushNamedAndRemoveUntil(
-                    '/login', ModalRoute.withName('/home'));
-                //Modular.get<AppController>().authStore.refresh();
+                
               }
               if (!snapshot.hasData) {
-                Modular.to.pushNamedAndRemoveUntil(
-                    '/login', ModalRoute.withName('/home'));
-                //Modular.get<AppController>().authStore.refresh();
+                
               } else {
                 return UserAccountsDrawerHeader(
                   accountName: Text(

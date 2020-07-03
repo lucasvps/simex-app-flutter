@@ -1,5 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -24,43 +25,77 @@ class _RegistersDonePageState
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Seu histórico de registros feitos', style: GoogleFonts.montserrat(),),
+          title: Text(
+            'Seu histórico de registros feitos',
+            style: GoogleFonts.montserrat(),
+          ),
           centerTitle: true,
         ),
-        body: Container(
-          child: FutureBuilder(
-            future: controller.store.registerRepository.registersDoneByUser(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.active:
-                case ConnectionState.waiting:
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                  break;
-                case ConnectionState.none:
-                  return Text('erro 1');
-                  break;
-                case ConnectionState.done:
-                  if (snapshot.hasError) {
-                    Modular.to.pushNamedAndRemoveUntil(
-                        '/login', ModalRoute.withName('/home'));
-                    //Modular.get<AppController>().authStore.refresh();
-                  }
-                  if (!snapshot.hasData) {
-                    Modular.to.pushNamedAndRemoveUntil(
-                        '/login', ModalRoute.withName('/home'));
-                    //Modular.get<AppController>().authStore.refresh();
-                  } else {
-                    return customList(snapshot.data);
-                  }
+        body: Observer(builder: (context) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  child: FutureBuilder(
+                    future: controller.store.registerRepository
+                        .registersDoneByUser(controller.store.currentPage),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                          break;
+                        case ConnectionState.none:
+                          return Text('erro 1');
+                          break;
+                        case ConnectionState.done:
+                          if (snapshot.hasError) {
+                            Text('Ocorreu um erro, recarregue a página!');
+                          }
+                          if (!snapshot.hasData) {
+                            Text('Você não possui registros anteriores!');
+                          } else {
+                            return customList(snapshot.data);
+                          }
 
-                  break;
-              }
-              return Container();
-            },
-          ),
-        ));
+                          break;
+                      }
+                      return Container();
+                    },
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: (int.parse(controller.store.currentPage) > 1)
+                          ? () {
+                              controller.store.setCurrentPage(
+                                  (int.parse(controller.store.currentPage) - 1)
+                                      .toString());
+                            }
+                          : null),
+                  Text(controller.store.currentPage),
+                  IconButton(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      onPressed: controller.store.currentPage !=
+                              controller.store.lastPage
+                          ? () {
+                              controller.store.setCurrentPage(
+                                  (int.parse(controller.store.currentPage) + 1)
+                                      .toString());
+                            }
+                          : null),
+                ],
+              )
+            ],
+          );
+        }));
   }
 
   Widget customList(List<RegistersDone> registers) {

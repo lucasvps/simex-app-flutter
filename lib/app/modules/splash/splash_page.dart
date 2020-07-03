@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_controller.dart';
 import 'splash_controller.dart';
 
@@ -16,16 +17,30 @@ class _SplashPageState extends ModularState<SplashPage, SplashController> {
 
   @override
   void initState() {
-    Modular.get<AppController>().currentUser().then((value) {
-      
 
-      if (value['email'] != null) {
-        Modular.to.pushReplacementNamed('/contacts');
-      } else {
-        Modular.to.pushReplacementNamed('/login');
-      }
-    });
+    checkLoginStatus();
+
+    // Modular.get<AppController>().currentUser().then((value) {
+    //   if (value['email'] != null) {
+    //     Modular.to.pushReplacementNamed('/contacts');
+    //   } else {
+    //     Modular.to.pushReplacementNamed('/login');
+    //   }
+    // });
+
     super.initState();
+  }
+
+  SharedPreferences sharedPreferences;
+
+  checkLoginStatus() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.getString('token') != null) {
+     
+      Modular.to.pushReplacementNamed('/contacts');
+    } else {
+      Modular.to.pushReplacementNamed('/login');
+    }
   }
 
   @override
@@ -37,7 +52,9 @@ class _SplashPageState extends ModularState<SplashPage, SplashController> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Center(child: CircularProgressIndicator(),)
+          Center(
+            child: CircularProgressIndicator(),
+          )
         ],
       ),
     );

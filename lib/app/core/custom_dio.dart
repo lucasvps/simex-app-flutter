@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomDio {
@@ -20,13 +22,13 @@ class CustomDio {
     if (e.response.statusCode == 401) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.clear();
-      //prefs.commit();
-      //Modular.to.pushNamedAndRemoveUntil('/', ModalRoute.withName('/'));
+      Modular.to.pushNamedAndRemoveUntil(
+          '/login', ModalRoute.withName(Modular.initialRoute));
     }
     print('erro dio ' + e.error);
     print('erro dio ' + e.type.toString());
     print('erro dio ' + e.response.toString());
-    
+
     return e.type;
   }
 

@@ -5,6 +5,7 @@ class ProductModel {
   String price;
   String initialDate;
   String finalDate;
+  
 
   ProductModel(
       {this.id,
