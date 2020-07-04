@@ -58,7 +58,7 @@ class _RegisterInfoPageState
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Informações do Registro',
+            'Informações do Registro' + widget.contactsModel.id.toString(), 
             style: GoogleFonts.montserrat(),
           ),
           centerTitle: true,

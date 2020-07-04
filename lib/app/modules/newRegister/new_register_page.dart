@@ -5,19 +5,19 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
+import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/product_model.dart';
 import 'package:simex_app/app/models/register_model.dart';
+import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
 import '../../app_controller.dart';
 import 'new_register_controller.dart';
 
 class NewRegisterPage extends StatefulWidget {
   final String title;
-  const NewRegisterPage(
-      {Key key, this.title = "NewRegister", this.clientModel, this.idClient})
+  const NewRegisterPage({Key key, this.title = "NewRegister", this.clientModel})
       : super(key: key);
   final ClientModel clientModel;
-  final String idClient;
 
   @override
   _NewRegisterPageState createState() => _NewRegisterPageState();
@@ -57,7 +57,6 @@ class _NewRegisterPageState
   void initState() {
     Modular.get<AppController>().authStore.getCurrentUser().then((value) async {
       await controller.store.setCurrentUserID(value['id']);
-      print(controller.store.currentUserID);
     });
     super.initState();
   }
@@ -460,7 +459,7 @@ class _NewRegisterPageState
     String formatted = formatter.format(now);
 
     var registerModel = RegisterModel(
-        idClient: int.parse(widget.idClient),
+        idClient: widget.clientModel.id,
         idUser: controller.store.currentUserID,
         productId: int.parse(controller.store.prodID),
         dateContact: formatted,
@@ -478,8 +477,44 @@ class _NewRegisterPageState
             : '0.0',
         contactFrom: controller.store.contactFrom);
 
-    //print(registerModel.toJson());
-    controller.store.repository.createRegister(registerModel);
-    controller.store.cleanFields();
+    controller.store.repository.createRegister(registerModel).then((value) {
+      controller.store.setCurrentStep(0);
+      controller.store.cleanFields();
+
+      ClientModel clientModelUpdate = ClientModel(
+        adress: widget.clientModel.adress,
+        city: widget.clientModel.city,
+        code: widget.clientModel.code,
+        cpf: widget.clientModel.cpf,
+        cultureOne: widget.clientModel.cultureOne,
+        cultureTwo: widget.clientModel.cultureTwo,
+        email: widget.clientModel.email,
+        name: widget.clientModel.name,
+        phone: widget.clientModel.phone,
+        state: widget.clientModel.state,
+        store: widget.clientModel.store,
+        totalCombine: widget.clientModel.totalCombine,
+        totalTractor: widget.clientModel.totalTractor,
+        contactsDone: widget.clientModel.contactsDone + 1,
+        lastContact: formatted,
+        lastPurchase: controller.store.efectiveSell
+            ? formatted
+            : widget.clientModel.lastPurchase,
+      );
+
+      Modular.get<ClientRepository>()
+          .updateClient(widget.clientModel.id, clientModelUpdate)
+          .then((value) {})
+          .catchError((err) {
+        print('erro update' + err);
+      });
+    }).catchError((err) {
+      print('erroooooo : ' + err);
+      Components.alert(
+        context,
+        'Ocorreu algum erro!',
+        'Por favor, tente novamente!',
+      );
+    });
   }
 }

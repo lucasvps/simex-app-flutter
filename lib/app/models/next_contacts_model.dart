@@ -8,15 +8,25 @@ class NextContactsModel {
   String status;
   String observation;
   int productAmount;
-  String value;
   String valueSold;
   String reason;
   String nextContact;
+  String name;
   String phone;
   String email;
-  String cpf;
+  int totalTractor;
+  int totalCombine;
+  String adress;
+  String city;
+  String state;
   String store;
-  String name;
+  String code;
+  String cpf;
+  String cultureOne;
+  String cultureTwo;
+  String lastContact;
+  String lastPurchase;
+  int contactsDone;
   String productName;
   String price;
 
@@ -30,15 +40,25 @@ class NextContactsModel {
       this.status,
       this.observation,
       this.productAmount,
-      this.value,
       this.valueSold,
       this.reason,
       this.nextContact,
+      this.name,
       this.phone,
       this.email,
-      this.cpf,
+      this.totalTractor,
+      this.totalCombine,
+      this.adress,
+      this.city,
+      this.state,
       this.store,
-      this.name,
+      this.code,
+      this.cpf,
+      this.cultureOne,
+      this.cultureTwo,
+      this.lastContact,
+      this.lastPurchase,
+      this.contactsDone,
       this.productName,
       this.price});
 
@@ -52,15 +72,25 @@ class NextContactsModel {
     status = json['status'];
     observation = json['observation'];
     productAmount = json['product_amount'];
-    value = json['value'];
     valueSold = json['value_sold'];
     reason = json['reason'];
     nextContact = json['next_contact'];
+    name = json['name'];
     phone = json['phone'];
     email = json['email'];
-    cpf = json['cpf'];
+    totalTractor = json['total_tractor'];
+    totalCombine = json['total_combine'];
+    adress = json['adress'];
+    city = json['city'];
+    state = json['state'];
     store = json['store'];
-    name = json['name'];
+    code = json['code'];
+    cpf = json['cpf'];
+    cultureOne = json['culture_one'];
+    cultureTwo = json['culture_two'];
+    lastContact = json['last_contact'];
+    lastPurchase = json['last_purchase'];
+    contactsDone = json['contacts_done'];
     productName = json['product_name'];
     price = json['price'];
   }
@@ -76,15 +106,25 @@ class NextContactsModel {
     data['status'] = this.status;
     data['observation'] = this.observation;
     data['product_amount'] = this.productAmount;
-    data['value'] = this.value;
     data['value_sold'] = this.valueSold;
     data['reason'] = this.reason;
     data['next_contact'] = this.nextContact;
+    data['name'] = this.name;
     data['phone'] = this.phone;
     data['email'] = this.email;
-    data['cpf'] = this.cpf;
+    data['total_tractor'] = this.totalTractor;
+    data['total_combine'] = this.totalCombine;
+    data['adress'] = this.adress;
+    data['city'] = this.city;
+    data['state'] = this.state;
     data['store'] = this.store;
-    data['name'] = this.name;
+    data['code'] = this.code;
+    data['cpf'] = this.cpf;
+    data['culture_one'] = this.cultureOne;
+    data['culture_two'] = this.cultureTwo;
+    data['last_contact'] = this.lastContact;
+    data['last_purchase'] = this.lastPurchase;
+    data['contacts_done'] = this.contactsDone;
     data['product_name'] = this.productName;
     data['price'] = this.price;
     return data;

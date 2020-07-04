@@ -6,15 +6,13 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/modules/infoClient/infoClient_page.dart';
+import 'package:simex_app/app/modules/newRegister/new_register_page.dart';
 import 'clients_controller.dart';
-
 
 class ClientsPage extends StatefulWidget {
   final String title;
   const ClientsPage({Key key, this.title = "Clients"}) : super(key: key);
 
-
-  
   @override
   _ClientsPageState createState() => _ClientsPageState();
 }
@@ -22,7 +20,6 @@ class ClientsPage extends StatefulWidget {
 class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
   //use 'controller' variable to access controller
 
-  
   TextEditingController controllerText = TextEditingController();
 
   @override
@@ -34,8 +31,6 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
   static var maskTextInputFormatter = MaskTextInputFormatter(
       mask: "###.###.###-##", filter: {"#": RegExp(r'[0-9]')});
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +38,8 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
         height: 100,
         width: 80,
         child: FloatingActionButton(
-          backgroundColor: AppThemeLight().getTheme().primaryColor,
+          backgroundColor:
+              AppThemeLight().getTheme().primaryColor.withOpacity(0.6),
           onPressed: () {
             Modular.to.pushNamed('/newClient');
           },
@@ -67,9 +63,7 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
             padding: const EdgeInsets.all(16.0),
             child: TextFormField(
               inputFormatters: [maskTextInputFormatter],
-              // initialValue: "",
               controller: controllerText,
-              //onChanged: controller.clientStore.setSearch,
               decoration: InputDecoration(
                   suffixIcon: IconButton(
                       icon: Icon(Icons.search),
@@ -184,9 +178,13 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
                       flex: 3,
                       child: RaisedButton(
                         onPressed: () {
-                          //print('${widget.clientSearched[index].id}');
-                          Modular.to
-                              .pushNamed('/newRegister/${clients[index].id}');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewRegisterPage(clientModel: clients[index],)),
+                          );
+                          // Modular.to.pushNamed(
+                          //     '/newRegister/${clients[index].id}/${clients[index].toString()}');
                         },
                         child: Text(
                           'NOVO REGISTRO',

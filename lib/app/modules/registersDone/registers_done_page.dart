@@ -22,6 +22,14 @@ class _RegistersDonePageState
   //use 'controller' variable to access controller
 
   @override
+  void initState() {
+    controller.store.registerRepository.lastPageRegistersDone().then((value) {
+      controller.store.setLastPage(value.toString());
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -53,11 +61,20 @@ class _RegistersDonePageState
                           break;
                         case ConnectionState.done:
                           if (snapshot.hasError) {
-                            Text('Ocorreu um erro, recarregue a página!');
+                            return Center(
+                                child: Text(
+                                    'Ocorreu um erro, recarregue a página!'));
                           }
                           if (!snapshot.hasData) {
-                            Text('Você não possui registros anteriores!');
+                            return Center(
+                                child: Text(
+                                    'Você não possui registros anteriores!'));
                           } else {
+                            if (snapshot.data.toString() == '[]') {
+                              return Center(
+                                  child: Text(
+                                      'Você não possui registros anteriores!'));
+                            }
                             return customList(snapshot.data);
                           }
 
@@ -84,7 +101,8 @@ class _RegistersDonePageState
                   IconButton(
                       icon: Icon(Icons.arrow_forward_ios),
                       onPressed: controller.store.currentPage !=
-                              controller.store.lastPage
+                                  controller.store.lastPage &&
+                              controller.store.lastPage != '1'
                           ? () {
                               controller.store.setCurrentPage(
                                   (int.parse(controller.store.currentPage) + 1)

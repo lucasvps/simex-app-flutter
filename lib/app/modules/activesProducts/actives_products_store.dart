@@ -9,4 +9,16 @@ abstract class _ActivesProductsStoreBase with Store {
   final ProductRepository repository;
 
   _ActivesProductsStoreBase(this.repository);
+
+  @observable
+  String currentPage = '1';
+
+  @action
+  setCurrentPage(String value) => currentPage = value;
+
+  @observable
+  String lastPage;
+
+  @action
+  setLastPage(String value) => lastPage = value;
 }

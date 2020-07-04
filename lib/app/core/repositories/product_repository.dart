@@ -36,37 +36,33 @@ class ProductRepository {
   }
 
   Future<List<ProductModel>> currentProducts([String page]) async {
-    String url = ApiEndpoints.MAIN_URL + ApiEndpoints.PRODUCTS_URL;// + "?page=$page";
+    String url =
+        ApiEndpoints.MAIN_URL + ApiEndpoints.PRODUCTS_ACTIVE + "?page=$page";
 
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.get(url).then((value) {
       List<ProductModel> products = [];
-      
 
       //print(value.data['data']);
 
-      for (var item in value.data) {
+      for (var item in value.data['data']) {
         ProductModel productModel = ProductModel.fromJson(item);
 
-        DateTime finalDate =
-            new DateFormat("yyyy-MM-dd").parse(productModel.finalDate);
-        DateTime initialDate =
-            new DateFormat("yyyy-MM-dd").parse(productModel.initialDate);
-        var today = DateTime.now();
-
-        var difInitial = initialDate.difference(today).inDays;
-
-        var difFinal = finalDate.difference(today).inDays;
-
-        //formatDate(picked, [dd, '/', mm, '/', yyyy]);
-
-        if (difInitial <= 0 && difFinal >= 0) {
-          products.add(productModel);
-        }
+        products.add(productModel);
       }
 
       return products;
+    });
+  }
+
+  Future lastPageRegistersDone() async {
+    String url = ApiEndpoints.MAIN_URL + ApiEndpoints.PRODUCTS_ACTIVE;
+
+    var dio = CustomDio.withAuthentication().instance;
+
+    return await dio.get(url).then((value) {
+      return value.data['last_page'];
     });
   }
 

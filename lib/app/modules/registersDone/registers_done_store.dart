@@ -10,7 +10,6 @@ abstract class _RegistersDoneStoreBase with Store {
 
   _RegistersDoneStoreBase(this.registerRepository);
 
-
   @observable
   String currentPage = '1';
 

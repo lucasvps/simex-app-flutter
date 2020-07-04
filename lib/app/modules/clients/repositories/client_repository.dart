@@ -27,8 +27,23 @@ class ClientRepository {
     });
   }
 
+
+  Future<ClientModel> clientById(int id) async {
+    String url = ApiEndpoints.MAIN_URL + ApiEndpoints.CLIENTS_URL + "/$id";
+
+    var dio = CustomDio.withAuthentication().instance;
+
+    return await dio.get(url).then((value){
+      ClientModel model = ClientModel.fromJson(value.data);
+      return value.data;
+    });
+
+    
+  }
+
   Future updateClient(int id, ClientModel clientModel) async {
     String url = ApiEndpoints.MAIN_URL + ApiEndpoints.CLIENTS_URL + "/$id";
+
 
     var dio = CustomDio.withAuthentication().instance;
 

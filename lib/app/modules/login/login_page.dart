@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simex_app/app/core/stores/auth_store.dart';
 import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/user_model.dart';
 import 'login_controller.dart';
@@ -99,13 +100,23 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                                   password: controller.loginStore.password);
 
                               controller.login(userLogin).then((value) {
-                                Modular.to.pushReplacementNamed('/contacts');
+                                _onLoading();
+                                Future.delayed(new Duration(seconds: 3), () {})
+                                    .then((value) {
+                                  Navigator.pop(context);
+                                  Modular.to.pushReplacementNamed('/contacts');
+                                });
                               }).catchError((err) {
-                                Components.alert(
-                                  context,
-                                  'Não foi possivel realizar login!',
-                                  'Email ou senha estão incorretos, tente novamente!',
-                                );
+                                _onLoading();
+                                Future.delayed(new Duration(seconds: 2), () {})
+                                    .then((value) {
+                                  Navigator.pop(context);
+                                  Components.alert(
+                                    context,
+                                    'Não foi possivel realizar login!',
+                                    'Email ou senha estão incorretos, tente novamente!',
+                                  );
+                                });
                               });
                             }
                           : null,
@@ -122,5 +133,25 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
             ),
           );
         }));
+  }
+
+  void _onLoading() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: Dialog(
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                new CircularProgressIndicator(),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

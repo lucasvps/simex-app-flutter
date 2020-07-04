@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:simex_app/app/core/services/currency_input_formatter.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
+import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/product_model.dart';
 import 'new_product_controller.dart';
 
@@ -170,6 +171,12 @@ class _NewProductPageState
                                     .newProduct(product)
                                     .then((value) {
                                   controller.store.cleanFields();
+                                }).catchError((err) {
+                                  Components.alert(
+                                    context,
+                                    'Ocorreu algum erro!',
+                                    'Por favor, tente novamente!',
+                                  );
                                 });
                               }
                             : null,

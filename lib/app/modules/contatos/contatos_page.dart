@@ -4,8 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:simex_app/app/app_controller.dart';
 import 'package:simex_app/app/core/widgets.dart/custom_drawer.dart';
+import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/contacts_done_model.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
+import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
 import 'package:simex_app/app/modules/registerInfo/registerInfo_page.dart';
 import 'contatos_controller.dart';
 
@@ -43,6 +45,7 @@ class _ContatosPageState
                 FlatButton(
                     onPressed: () {
                       Modular.get<AppController>().authStore.logout();
+                      
                     },
                     child: Icon(
                       Icons.exit_to_app,

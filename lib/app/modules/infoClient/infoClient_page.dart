@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
+import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'infoClient_controller.dart';
 import 'widgets.dart/custom_info_row.dart';
@@ -46,7 +47,10 @@ class _InfoClientPageState
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Código do cliente : " + widget.detailedClient.code, style: GoogleFonts.montserrat(),),
+          title: Text(
+            "Código do cliente : " + widget.detailedClient.code,
+            style: GoogleFonts.montserrat(),
+          ),
           centerTitle: true,
         ),
         body: Container(
@@ -66,7 +70,6 @@ class _InfoClientPageState
                     )),
                   ),
                 ),
-
                 CustomInfoRow(
                   field: 'NOME',
                   readOnly: false,
@@ -154,6 +157,19 @@ class _InfoClientPageState
                   value: widget.detailedClient.totalCombine.toString(),
                   onChanged: controller.infoClientStore.setTotalCombine,
                 ),
+                CustomInfoRow(
+                  readOnly: true,
+                  field: 'Contatos feitos',
+                  value: widget.detailedClient.contactsDone.toString(),
+                ),
+                CustomInfoRow(
+                    readOnly: true,
+                    field: 'Último contato',
+                    value: widget.detailedClient.lastContact ?? ""),
+                CustomInfoRow(
+                    readOnly: true,
+                    field: 'Última compra',
+                    value: widget.detailedClient.lastPurchase ?? ""),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -174,32 +190,6 @@ class _InfoClientPageState
                     ),
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                //   child: Container(
-                //       width: double.maxFinite,
-                //       child: Card(
-                //         color: Color(0xffFFF176).withOpacity(0.9),
-                //         child: Text(
-                //           'INFORMAÇOES ADICIONAIS',
-                //           textAlign: TextAlign.center,
-                //           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                //         ),
-                //       )),
-                // ),
-                // CustomInfoRow(
-                //   readOnly: true,
-                //   field: 'Contatos feitos',
-                //   value: widget.detailedClient.contactsDone.toString(),
-                // ),
-                // CustomInfoRow(
-                //     readOnly: true,
-                //     field: 'Último contato',
-                //     value: widget.detailedClient.lastContact ?? ""),
-                // CustomInfoRow(
-                //     readOnly: true,
-                //     field: 'Última compra',
-                //     value: widget.detailedClient.lastPurchase ?? ""),
               ],
             ),
           ),
@@ -255,7 +245,15 @@ class _InfoClientPageState
     );
 
     controller.infoClientStore
-        .updateClient(widget.detailedClient.id, updateClient);
-    controller.infoClientStore.clearField();
+        .updateClient(widget.detailedClient.id, updateClient)
+        .then((value) {
+      controller.infoClientStore.clearField();
+    }).catchError((err) {
+      Components.alert(
+        context,
+        'Ocorreu algum erro!',
+        'Por favor, tente novamente!',
+      );
+    });
   }
 }

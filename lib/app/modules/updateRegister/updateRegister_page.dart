@@ -5,8 +5,11 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
+import 'package:simex_app/app/core/widgets.dart/components.dart';
+import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
 import 'package:simex_app/app/models/register_model.dart';
+import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
 import 'updateRegister_controller.dart';
 
 class UpdateRegisterPage extends StatefulWidget {
@@ -24,6 +27,7 @@ class UpdateRegisterPage extends StatefulWidget {
 class _UpdateRegisterPageState
     extends ModularState<UpdateRegisterPage, UpdateRegisterController> {
   //use 'controller' variable to access controller
+
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
@@ -217,13 +221,56 @@ class _UpdateRegisterPageState
         status: controller.store.efectiveSell
             ? "Venda Efetiva"
             : controller.store.pendingSell ? "Venda Pendente" : "Venda Perdida",
-        valueSold: controller.store.valueSold != null
-            ? controller.store.valueSold.toDouble().toString()
+        valueSold: controller.store.amountSold != null
+            ? (controller.store.amountSold *
+                double.parse(widget.nextContactsModel.price)).toString()
             : '0.0',
         contactFrom: controller.store.contactFrom);
 
     print(registerModel.toJson());
-    controller.updateRegister(registerModel, widget.nextContactsModel.id);
+    controller
+        .updateRegister(registerModel, widget.nextContactsModel.id)
+        .then((value) {
+          
+      ClientModel clientModelUpdate = ClientModel(
+        adress: widget.nextContactsModel.adress,
+        city: widget.nextContactsModel.city,
+        code: widget.nextContactsModel.code,
+        cpf: widget.nextContactsModel.cpf,
+        cultureOne: widget.nextContactsModel.cultureOne,
+        cultureTwo: widget.nextContactsModel.cultureTwo,
+        email: widget.nextContactsModel.email,
+        name: widget.nextContactsModel.name,
+        phone: widget.nextContactsModel.phone,
+        state: widget.nextContactsModel.state,
+        store: widget.nextContactsModel.store,
+        totalCombine: widget.nextContactsModel.totalCombine,
+        totalTractor: widget.nextContactsModel.totalTractor,
+        contactsDone: widget.nextContactsModel.contactsDone + 1,
+        lastContact: formatted,
+        lastPurchase: controller.store.efectiveSell
+            ? formatted
+            : widget.nextContactsModel.lastPurchase,
+      );
+
+      Modular.get<ClientRepository>()
+          .updateClient(widget.nextContactsModel.idClient, clientModelUpdate)
+          .then((value) {})
+          .catchError((err) {
+        print('erro update client' + err);
+        return err;
+      });
+
+      controller.store.cleanFields();
+      controller.store.setCurrentStep(0);
+    }).catchError((err) {
+      print('erro update reg ' + err);
+      Components.alert(
+        context,
+        'Ocorreu algum erro!',
+        'Por favor, tente novamente!',
+      );
+    });
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -393,7 +440,6 @@ class _UpdateRegisterPageState
                     color: AppThemeLight().getTheme().primaryColor,
                     onPressed: () {
                       setRegisterModelToUpdate();
-                      controller.store.cleanFields();
                     },
                     child: Text(
                       'SALVAR',

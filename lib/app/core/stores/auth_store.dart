@@ -10,6 +10,12 @@ abstract class _AuthStoreBase with Store {
 
   _AuthStoreBase(this.authRepository);
 
+  @observable
+  bool isLoading = false;
+
+  @action
+  changeIsLoading() => isLoading = !isLoading;
+
   Future getCurrentUser() async {
     return await authRepository.getCurrentUser();
   }

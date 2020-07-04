@@ -3,7 +3,6 @@ import 'package:simex_app/app/core/custom_dio.dart';
 import 'package:simex_app/app/core/endpoints.dart';
 import 'package:simex_app/app/models/register_model.dart';
 import 'package:simex_app/app/models/registers_done_model.dart';
-import 'package:simex_app/app/modules/registersDone/registers_done_store.dart';
 
 class RegisterRepository {
   Future updateRegister(RegisterModel model, int id) async {
@@ -35,13 +34,12 @@ class RegisterRepository {
     String url =
         ApiEndpoints.MAIN_URL + ApiEndpoints.REGISTERS_DONE + "?page=$page";
 
+        //print(url);
+
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.get(url).then((value) {
       List<RegistersDone> registers = [];
-
-      Modular.get<RegistersDoneStore>()
-          .setLastPage(value.data['last_page'].toString());
 
       for (var item in value.data['data']) {
         RegistersDone done = RegistersDone.fromJson(item);
@@ -49,7 +47,25 @@ class RegisterRepository {
         registers.add(done);
       }
 
+      // Modular.get<RegistersDoneStore>()
+      //     .setLastPage(value.data['last_page'].toString());
+
       return registers;
+    });
+  }
+
+  Future lastPageRegistersDone() async {
+    String url =
+        ApiEndpoints.MAIN_URL + ApiEndpoints.REGISTERS_DONE;
+
+        //print(url);
+
+    var dio = CustomDio.withAuthentication().instance;
+
+    return await dio.get(url).then((value) {
+      return value.data['last_page'];
+
+      
     });
   }
 }

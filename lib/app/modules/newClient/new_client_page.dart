@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
+import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/modules/newClient/widgets/custom_text_field.dart';
 import 'new_client_controller.dart';
@@ -184,7 +185,7 @@ class _NewClientPageState
                                   city: controller.store.city,
                                   code: '1832187',
                                   cpf: controller.store.cpf,
-                                  contactsDone: 1,
+                                  contactsDone: 0,
                                   cultureOne: controller.store.cultureOne ?? "",
                                   cultureTwo: controller.store.cultureTwo ?? "",
                                   email: controller.store.email ?? "",
@@ -199,7 +200,16 @@ class _NewClientPageState
                                       controller.store.totalTractor ?? 0,
                                 );
 
-                                controller.store.registerClient(newClient);
+                                controller.store
+                                    .registerClient(newClient)
+                                    .then((value) {})
+                                    .catchError((err) {
+                                  Components.alert(
+                                    context,
+                                    'Ocorreu algum erro!',
+                                    'Por favor, tente novamente!',
+                                  );
+                                });
                               }
                             : null,
                         child: Text(

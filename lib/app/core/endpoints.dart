@@ -25,6 +25,8 @@ class ApiEndpoints {
 
   static const String PRODUCTS_URL = '/products';
 
+  static const String PRODUCTS_ACTIVE = '/products/active';
+
   static const String PRODUCT_PRICE = '/product/price';
 
 }

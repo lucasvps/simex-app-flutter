@@ -1,4 +1,6 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CustomInfoRow extends StatefulWidget {
   CustomInfoRow(
@@ -44,7 +46,14 @@ class _CustomInfoRowState extends State<CustomInfoRow> {
                   //errorText: widget.errorText() ?? patternError,
                   border: InputBorder.none,
                 ),
-                initialValue: widget.value.toString(),
+                initialValue: widget.field == 'Última compra' ||
+                        widget.field == 'Último contato'
+                    ? formatDate(
+                        DateFormat("yyyy-MM-dd").parse(
+                          widget.value,
+                        ),
+                        [dd, '/', mm, '/', yyyy]).toString()
+                    : widget.value.toString(),
               ),
             ),
           ],

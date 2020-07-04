@@ -22,10 +22,7 @@ class AuthRepository implements IAuthRepository {
         .post(url, data: userModel.toJsonLogin())
         .then((value) async {
       iSharedLocalStorage.put('token', value.data['token']);
-      print(iSharedLocalStorage.get('token'));
-      // var preferences = await SharedPreferences.getInstance();
-      // preferences.setString('token', value.data['token']);
-      print(value.data);
+      
     }).catchError((err) {
       return err;
     });
