@@ -44,8 +44,8 @@ class _ContatosPageState
               actions: <Widget>[
                 FlatButton(
                     onPressed: () {
-                      Modular.get<AppController>().authStore.logout();
-                      
+                      //Modular.get<AppController>().authStore.logout();
+                      Modular.to.pushNamed('/pdfCreate');
                     },
                     child: Icon(
                       Icons.exit_to_app,

@@ -29,4 +29,8 @@ class ApiEndpoints {
 
   static const String PRODUCT_PRICE = '/product/price';
 
+  static const String CLIENTS_WITHOUT_CONTACTS = '/clients/withoutContact';
+
+  static const String CLIENTS_SPENT_MORE = '/clients/spentMore';
+
 }

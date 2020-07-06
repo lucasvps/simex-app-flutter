@@ -1,0 +1,5 @@
+lib/app/modules/pdf/pdf_module.dart
+lib/app/modules/pdf/pdf_page.dart
+test/app/modules/pdf/pdf_page_test.dart
+lib/app/modules/pdf/pdf_controller.dart
+test/app/modules/pdf/pdf_controller_test.dart
