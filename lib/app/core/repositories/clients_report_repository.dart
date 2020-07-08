@@ -33,7 +33,7 @@ class ClientsReportRepository {
     String url = ApiEndpoints.MAIN_URL +
         ApiEndpoints.CLIENTS_WITHOUT_PURCHASE + "/$days";
 
-    
+    print(url);
 
     var dio = CustomDio.withAuthentication().instance;
 
@@ -56,6 +56,7 @@ class ClientsReportRepository {
     String url = ApiEndpoints.MAIN_URL +
         ApiEndpoints.CLIENTS_SPENT_MORE;
 
+    print(url);
     
     var dio = CustomDio.withAuthentication().instance;
 

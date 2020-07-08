@@ -48,24 +48,11 @@ class _ContatosPageState
                 FlatButton(
                     onPressed: () {
                       Modular.get<AppController>().authStore.logout();
-
-                      //Modular.to.pushNamed('/pdfCreate');
                     },
                     child: Icon(
                       Icons.exit_to_app,
                       color: Colors.white,
                     )),
-                FlatButton(
-                    onPressed: () {
-                      //Modular.get<AppController>().authStore.logout();
-                      //controller.store.setDaysURL('10');
-                      Modular.to.pushNamed('/reports');
-                      
-                    },
-                    child: Icon(
-                      Icons.exit_to_app,
-                      color: Colors.red,
-                    ))
               ],
               bottom: TabBar(tabs: [
                 Tab(

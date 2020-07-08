@@ -6,6 +6,7 @@ import 'package:simex_app/app/models/reports/clients/clients_spent_more_model.da
 import 'package:simex_app/app/models/reports/clients/clients_without_contact_model.dart';
 import 'package:simex_app/app/models/reports/clients/clients_without_purchase.dart';
 import 'package:simex_app/app/models/reports/enterprise/enterprise_report_model.dart';
+import 'package:simex_app/app/models/reports/enterprise/user_report_model.dart';
 import 'package:simex_app/app/models/reports/products/product_efective_eficiency_model.dart';
 import 'package:simex_app/app/models/reports/products/product_lost_eficiency_model.dart';
 import 'package:simex_app/app/models/reports/products/product_pending_eficiency_model.dart';
@@ -23,34 +24,63 @@ abstract class _PdfControllerBase with Store {
 
   _PdfControllerBase(this.reportRepository, this.store,
       this.productReportRepository, this.enterpriseReportRepository) {
-    clientsWithoutContact = reportRepository
-        .clientsWithoutcontact(days: store.daysContactsURL)
-        .asObservable();
-    clientsWithoutPurchase = reportRepository
-        .clientsWithoutPurchase(days: store.daysPurchaseURL)
-        .asObservable();
+    (store.daysContactsURL != null &&
+            store.daysContactsURL != '0' &&
+            store.daysContactsURL != '')
+        ? clientsWithoutContact = reportRepository
+            .clientsWithoutcontact(days: store.daysContactsURL)
+            .asObservable()
+        : null;
+
+    (store.daysPurchaseURL != null &&
+            store.daysPurchaseURL != '0' &&
+            store.daysPurchaseURL != '')
+        ? clientsWithoutPurchase = reportRepository
+            .clientsWithoutPurchase(days: store.daysPurchaseURL)
+            .asObservable()
+        : null;
+
     clientsSpentMore = reportRepository.clientsSpentMore().asObservable();
-    productsEfectiveEficiency = productReportRepository
-        .productsEficiency(
-            initialDate: store.initialDateProduct,
-            finalDate: store.finalDateProduct)
-        .asObservable();
 
-    productsPendingEficiency = productReportRepository
-        .productsPendingEficiency(
-            initialDate: store.initialDateProduct,
-            finalDate: store.finalDateProduct)
-        .asObservable();
+    store.initialDateProduct != null
+        ? productsEfectiveEficiency = productReportRepository
+            .productsEficiency(
+                initialDate: store.initialDateProduct,
+                finalDate: store.finalDateProduct)
+            .asObservable()
+        : null;
 
-    productsLostEficiency = productReportRepository
-        .productsLostEficiency(
-            initialDate: store.initialDateProduct,
-            finalDate: store.finalDateProduct)
-        .asObservable();
+    store.initialDateProduct != null
+        ? productsPendingEficiency = productReportRepository
+            .productsPendingEficiency(
+                initialDate: store.initialDateProduct,
+                finalDate: store.finalDateProduct)
+            .asObservable()
+        : null;
 
-    enterpriseReportModel = enterpriseReportRepository.getEnterpriseReport(
-        initialDate: store.initialDateProduct,
-        finalDate: store.finalDateProduct).asObservable();
+    store.initialDateProduct != null
+        ? productsLostEficiency = productReportRepository
+            .productsLostEficiency(
+                initialDate: store.initialDateProduct,
+                finalDate: store.finalDateProduct)
+            .asObservable()
+        : null;
+
+    store.initialDateEnterprise != null
+        ? enterpriseReportModel = enterpriseReportRepository
+            .getEnterpriseReport(
+                initialDate: store.initialDateEnterprise,
+                finalDate: store.finalDateEnterprise)
+            .asObservable()
+        : null;
+
+    store.initialDateUser != null
+        ? userReportModel = enterpriseReportRepository.getUserReport(
+          initialDate: store.initialDateUser,
+          finalDate: store.finalDateUser,
+          id: store.idUser
+        ).asObservable()
+        : null;
   }
 
   @observable
@@ -75,4 +105,7 @@ abstract class _PdfControllerBase with Store {
 
   @observable
   ObservableFuture<EnterpriseReportModel> enterpriseReportModel;
+
+  @observable
+  ObservableFuture<UserReportModel> userReportModel;
 }

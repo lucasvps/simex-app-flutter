@@ -42,4 +42,8 @@ class ApiEndpoints {
   static const String PRODUCT_LOST_EFICIENCY = '/product/lost/efficiency';
 
   static const String ENTERPRISE_REPORT = '/register/report';
+
+  static const String USER_REPORT = '/register/report/user';
+
+  static const String USER_URL = '/users';
 }

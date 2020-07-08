@@ -4,15 +4,18 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/reports/clients/clients_spent_more_model.dart';
 import 'package:simex_app/app/models/reports/clients/clients_without_contact_model.dart';
 import 'package:simex_app/app/models/reports/clients/clients_without_purchase.dart';
 import 'package:simex_app/app/models/reports/enterprise/enterprise_report_model.dart';
+import 'package:simex_app/app/models/reports/enterprise/user_report_model.dart';
 import 'package:simex_app/app/models/reports/products/product_efective_eficiency_model.dart';
 import 'package:simex_app/app/models/reports/products/product_lost_eficiency_model.dart';
 import 'package:simex_app/app/models/reports/products/product_pending_eficiency_model.dart';
@@ -33,6 +36,19 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
 
   final pdf = pw.Document();
 
+  bool is_loaded;
+
+  @override
+  void initState() {
+    is_loaded = false;
+    super.initState();
+    Future.delayed(Duration(seconds: 5)).then((value) {
+      setState(() {
+        is_loaded = true;
+      });
+    });
+  }
+
   //enterpriseReportModel.toJson()['ActivePhone'][0]['activePhone'].toString()
 
   _clientsWitoutPurchase(context) async {
@@ -41,6 +57,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
 
     pdf.addPage(
       pw.MultiPage(
+        pageFormat: PdfPageFormat.a5.copyWith(marginTop: 0),
+        margin: pw.EdgeInsets.fromLTRB(16, 16, 16, 16),
         build: (context) {
           return <pw.Widget>[
             pw.Header(
@@ -56,7 +74,7 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                       ),
                       pw.Center(
                           child: pw.Text("SIMEX MÁQUINAS AGRICOLAS LTDA",
-                              style: pw.TextStyle(fontSize: 18),
+                              style: pw.TextStyle(fontSize: 14),
                               textAlign: pw.TextAlign.center)),
                       pw.Text('')
                     ])),
@@ -99,6 +117,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
 
     pdf.addPage(
       pw.MultiPage(
+        pageFormat: PdfPageFormat.a5.copyWith(marginTop: 0),
+        margin: pw.EdgeInsets.fromLTRB(16, 16, 16, 16),
         build: (context) {
           return <pw.Widget>[
             pw.Header(
@@ -114,7 +134,7 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                       ),
                       pw.Center(
                           child: pw.Text("SIMEX MÁQUINAS AGRICOLAS LTDA",
-                              style: pw.TextStyle(fontSize: 18),
+                              style: pw.TextStyle(fontSize: 14),
                               textAlign: pw.TextAlign.center)),
                       pw.Text('')
                     ])),
@@ -156,6 +176,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
 
     pdf.addPage(
       pw.MultiPage(
+        pageFormat: PdfPageFormat.a5.copyWith(marginTop: 0),
+        margin: pw.EdgeInsets.fromLTRB(16, 16, 16, 16),
         build: (context) {
           return <pw.Widget>[
             pw.Header(
@@ -171,7 +193,7 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                       ),
                       pw.Center(
                           child: pw.Text("SIMEX MÁQUINAS AGRICOLAS LTDA",
-                              style: pw.TextStyle(fontSize: 18),
+                              style: pw.TextStyle(fontSize: 14),
                               textAlign: pw.TextAlign.center)),
                       pw.Text('')
                     ])),
@@ -197,7 +219,9 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
     final String dir = (await getApplicationDocumentsDirectory()).path;
     final String path = '$dir/reports.pdf';
     final File file = File(path);
-    await file.writeAsBytes(pdf.save());
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save());
+    //await file.writeAsBytes(pdf.save());
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => PDFViewerPage(path: path),
@@ -215,13 +239,12 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
     List<ProductsLostEfficiencyModel> dataLost =
         controller.productsLostEficiency.value;
 
-    EnterpriseReportModel enterpriseReportModel =
-        controller.enterpriseReportModel.value;
-
     final pw.Document pdf = pw.Document(deflate: zlib.encode);
 
     pdf.addPage(
       pw.MultiPage(
+        pageFormat: PdfPageFormat.a5.copyWith(marginTop: 0),
+        margin: pw.EdgeInsets.fromLTRB(16, 16, 16, 16),
         build: (context) {
           return <pw.Widget>[
             pw.Header(
@@ -237,7 +260,7 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                       ),
                       pw.Center(
                           child: pw.Text("SIMEX MÁQUINAS AGRICOLAS LTDA",
-                              style: pw.TextStyle(fontSize: 18),
+                              style: pw.TextStyle(fontSize: 14),
                               textAlign: pw.TextAlign.center)),
                       pw.Text('')
                     ])),
@@ -325,7 +348,6 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                 'Data Final',
                 'Preço',
                 'Qtd Vendas Perdidas',
-                'Teste'
               ],
               ...dataLost.map((item) => [
                     item.productName,
@@ -342,9 +364,6 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                     NumberFormat.simpleCurrency(locale: 'pt_Br')
                         .format(double.parse(item.price)),
                     item.losts.toString(),
-                    enterpriseReportModel
-                        .toJson()['ActivePhone'][0]['activePhone']
-                        .toString()
                   ])
             ]),
           ];
@@ -364,16 +383,13 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
   }
 
   _enterpriseReport(context) async {
-    List<ProductsLostEfficiencyModel> dataLost =
-        controller.productsLostEficiency.value;
-
     EnterpriseReportModel enterpriseReportModel =
         controller.enterpriseReportModel.value;
     final pw.Document pdf = pw.Document(deflate: zlib.encode);
 
     pdf.addPage(
       pw.MultiPage(
-        margin: pw.EdgeInsets.fromLTRB(32, 0, 32, 32),
+        margin: pw.EdgeInsets.fromLTRB(32, 16, 32, 32),
         pageFormat: PdfPageFormat.a5.copyWith(marginTop: 0),
         build: (context) {
           return <pw.Widget>[
@@ -394,7 +410,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                               textAlign: pw.TextAlign.center)),
                       pw.Text('')
                     ])),
-            pw.Text("Contatos realizados no período de : (DATAS AQUI)"),
+            pw.Text(
+                "Contatos realizados no período de : ${controller.store.initialDateEnterpriseBR} à ${controller.store.finalDateEnterpriseBR}"),
             pw.SizedBox(height: 5),
             pw.Text("Usuário : Todos"),
             pw.SizedBox(height: 15),
@@ -472,8 +489,11 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                   <String>['', 'Valor/Quantidade'],
                   <String>[
                     'Valor Total de Venda',
-                    enterpriseReportModel.toJson()['ValueSold'].toString() !=
-                            '[]'
+                    (enterpriseReportModel.toJson()['ValueSold'].toString() !=
+                                '[]' &&
+                            enterpriseReportModel.toJson()['ValueSold'][0]
+                                    ['valueSoldTotal'] !=
+                                null)
                         ? NumberFormat.simpleCurrency(locale: 'pt_Br')
                             .format(double.parse(
                             enterpriseReportModel
@@ -511,30 +531,221 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
     );
   }
 
+  _userReport(context) async {
+    UserReportModel userReportModel =
+        controller.userReportModel.value;
+    final pw.Document pdf = pw.Document(deflate: zlib.encode);
+
+    pdf.addPage(
+      pw.MultiPage(
+        margin: pw.EdgeInsets.fromLTRB(32, 16, 32, 32),
+        pageFormat: PdfPageFormat.a5.copyWith(marginTop: 0),
+        build: (context) {
+          return <pw.Widget>[
+            pw.Header(
+                level: 0,
+                child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: <pw.Widget>[
+                      pw.Text(
+                        formatDate(
+                            DateFormat("yyyy-MM-dd")
+                                .parse(DateTime.now().toString()),
+                            [dd, '/', mm, '/', yyyy]).toString(),
+                      ),
+                      pw.Center(
+                          child: pw.Text("SIMEX MÁQUINAS AGRICOLAS LTDA",
+                              style: pw.TextStyle(fontSize: 14),
+                              textAlign: pw.TextAlign.center)),
+                      pw.Text('')
+                    ])),
+            pw.Text(
+                "Contatos realizados no período de : ${controller.store.initialDateUserBR} à ${controller.store.finalDateUserBR}"),
+            pw.SizedBox(height: 5),
+            pw.Text("Usuário : eu"),
+            pw.SizedBox(height: 15),
+            pw.Center(
+              child: pw.Text("Distruibuição dos Contatos",
+                  style: pw.TextStyle(fontSize: 12)),
+            ),
+            pw.SizedBox(height: 5),
+            pw.Table.fromTextArray(
+                cellStyle: pw.TextStyle(fontSize: 10),
+                context: context,
+                data: <List<String>>[
+                  <String>[
+                    'Tipo de Contato',
+                    'Quantidade',
+                  ],
+                  <String>[
+                    'Telef. Ativo',
+                    userReportModel.toJson()['ActivePhone'].toString() !=
+                            '[]'
+                        ? userReportModel
+                            .toJson()['ActivePhone'][0]['amount']
+                            .toString()
+                        : '0',
+                  ],
+                  <String>[
+                    'Visita Externa',
+                    userReportModel
+                                .toJson()['ExternalVisit']
+                                .toString() !=
+                            '[]'
+                        ? userReportModel
+                            .toJson()['ExternalVisit'][0]['amount']
+                            .toString()
+                        : '0',
+                  ],
+                  <String>[
+                    'Telef. Recebido',
+                    userReportModel.toJson()['ReceivedCall'].toString() !=
+                            '[]'
+                        ? userReportModel
+                            .toJson()['ReceivedCall'][0]['amount']
+                            .toString()
+                        : '0',
+                  ],
+                  <String>[
+                    'Balcão',
+                    userReportModel.toJson()['Balcony'].toString() != '[]'
+                        ? userReportModel
+                            .toJson()['Balcony'][0]['amount']
+                            .toString()
+                        : '0',
+                  ],
+                  <String>[
+                    'Total de Contatos',
+                    userReportModel
+                                .toJson()['AmountContacts']
+                                .toString() !=
+                            '[]'
+                        ? userReportModel
+                            .toJson()['AmountContacts'][0]['amount']
+                            .toString()
+                        : '0',
+                  ],
+                ]),
+            pw.SizedBox(height: 20),
+            pw.Center(
+              child: pw.Text("Resultados", style: pw.TextStyle(fontSize: 12)),
+            ),
+            pw.SizedBox(height: 5),
+            pw.Table.fromTextArray(
+                cellStyle: pw.TextStyle(fontSize: 10),
+                context: context,
+                data: <List<String>>[
+                  <String>['', 'Valor/Quantidade'],
+                  <String>[
+                    'Valor Total de Venda',
+                    (userReportModel.toJson()['ValueSoldTotal'].toString() !=
+                                '[]' &&
+                            userReportModel.toJson()['ValueSoldTotal'][0]
+                                    ['valueSoldTotal'] !=
+                                null)
+                        ? NumberFormat.simpleCurrency(locale: 'pt_Br')
+                            .format(double.parse(
+                            userReportModel
+                                .toJson()['ValueSoldTotal'][0]['valueSoldTotal']
+                                .toString(),
+                          ))
+                        : 'R\$ 0.0',
+                  ],
+                  <String>[
+                    'Quantidade de Vendas',
+                    userReportModel
+                                .toJson()['AmountOfEfectiveSell']
+                                .toString() !=
+                            '[]'
+                        ? userReportModel
+                            .toJson()['AmountOfEfectiveSell'][0]
+                                ['amountOfEfectiveSell']
+                            .toString()
+                        : '0',
+                  ],
+                ]),
+          ];
+        },
+      ),
+    );
+
+    final String dir = (await getApplicationDocumentsDirectory()).path;
+    final String path = '$dir/reports.pdf';
+    final File file = File(path);
+    await file.writeAsBytes(pdf.save());
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => PDFViewerPage(path: path),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
       return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            if (widget.choice == '1') {
-              _clientsWitoutContact(context);
-            } else if (widget.choice == '2') {
-              _clientsWitoutPurchase(context);
-            } else if (widget.choice == '3') {
-              _clientsSpentMore(context);
-            } else if (widget.choice == '4') {
-              _efectiveSellEficiency(context);
-            } else if (widget.choice == '5') {
-              _enterpriseReport(context);
-            }
-          },
-          child: Text('GERAR PDF'),
-        ),
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text('Gerar PDF do Relatório'),
+          centerTitle: false,
+          actions: <Widget>[
+            FlatButton(
+                onPressed: () {
+                  Modular.to.pushNamedAndRemoveUntil(
+                      '/contacts', ModalRoute.withName('/contacts'));
+                },
+                child: Text(
+                  'Voltar a página principal',
+                  style: TextStyle(
+                      color: Colors.white,
+                      backgroundColor: Colors.grey.withOpacity(0.4)),
+                ))
+          ],
         ),
-        body: Container(),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Image.asset('lib/assets/images/reports.png'),
+            Container(
+              child: is_loaded
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            color: AppThemeLight().getTheme().primaryColor,
+                            onPressed: () {
+                              if (widget.choice == '1') {
+                                _clientsWitoutContact(context);
+                              } else if (widget.choice == '2') {
+                                _clientsWitoutPurchase(context);
+                              } else if (widget.choice == '3') {
+                                _clientsSpentMore(context);
+                              } else if (widget.choice == '4') {
+                                _efectiveSellEficiency(context);
+                              } else if (widget.choice == '5') {
+                                _enterpriseReport(context);
+                              } else if (widget.choice == '6') {
+                                _userReport(context);
+                              }
+                            },
+                            child: Text('GERAR PDF',
+                                style: GoogleFonts.lato(
+                                    fontWeight: FontWeight.bold, fontSize: 20)),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    ),
+            ),
+          ],
+        ),
       );
     });
   }

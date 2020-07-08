@@ -29,11 +29,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
               return Text('erro 1');
               break;
             case ConnectionState.done:
-              if (snapshot.hasError) {
-                
-              }
+              if (snapshot.hasError) {}
               if (!snapshot.hasData) {
-                
               } else {
                 return UserAccountsDrawerHeader(
                   accountName: Text(
@@ -74,6 +71,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
           title: 'Produtos/Campanha',
           subtitle: 'Ver e adicionar produtos/campanhas.',
           pageTo: '/activesProduct'),
+      customListTile(
+          icon: Icons.print,
+          title: 'Relatórios',
+          subtitle: "Gerar Relatórios e PDF's",
+          pageTo: '/reports'),
     ]));
   }
 

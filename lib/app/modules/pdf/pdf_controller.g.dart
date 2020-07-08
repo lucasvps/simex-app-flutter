@@ -118,6 +118,39 @@ mixin _$PdfController on _PdfControllerBase, Store {
     });
   }
 
+  final _$enterpriseReportModelAtom =
+      Atom(name: '_PdfControllerBase.enterpriseReportModel');
+
+  @override
+  ObservableFuture<EnterpriseReportModel> get enterpriseReportModel {
+    _$enterpriseReportModelAtom.reportRead();
+    return super.enterpriseReportModel;
+  }
+
+  @override
+  set enterpriseReportModel(ObservableFuture<EnterpriseReportModel> value) {
+    _$enterpriseReportModelAtom.reportWrite(value, super.enterpriseReportModel,
+        () {
+      super.enterpriseReportModel = value;
+    });
+  }
+
+  final _$userReportModelAtom =
+      Atom(name: '_PdfControllerBase.userReportModel');
+
+  @override
+  ObservableFuture<UserReportModel> get userReportModel {
+    _$userReportModelAtom.reportRead();
+    return super.userReportModel;
+  }
+
+  @override
+  set userReportModel(ObservableFuture<UserReportModel> value) {
+    _$userReportModelAtom.reportWrite(value, super.userReportModel, () {
+      super.userReportModel = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -126,7 +159,9 @@ clientsWithoutPurchase: ${clientsWithoutPurchase},
 clientsSpentMore: ${clientsSpentMore},
 productsEfectiveEficiency: ${productsEfectiveEficiency},
 productsPendingEficiency: ${productsPendingEficiency},
-productsLostEficiency: ${productsLostEficiency}
+productsLostEficiency: ${productsLostEficiency},
+enterpriseReportModel: ${enterpriseReportModel},
+userReportModel: ${userReportModel}
     ''';
   }
 }
