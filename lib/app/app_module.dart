@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:simex_app/app/app_widget.dart';
 import 'package:simex_app/app/core/interfaces/auth_repository_interface.dart';
 import 'package:simex_app/app/core/interfaces/shared_local_storage_interface.dart';
+import 'package:simex_app/app/core/repositories/enterprise_report_repository.dart';
 import 'package:simex_app/app/core/repositories/register_repository.dart';
 import 'package:simex_app/app/core/services/shared_local_storage_service.dart';
 import 'package:simex_app/app/core/stores/auth_store.dart';
@@ -18,6 +19,7 @@ import 'package:simex_app/app/modules/newProduct/new_product_module.dart';
 import 'package:simex_app/app/modules/newRegister/new_register_module.dart';
 import 'package:simex_app/app/modules/pdf/pdf_module.dart';
 import 'package:simex_app/app/modules/registersDone/registers_done_module.dart';
+import 'package:simex_app/app/modules/reports/reports_module.dart';
 import 'package:simex_app/app/modules/splash/splash_module.dart';
 import 'package:simex_app/app/modules/updateRegister/updateRegister_controller.dart';
 import 'package:simex_app/app/modules/updateRegister/updateRegister_store.dart';
@@ -27,13 +29,14 @@ import 'core/repositories/auth_repository.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => AppController(i.get())),
+        Bind((i) => AppController(i.get(), i.get())),
         Bind<IAuthRepository>((i) => AuthRepository(i.get())),
         Bind<ISharedLocalStorage>((i) => SharedLocalStorageService()),
         Bind((i) => AuthStore(i.get())),
         Bind((i) => UpdateRegisterController(i.get())),
         Bind((i) => UpdateRegisterStore(i.get())),
         Bind((i) => RegisterRepository()),
+        Bind((i) => EnterpriseReportRepository()),
       ];
 
   @override
@@ -50,6 +53,7 @@ class AppModule extends MainModule {
         Router('/activesProduct', module: ActivesProductsModule()),
         Router('/registersDone', module: RegistersDoneModule()),
         Router('/pdfCreate', module: PdfModule()),
+        Router('/reports', module: ReportsModule()),
         //Router('/updateRegister', module: UpdateRegisterModule()),
         
       ];

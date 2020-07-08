@@ -27,10 +27,106 @@ mixin _$PdfController on _PdfControllerBase, Store {
     });
   }
 
+  final _$clientsWithoutPurchaseAtom =
+      Atom(name: '_PdfControllerBase.clientsWithoutPurchase');
+
+  @override
+  ObservableFuture<List<ClientsWithoutPurchase>> get clientsWithoutPurchase {
+    _$clientsWithoutPurchaseAtom.reportRead();
+    return super.clientsWithoutPurchase;
+  }
+
+  @override
+  set clientsWithoutPurchase(
+      ObservableFuture<List<ClientsWithoutPurchase>> value) {
+    _$clientsWithoutPurchaseAtom
+        .reportWrite(value, super.clientsWithoutPurchase, () {
+      super.clientsWithoutPurchase = value;
+    });
+  }
+
+  final _$clientsSpentMoreAtom =
+      Atom(name: '_PdfControllerBase.clientsSpentMore');
+
+  @override
+  ObservableFuture<List<ClientsSpentMore>> get clientsSpentMore {
+    _$clientsSpentMoreAtom.reportRead();
+    return super.clientsSpentMore;
+  }
+
+  @override
+  set clientsSpentMore(ObservableFuture<List<ClientsSpentMore>> value) {
+    _$clientsSpentMoreAtom.reportWrite(value, super.clientsSpentMore, () {
+      super.clientsSpentMore = value;
+    });
+  }
+
+  final _$productsEfectiveEficiencyAtom =
+      Atom(name: '_PdfControllerBase.productsEfectiveEficiency');
+
+  @override
+  ObservableFuture<List<ProductsEfectiveEfficiencyModel>>
+      get productsEfectiveEficiency {
+    _$productsEfectiveEficiencyAtom.reportRead();
+    return super.productsEfectiveEficiency;
+  }
+
+  @override
+  set productsEfectiveEficiency(
+      ObservableFuture<List<ProductsEfectiveEfficiencyModel>> value) {
+    _$productsEfectiveEficiencyAtom
+        .reportWrite(value, super.productsEfectiveEficiency, () {
+      super.productsEfectiveEficiency = value;
+    });
+  }
+
+  final _$productsPendingEficiencyAtom =
+      Atom(name: '_PdfControllerBase.productsPendingEficiency');
+
+  @override
+  ObservableFuture<List<ProductsePendingEfficiencyModel>>
+      get productsPendingEficiency {
+    _$productsPendingEficiencyAtom.reportRead();
+    return super.productsPendingEficiency;
+  }
+
+  @override
+  set productsPendingEficiency(
+      ObservableFuture<List<ProductsePendingEfficiencyModel>> value) {
+    _$productsPendingEficiencyAtom
+        .reportWrite(value, super.productsPendingEficiency, () {
+      super.productsPendingEficiency = value;
+    });
+  }
+
+  final _$productsLostEficiencyAtom =
+      Atom(name: '_PdfControllerBase.productsLostEficiency');
+
+  @override
+  ObservableFuture<List<ProductsLostEfficiencyModel>>
+      get productsLostEficiency {
+    _$productsLostEficiencyAtom.reportRead();
+    return super.productsLostEficiency;
+  }
+
+  @override
+  set productsLostEficiency(
+      ObservableFuture<List<ProductsLostEfficiencyModel>> value) {
+    _$productsLostEficiencyAtom.reportWrite(value, super.productsLostEficiency,
+        () {
+      super.productsLostEficiency = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
-clientsWithoutContact: ${clientsWithoutContact}
+clientsWithoutContact: ${clientsWithoutContact},
+clientsWithoutPurchase: ${clientsWithoutPurchase},
+clientsSpentMore: ${clientsSpentMore},
+productsEfectiveEficiency: ${productsEfectiveEficiency},
+productsPendingEficiency: ${productsPendingEficiency},
+productsLostEficiency: ${productsLostEficiency}
     ''';
   }
 }

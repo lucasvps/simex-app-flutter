@@ -31,6 +31,15 @@ class ApiEndpoints {
 
   static const String CLIENTS_WITHOUT_CONTACTS = '/clients/withoutContact';
 
+  static const String CLIENTS_WITHOUT_PURCHASE = '/clients/withoutPurchase';
+
   static const String CLIENTS_SPENT_MORE = '/clients/spentMore';
 
+  static const String PRODUCT_EFICIENCY = '/product/efective/efficiency';
+
+  static const String PRODUCT_PENDING_EFICIENCY = '/product/pending/efficiency';
+
+  static const String PRODUCT_LOST_EFICIENCY = '/product/lost/efficiency';
+
+  static const String ENTERPRISE_REPORT = '/register/report';
 }
