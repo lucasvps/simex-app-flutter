@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simex_app/app/app_controller.dart';
-import 'package:simex_app/app/core/repositories/enterprise_report_repository.dart';
-import 'package:simex_app/app/core/repositories/products_report_repository.dart';
+import 'package:simex_app/app/core/repositories/reportsRepositories/enterprise_report_repository.dart';
+import 'package:simex_app/app/core/repositories/reportsRepositories/products_report_repository.dart';
+import 'package:simex_app/app/core/stores/auth_store.dart';
 import 'package:simex_app/app/core/widgets.dart/custom_drawer.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/contacts_done_model.dart';
@@ -27,12 +29,27 @@ class _ContatosPageState
   //use 'controller' variable to access controller
 
   int id;
+  SharedPreferences sharedPreferences;
+
+  checkLoginStatus() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.getString('token') != null) {
+      Modular.get<AuthStore>()
+          .setUserEmail(sharedPreferences.getString('userEmail'));
+      Modular.get<AuthStore>()
+          .setUserName(sharedPreferences.getString('userName'));
+      Modular.get<AuthStore>().setIsAdmin(sharedPreferences.getInt('is_admin'));
+    } else {
+      Modular.to.pushReplacementNamed('/login');
+    }
+  }
 
   @override
   void initState() {
     Modular.get<AppController>().currentUser().then((value) {
       id = value['id'];
     });
+    checkLoginStatus();
     super.initState();
   }
 
@@ -265,20 +282,36 @@ class _ContatosPageState
                     SizedBox(
                       height: 3,
                     ),
-                    Text(
-                      "Produto : " + list[index].productName,
-                      style: GoogleFonts.pangolin(
-                        fontSize: 18,
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: list[index].productId != null
+                          ? Text(
+                              "Produto : " + list[index].productName,
+                              style: GoogleFonts.pangolin(
+                                fontSize: 18,
+                              ),
+                            )
+                          : list[index].observation != null
+                              ? Text(
+                                  "Descrição do Contato : " +
+                                      list[index].observation,
+                                  style: GoogleFonts.pangolin(
+                                    fontSize: 18,
+                                  ),
+                                )
+                              : SizedBox(),
                     ),
                     SizedBox(
                       height: 3,
                     ),
                     Text(
-                      "Valor :" +
-                          NumberFormat.simpleCurrency(locale: 'pt_Br').format(
-                            double.parse(list[index].price),
-                          ),
+                      list[index].productId != null
+                          ? "Valor :" +
+                              NumberFormat.simpleCurrency(locale: 'pt_Br')
+                                  .format(
+                                double.parse(list[index].price),
+                              )
+                          : "",
                       style: GoogleFonts.pangolin(
                         fontSize: 18,
                       ),
@@ -305,65 +338,68 @@ class _ContatosPageState
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Text(
-                            'Cliente : ' + list[index].name,
-                            style: GoogleFonts.pangolin(
-                              fontSize: 18,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              'Cliente : ' + list[index].name,
+                              style: GoogleFonts.pangolin(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Text(
-                            'Status : ' + list[index].status,
-                            style: GoogleFonts.pangolin(
-                              fontSize: 18,
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              'Status : ' + list[index].status,
+                              style: GoogleFonts.pangolin(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                        ),
-                        list[index].status == "Venda Perdida"
-                            ? Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: Text(
-                                  'Razão : ' + list[index].reason,
-                                  style: GoogleFonts.pangolin(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              )
-                            : list[index].status == "Venda Pendente"
-                                ? Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: Text(
-                                      list[index].observation != null
-                                          ? 'Observação : ' +
-                                              list[index].observation
-                                          : "Nenhuma observação!",
-                                      style: GoogleFonts.pangolin(
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: Text(
-                                      'Valor de Venda : ' +
-                                          NumberFormat.simpleCurrency(
-                                                  locale: 'pt_Br')
-                                              .format(
-                                            double.parse(list[index].valueSold),
-                                          ),
-                                      style: GoogleFonts.pangolin(
-                                        fontSize: 18,
-                                      ),
+                          list[index].status == "Venda Perdida"
+                              ? Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Text(
+                                    'Razão : ' + list[index].reason,
+                                    style: GoogleFonts.pangolin(
+                                      fontSize: 18,
                                     ),
                                   ),
-                      ],
+                                )
+                              : list[index].status == "Venda Pendente"
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(6.0),
+                                      child: Text(
+                                        list[index].observation != null
+                                            ? 'Observação : ' +
+                                                list[index].observation
+                                            : "Nenhuma observação!",
+                                        style: GoogleFonts.pangolin(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.all(6.0),
+                                      child: Text(
+                                        'Valor de Venda : ' +
+                                            NumberFormat.simpleCurrency(
+                                                    locale: 'pt_Br')
+                                                .format(
+                                              double.parse(
+                                                  list[index].valueSold),
+                                            ),
+                                        style: GoogleFonts.pangolin(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                        ],
+                      ),
                     ),
                     Container(
                         child: list[index].status == "Venda Efetiva"

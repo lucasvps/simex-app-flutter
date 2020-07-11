@@ -21,6 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_phone_direct_caller: ^1.0.1
+  flutter_open_whatsapp: ^0.1.2
   printing: ^3.5.0
   date_range_picker: ^1.0.6
   flutter_full_pdf_viewer: ^1.0.6

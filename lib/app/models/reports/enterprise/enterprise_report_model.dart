@@ -184,7 +184,7 @@ class AmountContacts {
 }
 
 class ValueSold {
-  double valueSoldTotal;
+  int valueSoldTotal;
 
   ValueSold({this.valueSoldTotal});
 

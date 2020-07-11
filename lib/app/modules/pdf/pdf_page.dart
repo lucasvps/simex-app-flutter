@@ -103,6 +103,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
     final String dir = (await getApplicationDocumentsDirectory()).path;
     final String path = '$dir/reports.pdf';
     final File file = File(path);
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save());
     await file.writeAsBytes(pdf.save());
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -162,6 +164,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
     final String dir = (await getApplicationDocumentsDirectory()).path;
     final String path = '$dir/reports.pdf';
     final File file = File(path);
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save());
     await file.writeAsBytes(pdf.save());
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -220,8 +224,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
     final String path = '$dir/reports.pdf';
     final File file = File(path);
     await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdf.save());
-    //await file.writeAsBytes(pdf.save());
+        onLayout: (PdfPageFormat format) async => pdf.save());
+    await file.writeAsBytes(pdf.save());
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => PDFViewerPage(path: path),
@@ -307,7 +311,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                     NumberFormat.simpleCurrency(locale: 'pt_Br')
                         .format(double.parse(item.price)),
                     item.sales.toString(),
-                    item.valueSold
+                    NumberFormat.simpleCurrency(locale: 'pt_Br')
+                        .format(double.parse(item.valueSold)),
                   ])
             ]),
             pw.SizedBox(height: 15),
@@ -374,6 +379,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
     final String dir = (await getApplicationDocumentsDirectory()).path;
     final String path = '$dir/reports.pdf';
     final File file = File(path);
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save());
     await file.writeAsBytes(pdf.save());
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -385,6 +392,7 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
   _enterpriseReport(context) async {
     EnterpriseReportModel enterpriseReportModel =
         controller.enterpriseReportModel.value;
+
     final pw.Document pdf = pw.Document(deflate: zlib.encode);
 
     pdf.addPage(
@@ -523,6 +531,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
     final String dir = (await getApplicationDocumentsDirectory()).path;
     final String path = '$dir/reports.pdf';
     final File file = File(path);
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save());
     await file.writeAsBytes(pdf.save());
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -532,8 +542,7 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
   }
 
   _userReport(context) async {
-    UserReportModel userReportModel =
-        controller.userReportModel.value;
+    UserReportModel userReportModel = controller.userReportModel.value;
     final pw.Document pdf = pw.Document(deflate: zlib.encode);
 
     pdf.addPage(
@@ -562,7 +571,7 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
             pw.Text(
                 "Contatos realizados no período de : ${controller.store.initialDateUserBR} à ${controller.store.finalDateUserBR}"),
             pw.SizedBox(height: 5),
-            pw.Text("Usuário : eu"),
+            pw.Text("Usuário : " + controller.store.userName),
             pw.SizedBox(height: 15),
             pw.Center(
               child: pw.Text("Distruibuição dos Contatos",
@@ -579,8 +588,7 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                   ],
                   <String>[
                     'Telef. Ativo',
-                    userReportModel.toJson()['ActivePhone'].toString() !=
-                            '[]'
+                    userReportModel.toJson()['ActivePhone'].toString() != '[]'
                         ? userReportModel
                             .toJson()['ActivePhone'][0]['amount']
                             .toString()
@@ -588,10 +596,7 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                   ],
                   <String>[
                     'Visita Externa',
-                    userReportModel
-                                .toJson()['ExternalVisit']
-                                .toString() !=
-                            '[]'
+                    userReportModel.toJson()['ExternalVisit'].toString() != '[]'
                         ? userReportModel
                             .toJson()['ExternalVisit'][0]['amount']
                             .toString()
@@ -599,8 +604,7 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                   ],
                   <String>[
                     'Telef. Recebido',
-                    userReportModel.toJson()['ReceivedCall'].toString() !=
-                            '[]'
+                    userReportModel.toJson()['ReceivedCall'].toString() != '[]'
                         ? userReportModel
                             .toJson()['ReceivedCall'][0]['amount']
                             .toString()
@@ -616,9 +620,7 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                   ],
                   <String>[
                     'Total de Contatos',
-                    userReportModel
-                                .toJson()['AmountContacts']
-                                .toString() !=
+                    userReportModel.toJson()['AmountContacts'].toString() !=
                             '[]'
                         ? userReportModel
                             .toJson()['AmountContacts'][0]['amount']
@@ -672,6 +674,9 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
     final String dir = (await getApplicationDocumentsDirectory()).path;
     final String path = '$dir/reports.pdf';
     final File file = File(path);
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save());
+    //await Printing.sharePdf(bytes: pdf.save(), filename: 'my-document.pdf');
     await file.writeAsBytes(pdf.save());
     Navigator.of(context).push(
       MaterialPageRoute(

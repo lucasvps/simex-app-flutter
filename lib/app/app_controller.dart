@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:simex_app/app/core/repositories/enterprise_report_repository.dart';
+import 'package:simex_app/app/core/repositories/reportsRepositories/enterprise_report_repository.dart';
 import 'package:simex_app/app/core/stores/auth_store.dart';
 
 part 'app_controller.g.dart';

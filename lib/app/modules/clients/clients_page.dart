@@ -62,7 +62,7 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextFormField(
-              inputFormatters: [maskTextInputFormatter],
+              //inputFormatters: [maskTextInputFormatter],
               controller: controllerText,
               decoration: InputDecoration(
                   suffixIcon: IconButton(
@@ -71,7 +71,7 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
                         controller.clientStore.setSearch(controllerText.text);
                         controllerText.text = '';
                       }),
-                  labelText: "Pesquisar cliente pelo CPF",
+                  labelText: "Pesquisar cliente pelo nome",
                   border: OutlineInputBorder()),
             ),
           ),
@@ -80,7 +80,7 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
               child: SizedBox(
                 child: FutureBuilder(
                   future: controller
-                      .searchedUserByDoc(controller.clientStore.searchDoc),
+                      .searchUserByName(controller.clientStore.searchDoc),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.active:
@@ -181,10 +181,10 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => NewRegisterPage(clientModel: clients[index],)),
+                                builder: (context) => NewRegisterPage(
+                                      clientModel: clients[index],
+                                    )),
                           );
-                          // Modular.to.pushNamed(
-                          //     '/newRegister/${clients[index].id}/${clients[index].toString()}');
                         },
                         child: Text(
                           'NOVO REGISTRO',

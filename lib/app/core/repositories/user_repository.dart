@@ -10,7 +10,6 @@ class UserRepository {
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.get(url).then((value) {
-      print(value.data);
       List<UserModel> users = [];
 
       for (var item in value.data) {
@@ -19,8 +18,22 @@ class UserRepository {
       }
 
       return users;
-    }).catchError((err){
+    }).catchError((err) {
       print('repo user error : ' + err.toString());
+    });
+  }
+
+  Future getAnyUserInfo({String id}) async {
+    String url = ApiEndpoints.MAIN_URL + ApiEndpoints.USER_INFO + "/$id";
+
+    var dio = CustomDio.withAuthentication().instance;
+
+    return await dio.get(url).then((value) {
+      if (value.data['email'] != null) {
+        return value.data;
+      }
+    }).catchError((err) {
+      return err;
     });
   }
 }

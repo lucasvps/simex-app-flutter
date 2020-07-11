@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simex_app/app/app_controller.dart';
+import 'package:simex_app/app/core/stores/auth_store.dart';
 
 class CustomDrawer extends StatefulWidget {
   CustomDrawer({Key key}) : super(key: key);
@@ -13,70 +16,55 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-        child: ListView(children: <Widget>[
-      FutureBuilder(
-        future: Modular.get<AppController>().authStore.getCurrentUser(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.active:
-            case ConnectionState.waiting:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-              break;
-            case ConnectionState.none:
-              return Text('erro 1');
-              break;
-            case ConnectionState.done:
-              if (snapshot.hasError) {}
-              if (!snapshot.hasData) {
-              } else {
-                return UserAccountsDrawerHeader(
-                  accountName: Text(
-                    snapshot.data['name'],
-                    style: GoogleFonts.pangolin(
-                      fontSize: 18,
-                    ),
-                  ),
-                  accountEmail: Text(
-                    snapshot.data['email'],
-                    style: GoogleFonts.yanoneKaffeesatz(
-                      fontSize: 18,
-                    ),
-                  ),
-                  currentAccountPicture: CircleAvatar(
-                    backgroundColor: Colors.black,
-                  ),
-                );
-              }
-
-              break;
-          }
-          return Container();
-        },
-      ),
-      customListTile(
-          icon: Icons.people,
-          title: 'Clientes',
-          subtitle: 'Buscar ou registrar novo cliente.',
-          pageTo: '/clients'),
-      customListTile(
-          icon: Icons.folder,
-          title: 'Registros',
-          subtitle: 'Todos os registros feitos.',
-          pageTo: '/registersDone'),
-      customListTile(
-          icon: Icons.build,
-          title: 'Produtos/Campanha',
-          subtitle: 'Ver e adicionar produtos/campanhas.',
-          pageTo: '/activesProduct'),
-      customListTile(
-          icon: Icons.print,
-          title: 'Relatórios',
-          subtitle: "Gerar Relatórios e PDF's",
-          pageTo: '/reports'),
-    ]));
+    return Observer(builder: (context) {
+      return Drawer(
+          child: ListView(children: <Widget>[
+        UserAccountsDrawerHeader(
+          accountName: Text(
+            Modular.get<AuthStore>().userName,
+            style: GoogleFonts.pangolin(
+              fontSize: 18,
+            ),
+          ),
+          accountEmail: Text(
+            Modular.get<AuthStore>().userEmail,
+            style: GoogleFonts.yanoneKaffeesatz(
+              fontSize: 18,
+            ),
+          ),
+          currentAccountPicture: CircleAvatar(
+            backgroundColor: Colors.black,
+          ),
+        ),
+        customListTile(
+            icon: Icons.people,
+            title: 'Clientes',
+            subtitle: 'Buscar ou registrar novo cliente.',
+            pageTo: '/clients'),
+        customListTile(
+            icon: Icons.folder,
+            title: 'Registros',
+            subtitle: 'Todos os registros feitos.',
+            pageTo: '/registersDone'),
+        customListTile(
+            icon: Icons.build,
+            title: 'Produtos/Campanha',
+            subtitle: 'Ver e adicionar produtos/campanhas.',
+            pageTo: '/activesProduct'),
+        customListTile(
+            icon: Icons.print,
+            title: 'Relatórios',
+            subtitle: "Gerar Relatórios e PDF's",
+            pageTo: '/reports'),
+        Modular.get<AuthStore>().isAdmin == 1
+            ? customListTile(
+                icon: Icons.person_add,
+                title: 'Vendedores',
+                subtitle: "Cadastrar e ver lista de vendedores",
+                pageTo: '/users')
+            : SizedBox()
+      ]));
+    });
   }
 
   Widget customListTile(

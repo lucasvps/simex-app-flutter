@@ -11,7 +11,7 @@ class UserReportModel {
       {this.activePhone,
       this.externalVisit,
       this.receivedCall,
-      this.balcony,
+      this.balcony, 
       this.amountContacts,
       this.valueSoldTotal,
       this.amountOfEfectiveSell});
@@ -118,13 +118,13 @@ class ExternalVisit {
   ExternalVisit({this.externalVisit, this.contactFrom});
 
   ExternalVisit.fromJson(Map<String, dynamic> json) {
-    externalVisit = json['externalVisit'];
+    externalVisit = json['amount'];
     contactFrom = json['contact_from'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['externalVisit'] = this.externalVisit;
+    data['amount'] = this.externalVisit;
     data['contact_from'] = this.contactFrom;
     return data;
   }
@@ -137,13 +137,13 @@ class ReceivedCall {
   ReceivedCall({this.receivedCall, this.contactFrom});
 
   ReceivedCall.fromJson(Map<String, dynamic> json) {
-    receivedCall = json['receivedCall'];
+    receivedCall = json['amount'];
     contactFrom = json['contact_from'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['receivedCall'] = this.receivedCall;
+    data['amount'] = this.receivedCall;
     data['contact_from'] = this.contactFrom;
     return data;
   }
@@ -156,13 +156,13 @@ class Balcony {
   Balcony({this.balconyContact, this.contactFrom});
 
   Balcony.fromJson(Map<String, dynamic> json) {
-    balconyContact = json['balconyContact'];
+    balconyContact = json['amount'];
     contactFrom = json['contact_from'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['balconyContact'] = this.balconyContact;
+    data['amount'] = this.balconyContact;
     data['contact_from'] = this.contactFrom;
     return data;
   }

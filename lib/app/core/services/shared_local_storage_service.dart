@@ -3,8 +3,6 @@ import 'package:simex_app/app/core/interfaces/shared_local_storage_interface.dar
 
 class SharedLocalStorageService implements ISharedLocalStorage {
 
-  
-
   @override
   Future delete(String key) async {
     var shared = await SharedPreferences.getInstance();

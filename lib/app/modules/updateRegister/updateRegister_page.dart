@@ -28,6 +28,11 @@ class _UpdateRegisterPageState
     extends ModularState<UpdateRegisterPage, UpdateRegisterController> {
   //use 'controller' variable to access controller
 
+  @override
+  void initState() { 
+    super.initState();
+    widget.nextContactsModel.price != null ? print("Aqui " + widget.nextContactsModel.price) : print('nullao');
+  }
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
@@ -210,7 +215,9 @@ class _UpdateRegisterPageState
         id: widget.nextContactsModel.id,
         idClient: widget.nextContactsModel.idClient,
         idUser: widget.nextContactsModel.idUser,
-        productId: widget.nextContactsModel.productId,
+        productId: widget.nextContactsModel.productId != null
+            ? widget.nextContactsModel.productId
+            : null,
         dateContact: formatted,
         nextContact:
             controller.store.pendingSell ? controller.store.nextContact : "",
@@ -221,9 +228,10 @@ class _UpdateRegisterPageState
         status: controller.store.efectiveSell
             ? "Venda Efetiva"
             : controller.store.pendingSell ? "Venda Pendente" : "Venda Perdida",
-        valueSold: controller.store.amountSold != null
+        valueSold: (controller.store.amountSold != null && widget.nextContactsModel.price != null)
             ? (controller.store.amountSold *
-                double.parse(widget.nextContactsModel.price)).toString()
+                    double.parse(widget.nextContactsModel.price))
+                .toString()
             : '0.0',
         contactFrom: controller.store.contactFrom);
 
@@ -231,7 +239,6 @@ class _UpdateRegisterPageState
     controller
         .updateRegister(registerModel, widget.nextContactsModel.id)
         .then((value) {
-          
       ClientModel clientModelUpdate = ClientModel(
         adress: widget.nextContactsModel.adress,
         city: widget.nextContactsModel.city,

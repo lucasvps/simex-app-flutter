@@ -5,6 +5,7 @@ import 'package:simex_app/app/core/custom_dio.dart';
 import 'package:simex_app/app/core/endpoints.dart';
 import 'package:simex_app/app/core/interfaces/auth_repository_interface.dart';
 import 'package:simex_app/app/core/interfaces/shared_local_storage_interface.dart';
+import 'package:simex_app/app/core/stores/auth_store.dart';
 import 'package:simex_app/app/models/user_model.dart';
 
 class AuthRepository implements IAuthRepository {
@@ -18,12 +19,19 @@ class AuthRepository implements IAuthRepository {
 
     var dio = CustomDio().instance;
 
+    
+
     return await dio
         .post(url, data: userModel.toJsonLogin())
         .then((value) async {
+          print(value.data);
       iSharedLocalStorage.put('token', value.data['token']);
+      iSharedLocalStorage.put('is_admin', value.data['is_admin']);
+      iSharedLocalStorage.put('userName', value.data['name']);
+      iSharedLocalStorage.put('userEmail', value.data['email']);
       
     }).catchError((err) {
+      print('login error ' + err);
       return err;
     });
   }

@@ -102,6 +102,12 @@ abstract class _PDFStoreBase with Store {
   setUserID(String value) => idUser = value;
 
   @observable
+  String userName;
+
+  @action
+  setUserName(String value) => userName = value;
+
+  @observable
   String initialDateUser;
 
   @action

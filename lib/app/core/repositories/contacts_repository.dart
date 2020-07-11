@@ -7,6 +7,8 @@ class ContactsRepository {
   Future contactsToDotoday(int id) async {
     String url = ApiEndpoints.MAIN_URL + ApiEndpoints.CONTACTS_TODO_TODAY;
 
+    print(url);
+
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.get(url).then((value) {
@@ -18,8 +20,8 @@ class ContactsRepository {
       }
 
       return contactsToday;
-    }).catchError((err){
-      print('repo error : ' + err.toString());
+    }).catchError((err) {
+      print('repo error contacts to do : ' + err.toString());
     });
   }
 

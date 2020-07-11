@@ -15,5 +15,9 @@ abstract class _ClientsControllerBase with Store {
     return await clientStore.searchedUserByDoc(doc);
   }
 
+  Future searchUserByName(String name) async {
+    return await clientStore.searchedUserByName(name);
+  }
+
 
 }

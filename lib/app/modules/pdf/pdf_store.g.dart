@@ -185,6 +185,21 @@ mixin _$PDFStore on _PDFStoreBase, Store {
     });
   }
 
+  final _$userNameAtom = Atom(name: '_PDFStoreBase.userName');
+
+  @override
+  String get userName {
+    _$userNameAtom.reportRead();
+    return super.userName;
+  }
+
+  @override
+  set userName(String value) {
+    _$userNameAtom.reportWrite(value, super.userName, () {
+      super.userName = value;
+    });
+  }
+
   final _$initialDateUserAtom = Atom(name: '_PDFStoreBase.initialDateUser');
 
   @override
@@ -370,6 +385,17 @@ mixin _$PDFStore on _PDFStoreBase, Store {
   }
 
   @override
+  dynamic setUserName(String value) {
+    final _$actionInfo = _$_PDFStoreBaseActionController.startAction(
+        name: '_PDFStoreBase.setUserName');
+    try {
+      return super.setUserName(value);
+    } finally {
+      _$_PDFStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic setInitialDateUser(String value) {
     final _$actionInfo = _$_PDFStoreBaseActionController.startAction(
         name: '_PDFStoreBase.setInitialDateUser');
@@ -427,6 +453,7 @@ finalDateEnterprise: ${finalDateEnterprise},
 initialDateEnterpriseBR: ${initialDateEnterpriseBR},
 finalDateEnterpriseBR: ${finalDateEnterpriseBR},
 idUser: ${idUser},
+userName: ${userName},
 initialDateUser: ${initialDateUser},
 finalDateUser: ${finalDateUser},
 initialDateUserBR: ${initialDateUserBR},

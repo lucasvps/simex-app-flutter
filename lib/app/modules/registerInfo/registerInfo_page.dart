@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
@@ -58,7 +60,7 @@ class _RegisterInfoPageState
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Informações do Registro' + widget.contactsModel.id.toString(), 
+            'Informações do Registro',
             style: GoogleFonts.montserrat(),
           ),
           centerTitle: true,
@@ -117,6 +119,55 @@ class _RegisterInfoPageState
                 field: 'TIPO DE CONTATO',
                 value: widget.contactsModel.contactFrom,
                 readOnly: true,
+              ),
+              Card(
+                elevation: 20,
+                color: Colors.white,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.phone),
+                            onPressed: () {
+                              FlutterPhoneDirectCaller.directCall(
+                                  widget.contactsModel.phone);
+                            }),
+                        Text(
+                          'Ligar para ' + widget.contactsModel.name,
+                          style: TextStyle(color: Colors.black, fontSize: 16),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 8, 14, 8),
+                          child: InkWell(
+                            onTap: () {
+                              FlutterOpenWhatsapp.sendSingleMessage(
+                                  widget.contactsModel.phone, "");
+                            },
+                            child: Container(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.028,
+                              width: MediaQuery.of(context).size.height * 0.028,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage('lib/assets/images/wpp.jpg'),
+                              )),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'Enviar mensagem para ' + widget.contactsModel.name,
+                          style: TextStyle(color: Colors.black, fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 12,

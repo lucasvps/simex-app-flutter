@@ -234,6 +234,21 @@ mixin _$NewRegisterStore on _NewRegisterStoreBase, Store {
     });
   }
 
+  final _$noProductAtom = Atom(name: '_NewRegisterStoreBase.noProduct');
+
+  @override
+  bool get noProduct {
+    _$noProductAtom.reportRead();
+    return super.noProduct;
+  }
+
+  @override
+  set noProduct(bool value) {
+    _$noProductAtom.reportWrite(value, super.noProduct, () {
+      super.noProduct = value;
+    });
+  }
+
   final _$_NewRegisterStoreBaseActionController =
       ActionController(name: '_NewRegisterStoreBase');
 
@@ -381,6 +396,17 @@ mixin _$NewRegisterStore on _NewRegisterStoreBase, Store {
   }
 
   @override
+  dynamic changeNoProduct() {
+    final _$actionInfo = _$_NewRegisterStoreBaseActionController.startAction(
+        name: '_NewRegisterStoreBase.changeNoProduct');
+    try {
+      return super.changeNoProduct();
+    } finally {
+      _$_NewRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentStep: ${currentStep},
@@ -397,7 +423,8 @@ nextContactBR: ${nextContactBR},
 contactFrom: ${contactFrom},
 amountSold: ${amountSold},
 productPrice: ${productPrice},
-prodID: ${prodID}
+prodID: ${prodID},
+noProduct: ${noProduct}
     ''';
   }
 }

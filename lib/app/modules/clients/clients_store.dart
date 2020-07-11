@@ -15,6 +15,10 @@ abstract class _ClientStoreBase with Store {
     return await clientRepository.searchedUserByDoc(doc);
   }
 
+  Future searchedUserByName(String name) async {
+    return await clientRepository.searchedUserByName(name : name);
+  }
+
   @observable
   String searchDoc;
 

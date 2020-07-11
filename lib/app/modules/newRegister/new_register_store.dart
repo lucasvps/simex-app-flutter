@@ -89,7 +89,7 @@ abstract class _NewRegisterStoreBase with Store {
   }
 
   @observable
-  String productPrice = "";
+  String productPrice = "0.0";
 
   @action
   setProductPrice(String value) => productPrice = value;
@@ -100,6 +100,12 @@ abstract class _NewRegisterStoreBase with Store {
   @action
   setProdId(String value) => prodID = value;
 
+  @observable
+  bool noProduct = false;
+
+  @action
+  changeNoProduct() => noProduct = !noProduct;
+
   cleanFields() {
     setStatus(null);
     setValueSold(null);
@@ -108,5 +114,8 @@ abstract class _NewRegisterStoreBase with Store {
     setNextContactBr(null);
     setNextContact(null);
     setAmountSold(null);
+    setProdId(null);
+    //setProductPrice(null);
+    noProduct = false;
   }
 }

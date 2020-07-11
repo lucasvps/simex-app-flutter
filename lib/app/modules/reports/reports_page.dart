@@ -675,6 +675,10 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                       ),
                       onChanged: (_) async {
                         controller.pdfStore.setUserID(_);
+                        controller.userRepository.getAnyUserInfo(id: _.toString()).then((value){
+                          controller.pdfStore.setUserName(value['name']);
+                        });
+
                       },
                       style: TextStyle(fontSize: 20, color: Colors.black),
                       value: controller.pdfStore.idUser,

@@ -27,6 +27,28 @@ class ClientRepository {
     });
   }
 
+  Future searchedUserByName({String name}) async {
+    String url = ApiEndpoints.MAIN_URL +
+        ApiEndpoints.SEARCH_CLIENT_NAME+
+        "/$name";
+
+    var dio = CustomDio.withAuthentication().instance;
+
+    return await dio.get(url).then((value) {
+      List<ClientModel> client = [];
+
+      for (var item in value.data) {
+        ClientModel clientModel = ClientModel.fromJson(item);
+        client.add(clientModel);
+      }
+      return client;
+      // var client = ClientModel.fromJson(value.data[0]);
+      // return client;
+    }).catchError((err) {
+      return null;
+    });
+  }
+
 
   Future<ClientModel> clientById(int id) async {
     String url = ApiEndpoints.MAIN_URL + ApiEndpoints.CLIENTS_URL + "/$id";
@@ -62,7 +84,7 @@ class ClientRepository {
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.post(url, data: clientModel.toJson()).then((value){
-      Modular.to.pushReplacementNamed('/contacts');
+      //Modular.to.pushReplacementNamed('/contacts');
     }).catchError((err){
       return err;
     });

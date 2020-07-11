@@ -17,6 +17,8 @@ class ApiEndpoints {
 
   static const String SEARCHED_CLIENT_INFO = '/search/clients';
 
+  static const String SEARCH_CLIENT_NAME = '/search/client';
+
   static const String REFRESH_TOKEN = '/refresh';
 
   static const String CONTACTS_TODO_TODAY = '/registers/user/today/1';
@@ -46,4 +48,6 @@ class ApiEndpoints {
   static const String USER_REPORT = '/register/report/user';
 
   static const String USER_URL = '/users';
+
+  static const String USER_INFO = '/user/info';
 }

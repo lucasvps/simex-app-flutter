@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:simex_app/app/core/stores/auth_store.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/product_model.dart';
 import 'actives_products_controller.dart';
@@ -35,16 +36,19 @@ class _ActivesProductsPageState
         floatingActionButton: Container(
           width: 100,
           height: 100,
-          child: FloatingActionButton(
-            backgroundColor: AppThemeLight().getTheme().primaryColor.withOpacity(0.6),
-            onPressed: () {
-              Modular.to.pushNamed('/newProduct');
-            },
-            child: Text(
-              'Cadastrar nova campanha',
-              textAlign: TextAlign.center,
-            ),
-          ),
+          child: Modular.get<AuthStore>().isAdmin == 1
+              ? FloatingActionButton(
+                  backgroundColor:
+                      AppThemeLight().getTheme().primaryColor.withOpacity(0.6),
+                  onPressed: () {
+                    Modular.to.pushNamed('/newProduct');
+                  },
+                  child: Text(
+                    'Cadastrar nova campanha',
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              : SizedBox(),
         ),
         appBar: AppBar(
           title: Text(

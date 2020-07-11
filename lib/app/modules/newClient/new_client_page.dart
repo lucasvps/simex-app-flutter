@@ -7,6 +7,7 @@ import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/modules/newClient/widgets/custom_text_field.dart';
+import 'package:simex_app/app/modules/newRegister/new_register_page.dart';
 import 'new_client_controller.dart';
 
 class NewClientPage extends StatefulWidget {
@@ -202,8 +203,14 @@ class _NewClientPageState
 
                                 controller.store
                                     .registerClient(newClient)
-                                    .then((value) {})
-                                    .catchError((err) {
+                                    .then((value) {
+                                      Modular.to.pop();
+                                  // clientAlert(
+                                  //     context,
+                                  //     'ATENÇÃO!',
+                                  //     'Deseja realizar um registro com esse cliente?',
+                                  //     newClient);
+                                }).catchError((err) {
                                   Components.alert(
                                     context,
                                     'Ocorreu algum erro!',
@@ -232,5 +239,39 @@ class _NewClientPageState
         }),
       ),
     );
+  }
+
+  Future clientAlert(context, title, content, ClientModel newClient) {
+    print(newClient.toJson());
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return AlertDialog(
+            title: Text(title),
+            content: Container(
+              child: Text(content),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Modular.to.pushNamedAndRemoveUntil(
+                        '/contacts', ModalRoute.withName('/contacts'));
+                  },
+                  child: Text("Tela Principal")),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NewRegisterPage(
+                                clientModel: newClient,
+                              )),
+                    );
+                  },
+                  child: Text("Realizar Registro"))
+            ],
+          );
+        });
   }
 }

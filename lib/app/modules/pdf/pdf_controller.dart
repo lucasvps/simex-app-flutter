@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
-import 'package:simex_app/app/core/repositories/clients_report_repository.dart';
-import 'package:simex_app/app/core/repositories/enterprise_report_repository.dart';
-import 'package:simex_app/app/core/repositories/products_report_repository.dart';
+import 'package:simex_app/app/core/repositories/reportsRepositories/clients_report_repository.dart';
+import 'package:simex_app/app/core/repositories/reportsRepositories/enterprise_report_repository.dart';
+import 'package:simex_app/app/core/repositories/reportsRepositories/products_report_repository.dart';
 import 'package:simex_app/app/models/reports/clients/clients_spent_more_model.dart';
 import 'package:simex_app/app/models/reports/clients/clients_without_contact_model.dart';
 import 'package:simex_app/app/models/reports/clients/clients_without_purchase.dart';

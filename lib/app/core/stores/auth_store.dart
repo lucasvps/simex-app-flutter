@@ -27,4 +27,23 @@ abstract class _AuthStoreBase with Store {
   Future refresh() async {
     return await authRepository.refreshToken();
   }
+
+  @observable
+  String userName;
+
+  @action
+  setUserName(String value) => userName = value;
+
+  @observable
+  String userEmail;
+
+  @action
+  setUserEmail(String value) => userEmail = value;
+
+  @observable
+  int isAdmin;
+
+  @action
+  setIsAdmin(int value) => isAdmin = value;
+
  }

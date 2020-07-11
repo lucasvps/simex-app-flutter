@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:simex_app/app/core/stores/auth_store.dart';
 import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/user_model.dart';
 import 'login_controller.dart';
