@@ -25,6 +25,8 @@ class ApiEndpoints {
 
   static const String CONTACTS_DONE_TODAY = '/registers/user/contactsDone/today';
 
+  static const String CONTACTS_DONE_BY_USER_SPECIFIC_DAY = '/registers/user/contacts/day';
+
   static const String PRODUCTS_URL = '/products';
 
   static const String PRODUCTS_ACTIVE = '/products/active';

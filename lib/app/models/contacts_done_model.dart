@@ -2,18 +2,28 @@ class ContactsDoneModel {
   String status;
   String name;
   String valueSold;
-  String reason;
   String observation;
+  String reason;
+  String contactFrom;
+  int productAmount;
 
   ContactsDoneModel(
-      {this.status, this.name, this.valueSold, this.reason, this.observation});
+      {this.status,
+      this.name,
+      this.valueSold,
+      this.observation,
+      this.reason,
+      this.contactFrom,
+      this.productAmount});
 
   ContactsDoneModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     name = json['name'];
     valueSold = json['value_sold'];
-    reason = json['reason'];
     observation = json['observation'];
+    reason = json['reason'];
+    contactFrom = json['contact_from'];
+    productAmount = json['product_amount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -21,8 +31,10 @@ class ContactsDoneModel {
     data['status'] = this.status;
     data['name'] = this.name;
     data['value_sold'] = this.valueSold;
-    data['reason'] = this.reason;
     data['observation'] = this.observation;
+    data['reason'] = this.reason;
+    data['contact_from'] = this.contactFrom;
+    data['product_amount'] = this.productAmount;
     return data;
   }
 }

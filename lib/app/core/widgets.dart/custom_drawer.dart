@@ -62,6 +62,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 title: 'Vendedores',
                 subtitle: "Cadastrar e ver lista de vendedores",
                 pageTo: '/users')
+            : SizedBox(),
+        Modular.get<AuthStore>().isAdmin == 1
+            ? customListTile(
+                icon: Icons.info,
+                title: 'Contatos por Vendedor',
+                subtitle: "Contatos que cada vendedor fez",
+                pageTo: '/contactsByUser')
             : SizedBox()
       ]));
     });

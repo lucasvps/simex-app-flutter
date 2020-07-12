@@ -56,31 +56,34 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextFormField(
-              //inputFormatters: [maskTextInputFormatter],
-              controller: controllerText,
-              decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        controller.clientStore.setSearch(controllerText.text);
-                        controllerText.text = '';
-                      }),
-                  labelText: "Pesquisar cliente pelo nome",
-                  border: OutlineInputBorder()),
+      body: Observer(builder: (context) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextFormField(
+                //inputFormatters: [maskTextInputFormatter],
+                controller: controllerText,
+                decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          //controller.clientStore.clientRepository.lastPageClientsByName("Alberto");
+                          controller.clientStore.setSearch(controllerText.text);
+                          controller.clientStore.clientRepository.lastPageClientsByName(controllerText.text);
+                          controllerText.text = '';
+                        }),
+                    labelText: "Pesquisar cliente pelo nome",
+                    border: OutlineInputBorder()),
+              ),
             ),
-          ),
-          Observer(builder: (_) {
-            return Flexible(
+            Flexible(
               child: SizedBox(
                 child: FutureBuilder(
-                  future: controller
-                      .searchUserByName(controller.clientStore.searchDoc),
+                  future: controller.searchUserByName(
+                      controller.clientStore.searchDoc,
+                      controller.clientStore.currentPage),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.active:
@@ -107,10 +110,38 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
                   },
                 ),
               ),
-            );
-          }),
-        ],
-      ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: (int.parse(controller.clientStore.currentPage) >
+                            1)
+                        ? () {
+                            controller.clientStore.setCurrentPage(
+                                (int.parse(controller.clientStore.currentPage) -
+                                        1)
+                                    .toString());
+                          }
+                        : null),
+                Text(controller.clientStore.currentPage),
+                IconButton(
+                    icon: Icon(Icons.arrow_forward_ios),
+                    onPressed: controller.clientStore.currentPage !=
+                            controller.clientStore.lastPage
+                        ? () {
+                            controller.clientStore.setCurrentPage(
+                                (int.parse(controller.clientStore.currentPage) +
+                                        1)
+                                    .toString());
+                          }
+                        : null),
+              ],
+            )
+          ],
+        );
+      }),
     );
   }
 
