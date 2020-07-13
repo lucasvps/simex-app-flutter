@@ -99,12 +99,12 @@ class _RegisterInfoPageState
               ),
               CustomInfoRegisterRow(
                 field: 'PRODUTO',
-                value: widget.contactsModel.productName,
+                value: widget.contactsModel.productName ?? "",
                 readOnly: true,
               ),
               CustomInfoRegisterRow(
                 field: 'OBSERVAÇÃO',
-                value: widget.contactsModel.observation,
+                value: widget.contactsModel.observation ?? "",
                 readOnly: true,
               ),
               CustomInfoRegisterRow(

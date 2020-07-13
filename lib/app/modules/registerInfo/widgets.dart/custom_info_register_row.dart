@@ -36,7 +36,7 @@ class _CustomInfoRegisterRowState extends State<CustomInfoRegisterRow> {
                   //errorText: widget.errorText(),
                   border: InputBorder.none,
                 ),
-                initialValue: widget.value.toString(),
+                initialValue: widget.value.toString() ?? "",
               ),
             ),
           ],

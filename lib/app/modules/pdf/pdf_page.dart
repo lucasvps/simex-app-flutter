@@ -211,8 +211,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                     item.name,
                     item.cpf,
                     item.phone.toString(),
-                    NumberFormat.simpleCurrency(locale: 'pt_Br')
-                        .format(double.parse(item.valueSpent)),
+                    item.valueSpent != null ? NumberFormat.simpleCurrency(locale: 'pt_Br')
+                        .format(double.parse(item.valueSpent)) : "R\$ 0.0",
                   ])
             ]),
           ];

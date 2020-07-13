@@ -18,6 +18,7 @@ import 'package:simex_app/app/modules/login/login_module.dart';
 import 'package:simex_app/app/modules/newClient/new_client_module.dart';
 import 'package:simex_app/app/modules/newProduct/new_product_module.dart';
 import 'package:simex_app/app/modules/newRegister/new_register_module.dart';
+import 'package:simex_app/app/modules/newUser/new_user_module.dart';
 import 'package:simex_app/app/modules/pdf/pdf_module.dart';
 import 'package:simex_app/app/modules/registersDone/registers_done_module.dart';
 import 'package:simex_app/app/modules/reports/reports_module.dart';
@@ -58,6 +59,7 @@ class AppModule extends MainModule {
         Router('/reports', module: ReportsModule()),
         Router('/users', module: UsersModule()),
         Router('/contactsByUser', module: ContactsByUserModule()),
+        Router('/newUser', module: NewUserModule()),
         //Router('/updateRegister', module: UpdateRegisterModule()),
         
       ];

@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -204,21 +205,23 @@ class _ContatosPageState
 
                         if (snapshot.data.length == 0) {
                           return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    'Você não realizou contatos hoje!',
-                                    style: TextStyle(fontSize: 20),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text(
+                                      'Você não realizou contatos hoje!',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
                                   ),
-                                ),
-                                Center(
-                                    child: Image.asset(
-                                        'lib/assets/images/empty.png')),
-                              ],
+                                  Center(
+                                      child: Image.asset(
+                                          'lib/assets/images/empty.png')),
+                                ],
+                              ),
                             ),
                           );
                         }
@@ -240,6 +243,7 @@ class _ContatosPageState
         return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
+              shadowColor: Colors.black,
               elevation: 20,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12))),
@@ -316,6 +320,18 @@ class _ContatosPageState
                         fontSize: 18,
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 12, 12, 12),
+                      child: Text(
+                        (formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd])
+                                    .toString() !=
+                                list[index].nextContact
+                            ? "Contato Atrasado"
+                            : ""),
+                        style: TextStyle(
+                            backgroundColor: Colors.red, color: Colors.white),
+                      ),
+                    )
                   ],
                 ),
               ),

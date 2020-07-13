@@ -26,7 +26,7 @@ class _UsersPageState extends ModularState<UsersPage, UsersController> {
           backgroundColor:
               AppThemeLight().getTheme().primaryColor.withOpacity(0.6),
           onPressed: () {
-            //Modular.to.pushNamed('/newClient');
+            Modular.to.pushNamed('/newUser');
           },
           child: Text(
             'Novo Vendedor',
@@ -130,10 +130,20 @@ class _UsersPageState extends ModularState<UsersPage, UsersController> {
                       flex: 3,
                       child: RaisedButton(
                         onPressed: () {
-                          
+                          UserModel user = UserModel(
+                            name: users[index].name,
+                            email: users[index].email,
+                            password: users[index].password,
+                            isAdmin: users[index].isAdmin == 1 ? 0 : 1,
+                          );
+
+                          controller.store.userRepository
+                              .updateUser(user, users[index].id);
                         },
                         child: Text(
-                          'EDITAR',
+                          users[index].isAdmin == 1
+                              ? "TIRAR ADMIN"
+                              : "TORNAR ADMIN",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.lato(
                             color: Colors.black,
@@ -148,7 +158,13 @@ class _UsersPageState extends ModularState<UsersPage, UsersController> {
                     Expanded(
                       flex: 3,
                       child: RaisedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          alert(
+                              context,
+                              'ATENÇÃO',
+                              'Você tem certeza que deseja deletar este usuário? Esta ação nao poderá ser desfeita.',
+                              users[index].id);
+                        },
                         child: Text(
                           'DELETAR',
                           style: GoogleFonts.lato(
@@ -169,5 +185,31 @@ class _UsersPageState extends ModularState<UsersPage, UsersController> {
         );
       },
     );
+  }
+
+  Future alert(context, title, content, id) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return AlertDialog(
+            title: Text(title),
+            content: Container(
+              child: Text(content),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Cancelar")),
+              FlatButton(
+                  onPressed: () {
+                    controller.store.userRepository.deleteUser(id);
+                  },
+                  child: Text("Deletar"))
+            ],
+          );
+        });
   }
 }

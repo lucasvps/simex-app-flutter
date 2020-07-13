@@ -92,22 +92,24 @@ class _ContactsByUserPageState
                             return Text("No data");
                           }
                           if (snapshot.data.length == 0) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Text(
-                                      'Este vendedor não realizou contatos nesta data!',
-                                      style: TextStyle(fontSize: 20),
+                            return SingleChildScrollView(
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Text(
+                                        'Este vendedor não realizou contatos nesta data!',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
                                     ),
-                                  ),
-                                  Center(
-                                      child: Image.asset(
-                                          'lib/assets/images/empty.png')),
-                                ],
+                                    Center(
+                                        child: Image.asset(
+                                            'lib/assets/images/empty.png')),
+                                  ],
+                                ),
                               ),
                             );
                           } else {
