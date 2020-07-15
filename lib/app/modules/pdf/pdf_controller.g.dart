@@ -151,6 +151,78 @@ mixin _$PdfController on _PdfControllerBase, Store {
     });
   }
 
+  final _$fullUserReportModelActiveAtom =
+      Atom(name: '_PdfControllerBase.fullUserReportModelActive');
+
+  @override
+  ObservableFuture<List<ActivePhoneModel>> get fullUserReportModelActive {
+    _$fullUserReportModelActiveAtom.reportRead();
+    return super.fullUserReportModelActive;
+  }
+
+  @override
+  set fullUserReportModelActive(
+      ObservableFuture<List<ActivePhoneModel>> value) {
+    _$fullUserReportModelActiveAtom
+        .reportWrite(value, super.fullUserReportModelActive, () {
+      super.fullUserReportModelActive = value;
+    });
+  }
+
+  final _$fullUserReportModelExternalAtom =
+      Atom(name: '_PdfControllerBase.fullUserReportModelExternal');
+
+  @override
+  ObservableFuture<List<ExternalVisitModel>> get fullUserReportModelExternal {
+    _$fullUserReportModelExternalAtom.reportRead();
+    return super.fullUserReportModelExternal;
+  }
+
+  @override
+  set fullUserReportModelExternal(
+      ObservableFuture<List<ExternalVisitModel>> value) {
+    _$fullUserReportModelExternalAtom
+        .reportWrite(value, super.fullUserReportModelExternal, () {
+      super.fullUserReportModelExternal = value;
+    });
+  }
+
+  final _$fullUserReportModelReceivedAtom =
+      Atom(name: '_PdfControllerBase.fullUserReportModelReceived');
+
+  @override
+  ObservableFuture<List<ReceivedCallModel>> get fullUserReportModelReceived {
+    _$fullUserReportModelReceivedAtom.reportRead();
+    return super.fullUserReportModelReceived;
+  }
+
+  @override
+  set fullUserReportModelReceived(
+      ObservableFuture<List<ReceivedCallModel>> value) {
+    _$fullUserReportModelReceivedAtom
+        .reportWrite(value, super.fullUserReportModelReceived, () {
+      super.fullUserReportModelReceived = value;
+    });
+  }
+
+  final _$fullUserReportModelBalconyAtom =
+      Atom(name: '_PdfControllerBase.fullUserReportModelBalcony');
+
+  @override
+  ObservableFuture<List<BalconyContactModel>> get fullUserReportModelBalcony {
+    _$fullUserReportModelBalconyAtom.reportRead();
+    return super.fullUserReportModelBalcony;
+  }
+
+  @override
+  set fullUserReportModelBalcony(
+      ObservableFuture<List<BalconyContactModel>> value) {
+    _$fullUserReportModelBalconyAtom
+        .reportWrite(value, super.fullUserReportModelBalcony, () {
+      super.fullUserReportModelBalcony = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -161,7 +233,11 @@ productsEfectiveEficiency: ${productsEfectiveEficiency},
 productsPendingEficiency: ${productsPendingEficiency},
 productsLostEficiency: ${productsLostEficiency},
 enterpriseReportModel: ${enterpriseReportModel},
-userReportModel: ${userReportModel}
+userReportModel: ${userReportModel},
+fullUserReportModelActive: ${fullUserReportModelActive},
+fullUserReportModelExternal: ${fullUserReportModelExternal},
+fullUserReportModelReceived: ${fullUserReportModelReceived},
+fullUserReportModelBalcony: ${fullUserReportModelBalcony}
     ''';
   }
 }

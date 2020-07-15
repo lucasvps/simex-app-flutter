@@ -86,7 +86,7 @@ class _InfoClientPageState
                 CustomInfoRow(
                   readOnly: false,
                   field: 'EMAIL',
-                  value: widget.detailedClient.email,
+                  value: widget.detailedClient.email ?? "",
                   onChanged: controller.infoClientStore.setEmail,
                 ),
                 CustomInfoRow(
@@ -148,19 +148,19 @@ class _InfoClientPageState
                 CustomInfoRow(
                   readOnly: false,
                   field: 'Qtd. de Trator',
-                  value: widget.detailedClient.totalTractor.toString(),
+                  value: widget.detailedClient.totalTractor.toString() ?? "0",
                   onChanged: controller.infoClientStore.setTotalTractor,
                 ),
                 CustomInfoRow(
                   readOnly: false,
                   field: 'Qtd. de Colheitadeira',
-                  value: widget.detailedClient.totalCombine.toString(),
+                  value: widget.detailedClient.totalCombine.toString() ?? "0",
                   onChanged: controller.infoClientStore.setTotalCombine,
                 ),
                 CustomInfoRow(
                   readOnly: true,
                   field: 'Contatos feitos',
-                  value: widget.detailedClient.contactsDone.toString(),
+                  value: widget.detailedClient.contactsDone.toString() ?? "0",
                 ),
                 CustomInfoRow(
                     readOnly: true,
@@ -248,6 +248,7 @@ class _InfoClientPageState
         .updateClient(widget.detailedClient.id, updateClient)
         .then((value) {
       controller.infoClientStore.clearField();
+      Modular.to.pushReplacementNamed('/contacts');
     }).catchError((err) {
       Components.alert(
         context,

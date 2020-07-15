@@ -130,4 +130,34 @@ abstract class _PDFStoreBase with Store {
 
   @action
   setfinalDateUserBR(String value) => finalDateUserBR = value;
+
+
+
+  //! ---- FULL REPORT USER DATES
+
+  @observable
+  String initialDateFullBR;
+
+  @action
+  setInitialDateFullBR(String value) => initialDateFullBR = value;
+
+  @observable
+  String finalDateFullBR;
+
+  @action
+  setfinalDateFullBR(String value) => finalDateFullBR = value;
+
+  @observable
+  String initialDateFull;
+
+  @action
+  setInitialDateFull(String value) => initialDateFull = value;
+
+  @observable
+  String finalDateFull;
+
+  @action
+  setfinalDateFull(String value) => finalDateFull = value;
+
 }
+

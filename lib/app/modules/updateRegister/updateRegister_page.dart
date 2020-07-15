@@ -4,10 +4,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:simex_app/app/core/repositories/product_repository.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
+import 'package:simex_app/app/models/product_model.dart';
 import 'package:simex_app/app/models/register_model.dart';
 import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
 import 'updateRegister_controller.dart';
@@ -31,7 +33,7 @@ class _UpdateRegisterPageState
   @override
   void initState() { 
     super.initState();
-    widget.nextContactsModel.price != null ? print("Aqui " + widget.nextContactsModel.price) : print('nullao');
+    print(controller.store.currentStep);
   }
 
   Future<bool> _onWillPop() async {
@@ -228,17 +230,23 @@ class _UpdateRegisterPageState
         status: controller.store.efectiveSell
             ? "Venda Efetiva"
             : controller.store.pendingSell ? "Venda Pendente" : "Venda Perdida",
-        valueSold: (controller.store.amountSold != null && widget.nextContactsModel.price != null)
+        valueSold: (controller.store.amountSold != null &&
+                widget.nextContactsModel.price != null)
             ? (controller.store.amountSold *
                     double.parse(widget.nextContactsModel.price))
                 .toString()
-            : '0.0',
+            : (controller.store.amountSold != null &&
+                    controller.store.productPrice != '0.0')
+                ? (controller.store.amountSold *
+                        double.parse(controller.store.productPrice))
+                    .toString()
+                : "0.0",
         contactFrom: controller.store.contactFrom);
 
-    print(registerModel.toJson());
     controller
         .updateRegister(registerModel, widget.nextContactsModel.id)
         .then((value) {
+      print(registerModel.toJson());
       ClientModel clientModelUpdate = ClientModel(
         adress: widget.nextContactsModel.adress,
         city: widget.nextContactsModel.city,
@@ -260,23 +268,19 @@ class _UpdateRegisterPageState
             : widget.nextContactsModel.lastPurchase,
       );
 
-      Modular.get<ClientRepository>()
-          .updateClient(widget.nextContactsModel.idClient, clientModelUpdate)
-          .then((value) {})
-          .catchError((err) {
-        print('erro update client' + err);
-        return err;
-      });
-
       controller.store.cleanFields();
       controller.store.setCurrentStep(0);
+
+      controller.store.clientRepository
+          .updateClient(widget.nextContactsModel.idClient, clientModelUpdate)
+          .then((value) {
+        //
+      }).catchError((err) {
+        print('erro seila onde');
+        return err;
+      });
     }).catchError((err) {
       print('erro update reg ' + err);
-      Components.alert(
-        context,
-        'Ocorreu algum erro!',
-        'Por favor, tente novamente!',
-      );
     });
   }
 
@@ -330,6 +334,47 @@ class _UpdateRegisterPageState
               )
             : Text('Marque a opção anterior.'),
         isActive: controller.store.currentStep >= 1,
+      ),
+      Step(
+        title: Text((widget.nextContactsModel.productId == null &&
+                controller.store.efectiveSell)
+            ? "Produto/Campanha"
+            : "Pular Etapa"),
+        isActive: controller.store.currentStep >= 3,
+        content: (widget.nextContactsModel.productId == null &&
+                controller.store.efectiveSell)
+            ? FutureBuilder(
+                future: Modular.get<ProductRepository>().currentProducts(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.active:
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                      break;
+                    case ConnectionState.none:
+                      return Text("No connection has been made");
+                      break;
+                    case ConnectionState.done:
+                      if (snapshot.hasError) {
+                        return Text(snapshot.error.toString());
+                      }
+                      if (!snapshot.hasData) {
+                        return Text("No data");
+                      } else {
+                        return Center(
+                          child: SingleChildScrollView(
+                              child: dropDownMenu(snapshot.data)),
+                          //child: Container(),
+                        );
+                      }
+                      break;
+                  }
+                  return Container();
+                },
+              )
+            : Text('Aperte Continuar'),
       ),
       Step(
           title: Text(controller.store.efectiveSell
@@ -411,11 +456,19 @@ class _UpdateRegisterPageState
                   ? Padding(
                       padding: const EdgeInsets.fromLTRB(8, 10, 10, 10),
                       child: Text(
-                        "Valor Total da Venda: " +
-                            NumberFormat.simpleCurrency(locale: 'pt_Br').format(
-                                controller.store.amountSold *
-                                    double.parse(
-                                        widget.nextContactsModel.price)),
+                        widget.nextContactsModel.price != null
+                            ? "Valor Total da Venda: " +
+                                NumberFormat.simpleCurrency(locale: 'pt_Br')
+                                    .format(controller.store.amountSold *
+                                        double.parse(
+                                            widget.nextContactsModel.price))
+                            : controller.store.productPrice != null
+                                ? "Valor Total da Venda: " +
+                                    NumberFormat.simpleCurrency(locale: 'pt_Br')
+                                        .format(controller.store.amountSold *
+                                            double.parse(
+                                                controller.store.productPrice))
+                                : "",
                         style: TextStyle(fontSize: 20),
                       ),
                     )
@@ -462,5 +515,73 @@ class _UpdateRegisterPageState
       )
     ];
     return _steps;
+  }
+
+  // ***********************************************************************************
+
+  Widget dropDownMenu(List<ProductModel> products) {
+    return Observer(builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    items: products.map((item) {
+                      return DropdownMenuItem(
+                        child: Text(
+                          item.productName +
+                              " / " +
+                              NumberFormat.simpleCurrency(locale: 'pt_Br')
+                                  .format(
+                                double.parse(item.price),
+                              ),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        value: item.id.toString(),
+                      );
+                    }).toList(),
+                    hint: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.60,
+                      child: Center(
+                        child: Text("Produtos",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontFamily: 'Indie')),
+                      ),
+                    ),
+                    onChanged: (_) async {
+                      controller.store.setProdId(_);
+
+                      String price = await Modular.get<ProductRepository>()
+                          .getProductPrice(_);
+
+                      controller.store.setProductPrice(price);
+                    },
+                    icon: Icon(
+                      Icons.arrow_downward,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                    value: controller.store.prodID,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    });
   }
 }

@@ -206,6 +206,37 @@ mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
     });
   }
 
+  final _$productPriceAtom =
+      Atom(name: '_UpdateRegisterStoreBase.productPrice');
+
+  @override
+  String get productPrice {
+    _$productPriceAtom.reportRead();
+    return super.productPrice;
+  }
+
+  @override
+  set productPrice(String value) {
+    _$productPriceAtom.reportWrite(value, super.productPrice, () {
+      super.productPrice = value;
+    });
+  }
+
+  final _$prodIDAtom = Atom(name: '_UpdateRegisterStoreBase.prodID');
+
+  @override
+  String get prodID {
+    _$prodIDAtom.reportRead();
+    return super.prodID;
+  }
+
+  @override
+  set prodID(String value) {
+    _$prodIDAtom.reportWrite(value, super.prodID, () {
+      super.prodID = value;
+    });
+  }
+
   final _$_UpdateRegisterStoreBaseActionController =
       ActionController(name: '_UpdateRegisterStoreBase');
 
@@ -309,6 +340,28 @@ mixin _$UpdateRegisterStore on _UpdateRegisterStoreBase, Store {
   }
 
   @override
+  dynamic setProductPrice(String value) {
+    final _$actionInfo = _$_UpdateRegisterStoreBaseActionController.startAction(
+        name: '_UpdateRegisterStoreBase.setProductPrice');
+    try {
+      return super.setProductPrice(value);
+    } finally {
+      _$_UpdateRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setProdId(String value) {
+    final _$actionInfo = _$_UpdateRegisterStoreBaseActionController.startAction(
+        name: '_UpdateRegisterStoreBase.setProdId');
+    try {
+      return super.setProdId(value);
+    } finally {
+      _$_UpdateRegisterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentStep: ${currentStep},
@@ -323,6 +376,8 @@ nextContact: ${nextContact},
 nextContactBR: ${nextContactBR},
 contactFrom: ${contactFrom},
 amountSold: ${amountSold},
+productPrice: ${productPrice},
+prodID: ${prodID},
 notLostButtonValid: ${notLostButtonValid},
 lostSellButtonValid: ${lostSellButtonValid}
     ''';

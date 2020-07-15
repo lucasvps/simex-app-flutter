@@ -60,4 +60,14 @@ abstract class _ReportsStoreBase with Store {
   setUserReport() => userReport = !userReport;
 
 
+
+  //! ---------------!//
+
+  @observable
+  bool fullUserReport = false;
+
+  @action
+  setFullUserReport() => fullUserReport = !fullUserReport;
+
+
 }

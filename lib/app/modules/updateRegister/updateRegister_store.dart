@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:simex_app/app/core/repositories/register_repository.dart';
+import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
 
 part 'updateRegister_store.g.dart';
 
@@ -7,14 +8,18 @@ class UpdateRegisterStore = _UpdateRegisterStoreBase with _$UpdateRegisterStore;
 
 abstract class _UpdateRegisterStoreBase with Store {
   final RegisterRepository repository;
-  _UpdateRegisterStoreBase(this.repository);
-
+  final ClientRepository clientRepository;
+  //final ProductRepository productRepository;
+  _UpdateRegisterStoreBase(this.repository, this.clientRepository);
 
   @observable
   int currentStep = 0;
 
   @action
-  setCurrentStep(int value) => currentStep = value;
+  setCurrentStep(int value) {
+    currentStep = value;
+    //print('NOVO STEP = ' + currentStep.toString());
+  }
 
   @observable
   bool lostSell = false;
@@ -75,9 +80,34 @@ abstract class _UpdateRegisterStoreBase with Store {
     amountSold = value;
   }
 
-  //! **************************** VALIDAÇOES ****************************************
+  @observable
+  String productPrice = "0.0";
 
-  
+  @action
+  setProductPrice(String value) {
+    productPrice = value;
+    print('producto price = ' + productPrice);
+  }
+
+  @observable
+  String prodID;
+
+  @action
+  setProdId(String value) => prodID = value;
+
+  // @observable
+  // String productName;
+
+  // @action
+  // setProductName(String value) => productName = value;
+
+  // @observable
+  // bool noProduct = false;
+
+  // @action
+  // changeNoProduct() => noProduct = !noProduct;
+
+  //! **************************** VALIDAÇOES ****************************************
 
   String validateContactFrom() {
     if (contactFrom == null || contactFrom.isEmpty) {
@@ -116,6 +146,7 @@ abstract class _UpdateRegisterStoreBase with Store {
   }
 
   cleanFields() {
+    print('ENTRO NO CLEAN FIELDS');
     setStatus(null);
     setValueSold(null);
     setReason(null);
@@ -124,5 +155,8 @@ abstract class _UpdateRegisterStoreBase with Store {
     setNextContactBr(null);
     setNextContact(null);
     setAmountSold(null);
+    setProdId(null);
+    setProductPrice('0.0');
+    //noProduct = false;
   }
 }

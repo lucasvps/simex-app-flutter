@@ -78,10 +78,13 @@ class ClientRepository {
   Future updateClient(int id, ClientModel clientModel) async {
     String url = ApiEndpoints.MAIN_URL + ApiEndpoints.CLIENTS_URL + "/$id";
 
+    print(url);
+
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.put(url, data: clientModel.toJson()).then((value) {
-      Modular.to.pushReplacementNamed('/contacts');
+      print('Cliente update : ' + clientModel.toJson().toString());
+      //Modular.to.pushReplacementNamed('/contacts');
     }).catchError((err) {
       print('erro reposit' + err.toString());
       return err;

@@ -260,6 +260,66 @@ mixin _$PDFStore on _PDFStoreBase, Store {
     });
   }
 
+  final _$initialDateFullBRAtom = Atom(name: '_PDFStoreBase.initialDateFullBR');
+
+  @override
+  String get initialDateFullBR {
+    _$initialDateFullBRAtom.reportRead();
+    return super.initialDateFullBR;
+  }
+
+  @override
+  set initialDateFullBR(String value) {
+    _$initialDateFullBRAtom.reportWrite(value, super.initialDateFullBR, () {
+      super.initialDateFullBR = value;
+    });
+  }
+
+  final _$finalDateFullBRAtom = Atom(name: '_PDFStoreBase.finalDateFullBR');
+
+  @override
+  String get finalDateFullBR {
+    _$finalDateFullBRAtom.reportRead();
+    return super.finalDateFullBR;
+  }
+
+  @override
+  set finalDateFullBR(String value) {
+    _$finalDateFullBRAtom.reportWrite(value, super.finalDateFullBR, () {
+      super.finalDateFullBR = value;
+    });
+  }
+
+  final _$initialDateFullAtom = Atom(name: '_PDFStoreBase.initialDateFull');
+
+  @override
+  String get initialDateFull {
+    _$initialDateFullAtom.reportRead();
+    return super.initialDateFull;
+  }
+
+  @override
+  set initialDateFull(String value) {
+    _$initialDateFullAtom.reportWrite(value, super.initialDateFull, () {
+      super.initialDateFull = value;
+    });
+  }
+
+  final _$finalDateFullAtom = Atom(name: '_PDFStoreBase.finalDateFull');
+
+  @override
+  String get finalDateFull {
+    _$finalDateFullAtom.reportRead();
+    return super.finalDateFull;
+  }
+
+  @override
+  set finalDateFull(String value) {
+    _$finalDateFullAtom.reportWrite(value, super.finalDateFull, () {
+      super.finalDateFull = value;
+    });
+  }
+
   final _$_PDFStoreBaseActionController =
       ActionController(name: '_PDFStoreBase');
 
@@ -440,6 +500,50 @@ mixin _$PDFStore on _PDFStoreBase, Store {
   }
 
   @override
+  dynamic setInitialDateFullBR(String value) {
+    final _$actionInfo = _$_PDFStoreBaseActionController.startAction(
+        name: '_PDFStoreBase.setInitialDateFullBR');
+    try {
+      return super.setInitialDateFullBR(value);
+    } finally {
+      _$_PDFStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setfinalDateFullBR(String value) {
+    final _$actionInfo = _$_PDFStoreBaseActionController.startAction(
+        name: '_PDFStoreBase.setfinalDateFullBR');
+    try {
+      return super.setfinalDateFullBR(value);
+    } finally {
+      _$_PDFStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setInitialDateFull(String value) {
+    final _$actionInfo = _$_PDFStoreBaseActionController.startAction(
+        name: '_PDFStoreBase.setInitialDateFull');
+    try {
+      return super.setInitialDateFull(value);
+    } finally {
+      _$_PDFStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setfinalDateFull(String value) {
+    final _$actionInfo = _$_PDFStoreBaseActionController.startAction(
+        name: '_PDFStoreBase.setfinalDateFull');
+    try {
+      return super.setfinalDateFull(value);
+    } finally {
+      _$_PDFStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 daysContactsURL: ${daysContactsURL},
@@ -457,7 +561,11 @@ userName: ${userName},
 initialDateUser: ${initialDateUser},
 finalDateUser: ${finalDateUser},
 initialDateUserBR: ${initialDateUserBR},
-finalDateUserBR: ${finalDateUserBR}
+finalDateUserBR: ${finalDateUserBR},
+initialDateFullBR: ${initialDateFullBR},
+finalDateFullBR: ${finalDateFullBR},
+initialDateFull: ${initialDateFull},
+finalDateFull: ${finalDateFull}
     ''';
   }
 }

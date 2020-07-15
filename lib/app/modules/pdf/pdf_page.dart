@@ -15,6 +15,7 @@ import 'package:simex_app/app/models/reports/clients/clients_spent_more_model.da
 import 'package:simex_app/app/models/reports/clients/clients_without_contact_model.dart';
 import 'package:simex_app/app/models/reports/clients/clients_without_purchase.dart';
 import 'package:simex_app/app/models/reports/enterprise/enterprise_report_model.dart';
+import 'package:simex_app/app/models/reports/enterprise/full_report_model.dart';
 import 'package:simex_app/app/models/reports/enterprise/user_report_model.dart';
 import 'package:simex_app/app/models/reports/products/product_efective_eficiency_model.dart';
 import 'package:simex_app/app/models/reports/products/product_lost_eficiency_model.dart';
@@ -211,8 +212,10 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                     item.name,
                     item.cpf,
                     item.phone.toString(),
-                    item.valueSpent != null ? NumberFormat.simpleCurrency(locale: 'pt_Br')
-                        .format(double.parse(item.valueSpent)) : "R\$ 0.0",
+                    item.valueSpent != null
+                        ? NumberFormat.simpleCurrency(locale: 'pt_Br')
+                            .format(double.parse(item.valueSpent))
+                        : "R\$ 0.0",
                   ])
             ]),
           ];
@@ -541,6 +544,123 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
     );
   }
 
+  _fullUserReport(context) async {
+    List<ActivePhoneModel> active = controller.fullUserReportModelActive.value;
+    List<BalconyContactModel> balcony =
+        controller.fullUserReportModelBalcony.value;
+    List<ExternalVisitModel> externalVisit =
+        controller.fullUserReportModelExternal.value;
+    List<ReceivedCallModel> received =
+        controller.fullUserReportModelReceived.value;
+
+    final pw.Document pdf = pw.Document(deflate: zlib.encode);
+
+    pdf.addPage(
+      pw.MultiPage(
+        margin: pw.EdgeInsets.fromLTRB(32, 16, 32, 32),
+        pageFormat: PdfPageFormat.a5.copyWith(marginTop: 0),
+        build: (context) {
+          return <pw.Widget>[
+            pw.Header(
+                level: 0,
+                child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: <pw.Widget>[
+                      pw.Text(
+                        formatDate(
+                            DateFormat("yyyy-MM-dd")
+                                .parse(DateTime.now().toString()),
+                            [dd, '/', mm, '/', yyyy]).toString(),
+                      ),
+                      pw.Center(
+                          child: pw.Text("SIMEX MÁQUINAS AGRICOLAS LTDA",
+                              style: pw.TextStyle(fontSize: 14),
+                              textAlign: pw.TextAlign.center)),
+                      pw.Text('')
+                    ])),
+            pw.Text(
+                "Contatos realizados no período de : ${controller.store.initialDateFullBR} à ${controller.store.finalDateFullBR}"),
+            pw.SizedBox(height: 5),
+            pw.Text("Usuário : Todos"),
+            pw.SizedBox(height: 15),
+            pw.Center(
+              child: pw.Text("Contatos por Telefone Ativo",
+                  style: pw.TextStyle(fontSize: 12)),
+            ),
+            pw.SizedBox(height: 5),
+            pw.Table.fromTextArray(context: context, data: <List<String>>[
+              <String>['Vendedor', 'Quantidade', 'Valor de Vendas'],
+              ...active.map((item) => [
+                    item.name,
+                    item.amount.toString(),
+                    NumberFormat.simpleCurrency(locale: 'pt_Br')
+                        .format(double.parse(item.valueSold)),
+                  ])
+            ]),
+            pw.SizedBox(height: 20),
+            pw.Center(
+              child: pw.Text("Contatos por Telefone Recebido",
+                  style: pw.TextStyle(fontSize: 12)),
+            ),
+            pw.SizedBox(height: 5),
+            pw.Table.fromTextArray(context: context, data: <List<String>>[
+              <String>['Vendedor', 'Quantidade', 'Valor de Vendas'],
+              ...received.map((item) => [
+                    item.name,
+                    item.amount.toString(),
+                    NumberFormat.simpleCurrency(locale: 'pt_Br')
+                        .format(double.parse(item.valueSold)),
+                  ])
+            ]),
+            pw.SizedBox(height: 20),
+            pw.Center(
+              child: pw.Text("Contatos por Visita Externa",
+                  style: pw.TextStyle(fontSize: 12)),
+            ),
+            pw.SizedBox(height: 5),
+            pw.Table.fromTextArray(context: context, data: <List<String>>[
+              <String>['Vendedor', 'Quantidade', 'Valor de Vendas'],
+              ...externalVisit.map((item) => [
+                    item.name,
+                    item.amount.toString(),
+                    NumberFormat.simpleCurrency(locale: 'pt_Br')
+                        .format(double.parse(item.valueSold)),
+                  ])
+            ]),
+            pw.SizedBox(height: 20),
+            pw.Center(
+              child: pw.Text("Contatos no Balcão",
+                  style: pw.TextStyle(fontSize: 12)),
+            ),
+            pw.SizedBox(height: 5),
+            pw.Table.fromTextArray(context: context, data: <List<String>>[
+              <String>['Vendedor', 'Quantidade', 'Valor de Vendas'],
+              ...balcony.map((item) => [
+                    item.name,
+                    item.amount.toString(),
+                    NumberFormat.simpleCurrency(locale: 'pt_Br')
+                        .format(double.parse(item.valueSold)),
+                  ])
+            ]),
+            pw.SizedBox(height: 20),
+          ];
+        },
+      ),
+    );
+
+    final String dir = (await getApplicationDocumentsDirectory()).path;
+    final String path = '$dir/reports.pdf';
+    final File file = File(path);
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save());
+    await file.writeAsBytes(pdf.save());
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => PDFViewerPage(path: path),
+      ),
+    );
+  }
+
   _userReport(context) async {
     UserReportModel userReportModel = controller.userReportModel.value;
     final pw.Document pdf = pw.Document(deflate: zlib.encode);
@@ -736,6 +856,8 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
                                 _enterpriseReport(context);
                               } else if (widget.choice == '6') {
                                 _userReport(context);
+                              } else if (widget.choice == '7') {
+                                _fullUserReport(context);
                               }
                             },
                             child: Text('GERAR PDF',

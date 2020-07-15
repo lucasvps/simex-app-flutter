@@ -54,7 +54,10 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                         (controller.store.userReport &&
                             controller.pdfStore.finalDateUser != null &&
                             controller.pdfStore.initialDateUser != null &&
-                            controller.pdfStore.idUser != null))
+                            controller.pdfStore.idUser != null) ||
+                        (controller.store.fullUserReport &&
+                            controller.pdfStore.finalDateFull != null &&
+                            controller.pdfStore.initialDateFull != null))
                     ? Text(
                         'Gerar Relatório',
                         style: TextStyle(
@@ -117,6 +120,11 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                           controller.pdfStore.setfinalDateUser(null);
                           controller.pdfStore.setInitialDateUser(null);
                           controller.pdfStore.setUserID(null);
+
+                          controller.pdfStore.setInitialDateFullBR(null);
+                          controller.pdfStore.setfinalDateFullBR(null);
+                          controller.pdfStore.setfinalDateFull(null);
+                          controller.pdfStore.setInitialDateFull(null);
                         },
                         checkColor: AppThemeLight().getTheme().primaryColor,
                       ),
@@ -180,6 +188,11 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                           controller.pdfStore.setfinalDateUser(null);
                           controller.pdfStore.setInitialDateUser(null);
                           controller.pdfStore.setUserID(null);
+
+                          controller.pdfStore.setInitialDateFullBR(null);
+                          controller.pdfStore.setfinalDateFullBR(null);
+                          controller.pdfStore.setfinalDateFull(null);
+                          controller.pdfStore.setInitialDateFull(null);
                         },
                         checkColor: AppThemeLight().getTheme().primaryColor,
                       ),
@@ -244,6 +257,11 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                           controller.pdfStore.setfinalDateUser(null);
                           controller.pdfStore.setInitialDateUser(null);
                           controller.pdfStore.setUserID(null);
+
+                          controller.pdfStore.setInitialDateFullBR(null);
+                          controller.pdfStore.setfinalDateFullBR(null);
+                          controller.pdfStore.setfinalDateFull(null);
+                          controller.pdfStore.setInitialDateFull(null);
                         },
                         checkColor: AppThemeLight().getTheme().primaryColor,
                       ),
@@ -286,6 +304,11 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                           controller.pdfStore.setfinalDateUser(null);
                           controller.pdfStore.setInitialDateUser(null);
                           controller.pdfStore.setUserID(null);
+
+                          controller.pdfStore.setInitialDateFullBR(null);
+                          controller.pdfStore.setfinalDateFullBR(null);
+                          controller.pdfStore.setfinalDateFull(null);
+                          controller.pdfStore.setInitialDateFull(null);
                         },
                         checkColor: AppThemeLight().getTheme().primaryColor,
                       ),
@@ -376,6 +399,11 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                           controller.pdfStore.setfinalDateUser(null);
                           controller.pdfStore.setInitialDateUser(null);
                           controller.pdfStore.setUserID(null);
+
+                          controller.pdfStore.setInitialDateFullBR(null);
+                          controller.pdfStore.setfinalDateFullBR(null);
+                          controller.pdfStore.setfinalDateFull(null);
+                          controller.pdfStore.setInitialDateFull(null);
                         },
                         checkColor: AppThemeLight().getTheme().primaryColor,
                       ),
@@ -466,6 +494,11 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                           controller.pdfStore.setfinalDateEnterpriseBR(null);
                           controller.pdfStore.setfinalDateEnterprise(null);
                           controller.pdfStore.setInitialDateEnterprise(null);
+
+                          controller.pdfStore.setInitialDateFullBR(null);
+                          controller.pdfStore.setfinalDateFullBR(null);
+                          controller.pdfStore.setfinalDateFull(null);
+                          controller.pdfStore.setInitialDateFull(null);
                         },
                         checkColor: AppThemeLight().getTheme().primaryColor,
                       ),
@@ -562,6 +595,101 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                               },
                             )
                           : SizedBox()),
+
+                  // ! FULL USER REPORT
+
+                  Row(
+                    children: <Widget>[
+                      Checkbox(
+                        value: controller.store.fullUserReport,
+                        onChanged: (value) {
+                          controller.store.setChoice('7');
+                          controller.store.setFullUserReport();
+                          controller.store.clientsWithoutContact = false;
+                          controller.store.clientsWithoutPurchase = false;
+                          controller.store.clientsThatSpentMore = false;
+                          controller.store.productEficiency = false;
+                          controller.store.enterpriseReport = false;
+                          controller.store.userReport = false;
+
+                          controller.pdfStore.setInitialDateProduct(null);
+                          controller.pdfStore.setfinalDateProduct(null);
+                          controller.pdfStore.setInitialDateProductBR(null);
+                          controller.pdfStore.setfinalDateProductBR(null);
+
+                          controller.pdfStore.setInitialDateEnterpriseBR(null);
+                          controller.pdfStore.setfinalDateEnterpriseBR(null);
+                          controller.pdfStore.setfinalDateEnterprise(null);
+                          controller.pdfStore.setInitialDateEnterprise(null);
+
+                          controller.pdfStore.setInitialDateUserBR(null);
+                          controller.pdfStore.setfinalDateUserBR(null);
+                          controller.pdfStore.setfinalDateUser(null);
+                          controller.pdfStore.setInitialDateUser(null);
+                          controller.pdfStore.setUserID(null);
+                        },
+                        checkColor: AppThemeLight().getTheme().primaryColor,
+                      ),
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Resumo Gerencial de Todos os Vendedores',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: (controller.pdfStore.initialDateFullBR != null &&
+                            controller.pdfStore.finalDateFullBR != null &&
+                            controller.store.fullUserReport)
+                        ? Card(
+                            elevation: 20,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Flexible(
+                                  child: Text(
+                                    "Início : " +
+                                        controller.pdfStore.initialDateFullBR,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    "Final : " +
+                                        controller.pdfStore.finalDateFullBR,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : SizedBox(),
+                  ),
+                  Container(
+                      child: controller.store.fullUserReport
+                          ? RaisedButton(
+                              child: Text('Marcar datas',
+                                  style: GoogleFonts.lato(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20)),
+                              color: AppThemeLight().getTheme().primaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18)),
+                              onPressed: () {
+                                _fullUserDate(context);
+                              },
+                            )
+                          : SizedBox()),
                 ],
               ),
             ),
@@ -631,6 +759,26 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
     }
   }
 
+  Future<Null> _fullUserDate(BuildContext context) async {
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+        context: context,
+        initialFirstDate: new DateTime.now(),
+        initialLastDate: new DateTime.now(),
+        firstDate: new DateTime(2020),
+        lastDate: DateTime.now());
+
+    if (picked != null) {
+      controller.pdfStore.setInitialDateFullBR(
+          formatDate(picked[0], [dd, '/', mm, '/', yyyy]));
+      controller.pdfStore
+          .setfinalDateFullBR(formatDate(picked[1], [dd, '/', mm, '/', yyyy]));
+      controller.pdfStore
+          .setInitialDateFull(formatDate(picked[0], [yyyy, '-', mm, '-', dd]));
+      controller.pdfStore
+          .setfinalDateFull(formatDate(picked[1], [yyyy, '-', mm, '-', dd]));
+    }
+  }
+
   // ***********************************************************************************
 
   Widget dropDownMenu(List<UserModel> users) {
@@ -675,10 +823,11 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                       ),
                       onChanged: (_) async {
                         controller.pdfStore.setUserID(_);
-                        controller.userRepository.getAnyUserInfo(id: _.toString()).then((value){
+                        controller.userRepository
+                            .getAnyUserInfo(id: _.toString())
+                            .then((value) {
                           controller.pdfStore.setUserName(value['name']);
                         });
-
                       },
                       style: TextStyle(fontSize: 20, color: Colors.black),
                       value: controller.pdfStore.idUser,

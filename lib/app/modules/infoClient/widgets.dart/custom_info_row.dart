@@ -22,6 +22,15 @@ class CustomInfoRow extends StatefulWidget {
 
 class _CustomInfoRowState extends State<CustomInfoRow> {
   @override
+  void initState() {
+    if (((widget.field == 'Última compra' ||
+        widget.field == 'Último contato'))) {
+      print('DATA : ' + widget.value);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
@@ -46,14 +55,15 @@ class _CustomInfoRowState extends State<CustomInfoRow> {
                   //errorText: widget.errorText() ?? patternError,
                   border: InputBorder.none,
                 ),
-                initialValue: widget.field == 'Última compra' ||
-                        widget.field == 'Último contato'
+                initialValue: ((widget.field == 'Última compra' ||
+                            widget.field == 'Último contato') &&
+                        widget.value != "")
                     ? formatDate(
                         DateFormat("yyyy-MM-dd").parse(
                           widget.value,
                         ),
                         [dd, '/', mm, '/', yyyy]).toString()
-                    : widget.value.toString(),
+                    : widget.value.toString() ?? "",
               ),
             ),
           ],

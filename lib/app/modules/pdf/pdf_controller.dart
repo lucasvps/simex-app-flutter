@@ -6,6 +6,7 @@ import 'package:simex_app/app/models/reports/clients/clients_spent_more_model.da
 import 'package:simex_app/app/models/reports/clients/clients_without_contact_model.dart';
 import 'package:simex_app/app/models/reports/clients/clients_without_purchase.dart';
 import 'package:simex_app/app/models/reports/enterprise/enterprise_report_model.dart';
+import 'package:simex_app/app/models/reports/enterprise/full_report_model.dart';
 import 'package:simex_app/app/models/reports/enterprise/user_report_model.dart';
 import 'package:simex_app/app/models/reports/products/product_efective_eficiency_model.dart';
 import 'package:simex_app/app/models/reports/products/product_lost_eficiency_model.dart';
@@ -75,11 +76,44 @@ abstract class _PdfControllerBase with Store {
         : null;
 
     store.initialDateUser != null
-        ? userReportModel = enterpriseReportRepository.getUserReport(
-          initialDate: store.initialDateUser,
-          finalDate: store.finalDateUser,
-          id: store.idUser
-        ).asObservable()
+        ? userReportModel = enterpriseReportRepository
+            .getUserReport(
+                initialDate: store.initialDateUser,
+                finalDate: store.finalDateUser,
+                id: store.idUser)
+            .asObservable()
+        : null;
+
+    store.initialDateFull != null
+        ? fullUserReportModelActive = enterpriseReportRepository
+            .getFullUsersReportActivePhone(
+                initialDate: store.initialDateFull,
+                finalDate: store.finalDateFull)
+            .asObservable()
+        : null;
+
+    store.initialDateFull != null
+        ? fullUserReportModelReceived = enterpriseReportRepository
+            .getFullUsersReportReceivedCall(
+                initialDate: store.initialDateFull,
+                finalDate: store.finalDateFull)
+            .asObservable()
+        : null;
+
+    store.initialDateFull != null
+        ? fullUserReportModelExternal = enterpriseReportRepository
+            .getFullUsersReportExternalVisit(
+                initialDate: store.initialDateFull,
+                finalDate: store.finalDateFull)
+            .asObservable()
+        : null;
+
+      store.initialDateFull != null
+        ? fullUserReportModelBalcony = enterpriseReportRepository
+            .getFullUsersReportBalcony(
+                initialDate: store.initialDateFull,
+                finalDate: store.finalDateFull)
+            .asObservable()
         : null;
   }
 
@@ -108,4 +142,16 @@ abstract class _PdfControllerBase with Store {
 
   @observable
   ObservableFuture<UserReportModel> userReportModel;
+
+  @observable
+  ObservableFuture<List<ActivePhoneModel>> fullUserReportModelActive;
+
+  @observable
+  ObservableFuture<List<ExternalVisitModel>> fullUserReportModelExternal;
+
+  @observable
+  ObservableFuture<List<ReceivedCallModel>> fullUserReportModelReceived;
+
+  @observable
+  ObservableFuture<List<BalconyContactModel>> fullUserReportModelBalcony;
 }

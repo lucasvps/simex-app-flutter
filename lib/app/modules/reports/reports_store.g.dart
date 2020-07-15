@@ -122,6 +122,21 @@ mixin _$ReportsStore on _ReportsStoreBase, Store {
     });
   }
 
+  final _$fullUserReportAtom = Atom(name: '_ReportsStoreBase.fullUserReport');
+
+  @override
+  bool get fullUserReport {
+    _$fullUserReportAtom.reportRead();
+    return super.fullUserReport;
+  }
+
+  @override
+  set fullUserReport(bool value) {
+    _$fullUserReportAtom.reportWrite(value, super.fullUserReport, () {
+      super.fullUserReport = value;
+    });
+  }
+
   final _$_ReportsStoreBaseActionController =
       ActionController(name: '_ReportsStoreBase');
 
@@ -203,6 +218,17 @@ mixin _$ReportsStore on _ReportsStoreBase, Store {
   }
 
   @override
+  dynamic setFullUserReport() {
+    final _$actionInfo = _$_ReportsStoreBaseActionController.startAction(
+        name: '_ReportsStoreBase.setFullUserReport');
+    try {
+      return super.setFullUserReport();
+    } finally {
+      _$_ReportsStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 choice: ${choice},
@@ -211,7 +237,8 @@ clientsWithoutPurchase: ${clientsWithoutPurchase},
 clientsThatSpentMore: ${clientsThatSpentMore},
 productEficiency: ${productEficiency},
 enterpriseReport: ${enterpriseReport},
-userReport: ${userReport}
+userReport: ${userReport},
+fullUserReport: ${fullUserReport}
     ''';
   }
 }

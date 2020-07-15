@@ -14,6 +14,7 @@ class RegisterRepository {
     return await dio.put(url, data: model.toJson()).then((value) {
       Modular.to.pushReplacementNamed('/contacts');
     }).catchError((err) {
+      print('update register repo error ' + err);
       return err;
     });
   }

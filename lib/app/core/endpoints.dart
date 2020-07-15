@@ -47,6 +47,14 @@ class ApiEndpoints {
 
   static const String ENTERPRISE_REPORT = '/register/report';
 
+  static const String FULL_REPORT_ACTIVE = '/register/report/active';
+
+  static const String FULL_REPORT_EXTERNAL = '/register/report/external';
+
+  static const String FULL_REPORT_RECEIVED = '/register/report/received';
+
+  static const String FULL_REPORT_balcony = '/register/report/balcony';
+
   static const String USER_REPORT = '/register/report/user';
 
   static const String USER_URL = '/users';
