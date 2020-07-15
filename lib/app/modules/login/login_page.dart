@@ -36,7 +36,11 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Image.asset('lib/assets/images/signin.png'),
+                Image.asset(
+                  'lib/assets/images/signin.png',
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.04,
                 ),

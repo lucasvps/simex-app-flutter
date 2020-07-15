@@ -69,7 +69,9 @@ class _NewProductPageState
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Image.asset('lib/assets/images/fillform.png'),
+                Image.asset('lib/assets/images/fillform.png',
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.25),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(

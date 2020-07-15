@@ -411,7 +411,7 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Resumo Gerencial da Empresa',
+                            'Distribuição de Contatos da Empresa',
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
@@ -506,7 +506,7 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Resumo Gerencial de um Usuário',
+                            'Distribuição de Contatos de um Vendedor Específico',
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
@@ -634,7 +634,7 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Resumo Gerencial de Todos os Vendedores',
+                            'Distribuição de Contatos de Todos os Vendedores',
                             style: TextStyle(fontSize: 18),
                           ),
                         ),

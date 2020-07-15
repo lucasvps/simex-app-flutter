@@ -107,7 +107,10 @@ class _ContactsByUserPageState
                                     ),
                                     Center(
                                         child: Image.asset(
-                                            'lib/assets/images/empty.png')),
+                                      'lib/assets/images/empty.png',
+                                      width: MediaQuery.of(context).size.width,
+                                      height: MediaQuery.of(context).size.height * 0.65,
+                                    )),
                                   ],
                                 ),
                               ),
@@ -134,81 +137,84 @@ class _ContactsByUserPageState
   // ***********************************************************************************
 
   Widget dropDownMenu(List<UserModel> users) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: SizedBox(
-        width: double.maxFinite,
-        //width: MediaQuery.of(context).size.width * 0.5,
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              DropdownButtonHideUnderline(
-                child: ButtonTheme(
-                  alignedDropdown: true,
-                  child: DropdownButton(
-                    items: users.map((item) {
-                      return DropdownMenuItem(
-                        child: Center(
-                          child: Text(
-                            item.name,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 15,
+    return Observer(builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: SizedBox(
+          width: double.maxFinite,
+          //width: MediaQuery.of(context).size.width * 0.5,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                DropdownButtonHideUnderline(
+                  child: ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButton(
+                      items: users.map((item) {
+                        return DropdownMenuItem(
+                          child: Center(
+                            child: Text(
+                              item.name,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
                             ),
                           ),
+                          value: item.id.toString(),
+                        );
+                      }).toList(),
+                      hint: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        child: Center(
+                          child: Text("Vendedores",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontFamily: 'Indie')),
                         ),
-                        value: item.id.toString(),
-                      );
-                    }).toList(),
-                    hint: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      child: Center(
-                        child: Text("Vendedores",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontFamily: 'Indie')),
                       ),
+                      onChanged: (_) async {
+                        controller.store.setUserId(_);
+                      },
+                      style: TextStyle(fontSize: 20, color: Colors.black),
+                      value: controller.store.userId,
                     ),
-                    onChanged: (_) async {
-                      controller.store.setUserId(_);
-                    },
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                    value: controller.store.userId,
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  RaisedButton(
-                    child: Text('Escolher dia',
-                        style: GoogleFonts.lato(
-                            fontWeight: FontWeight.bold, fontSize: 20)),
-                    color: AppThemeLight().getTheme().primaryColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18)),
-                    onPressed: () {
-                      _selectDate(context);
-                    },
-                  ),
-                  Text(
-                    controller.store.dateChoiceBR != null
-                        ? "Data : " + controller.store.dateChoiceBR
-                        : "",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              )
-            ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Text('Escolher dia',
+                          style: GoogleFonts.lato(
+                              fontWeight: FontWeight.bold, fontSize: 20)),
+                      color: AppThemeLight().getTheme().primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18)),
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                    ),
+                    Text(
+                      controller.store.dateChoiceBR != null
+                          ? "Data : " + controller.store.dateChoiceBR
+                          : "",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Future<Null> _selectDate(BuildContext context) async {

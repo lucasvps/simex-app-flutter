@@ -58,17 +58,22 @@ class _InfoClientPageState
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.35,
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('lib/assets/images/profile.png'),
-                    )),
-                  ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 10, bottom: 10),
+                //   child: Container(
+                //     height: MediaQuery.of(context).size.height * 0.35,
+                //     width: double.maxFinite,
+                //     decoration: BoxDecoration(
+                //         image: DecorationImage(
+                //       fit: BoxFit.cover,
+                //       image: AssetImage('lib/assets/images/profile.png'),
+                //     )),
+                //   ),
+                // ),
+                Image.asset(
+                  'lib/assets/images/profile.png',
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.35,
                 ),
                 CustomInfoRow(
                   field: 'NOME',
@@ -148,13 +153,13 @@ class _InfoClientPageState
                 CustomInfoRow(
                   readOnly: false,
                   field: 'Qtd. de Trator',
-                  value: widget.detailedClient.totalTractor.toString() ?? "0",
+                  value: widget.detailedClient.totalTractor.toString() ?? "",
                   onChanged: controller.infoClientStore.setTotalTractor,
                 ),
                 CustomInfoRow(
                   readOnly: false,
                   field: 'Qtd. de Colheitadeira',
-                  value: widget.detailedClient.totalCombine.toString() ?? "0",
+                  value: widget.detailedClient.totalCombine.toString() ?? "",
                   onChanged: controller.infoClientStore.setTotalCombine,
                 ),
                 CustomInfoRow(

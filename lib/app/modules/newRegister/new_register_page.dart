@@ -299,47 +299,57 @@ class _NewRegisterPageState
         content: controller.store.status != null
             ? Column(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Checkbox(
-                          checkColor: AppThemeLight().getTheme().primaryColor,
-                          value: controller.store.noProduct,
-                          onChanged: (value) =>
-                              controller.store.changeNoProduct()),
-                      Text('Sem produto')
-                    ],
-                  ),
-                  FutureBuilder(
-                    future:
-                        controller.store.productRepository.currentProducts(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.active:
-                        case ConnectionState.waiting:
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                          break;
-                        case ConnectionState.none:
-                          return Text("No connection has been made");
-                          break;
-                        case ConnectionState.done:
-                          if (snapshot.hasError) {
-                            return Text(snapshot.error.toString());
-                          }
-                          if (!snapshot.hasData) {
-                            return Text("No data");
-                          } else {
-                            return Center(
-                              child: SingleChildScrollView(
-                                  child: dropDownMenu(snapshot.data)),
-                            );
-                          }
-                          break;
-                      }
-                      return Container();
-                    },
-                  ),
+                  controller.store.pendingSell
+                      ? Row(
+                          children: <Widget>[
+                            Checkbox(
+                                checkColor:
+                                    AppThemeLight().getTheme().primaryColor,
+                                value: controller.store.noProduct,
+                                onChanged: (value) {
+                                  controller.store.changeNoProduct();
+                                  if (controller.store.noProduct){
+                                    controller.store.setProdId(null);
+                                  }
+                                }),
+                            Text('Sem produto')
+                          ],
+                        )
+                      : SizedBox(),
+                  !controller.store.noProduct
+                      ? FutureBuilder(
+                          future: controller.store.productRepository
+                              .currentProducts(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.active:
+                              case ConnectionState.waiting:
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                                break;
+                              case ConnectionState.none:
+                                return Text("No connection has been made");
+                                break;
+                              case ConnectionState.done:
+                                if (snapshot.hasError) {
+                                  return Text(snapshot.error.toString());
+                                }
+                                if (!snapshot.hasData) {
+                                  return Text("No data");
+                                } else {
+                                  return Center(
+                                    child: SingleChildScrollView(
+                                        child: dropDownMenu(snapshot.data)),
+                                  );
+                                }
+                                break;
+                            }
+                            return Container();
+                          },
+                        )
+                      : SizedBox(),
                 ],
               )
             : Text('Marque a opção anterior.'),
@@ -349,7 +359,8 @@ class _NewRegisterPageState
             ? "Quantidade Vendida"
             : "Descrição do contato"),
         isActive: controller.store.currentStep >= 3,
-        content: (controller.store.productName != null || controller.store.noProduct)
+        content: (controller.store.productName != null ||
+                controller.store.noProduct)
             ? Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: controller.store.efectiveSell &&
@@ -478,7 +489,9 @@ class _NewRegisterPageState
     var registerModel = RegisterModel(
         idClient: widget.clientModel.id,
         idUser: controller.store.currentUserID,
-        productId: controller.store.prodID != null ? int.parse(controller.store.prodID) : null,
+        productId: controller.store.prodID != null
+            ? int.parse(controller.store.prodID)
+            : null,
         dateContact: formatted,
         nextContact:
             controller.store.pendingSell ? controller.store.nextContact : "",
@@ -497,7 +510,6 @@ class _NewRegisterPageState
     print(registerModel.toJson());
 
     controller.store.repository.createRegister(registerModel).then((value) {
-      
       controller.store.setCurrentStep(0);
       controller.store.cleanFields();
 

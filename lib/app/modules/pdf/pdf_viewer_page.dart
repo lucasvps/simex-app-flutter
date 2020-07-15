@@ -11,7 +11,7 @@ class PDFViewerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PDFViewerScaffold(
       appBar: AppBar(
-        title: Text('SOU UMA APP BAR'),
+        title: Text(''),
         actions: <Widget>[
           FlatButton(onPressed: () async{
             final ByteData bytes = await rootBundle.load(path);

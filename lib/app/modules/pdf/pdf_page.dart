@@ -829,7 +829,9 @@ class _PdfPageState extends ModularState<PdfPage, PdfController> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Image.asset('lib/assets/images/reports.png'),
+            Image.asset('lib/assets/images/reports.png',
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.40),
             Container(
               child: is_loaded
                   ? Center(

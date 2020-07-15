@@ -130,9 +130,13 @@ class _ContatosPageState
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 ),
-                                Center(
-                                    child: Image.asset(
-                                        'lib/assets/images/empty.png')),
+                                Image.asset(
+                                    'lib/assets/images/empty.png',
+                                    width:
+                                        MediaQuery.of(context).size.width,
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                            0.65),
                               ],
                             ),
                           );
@@ -151,9 +155,10 @@ class _ContatosPageState
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 ),
-                                Center(
-                                    child: Image.asset(
-                                        'lib/assets/images/empty.png')),
+                                Image.asset('lib/assets/images/empty.png',
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.65),
                               ],
                             ),
                           );
@@ -197,7 +202,12 @@ class _ContatosPageState
                                 ),
                                 Center(
                                     child: Image.asset(
-                                        'lib/assets/images/empty.png')),
+                                        'lib/assets/images/empty.png',
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.65)),
                               ],
                             ),
                           );
@@ -219,7 +229,13 @@ class _ContatosPageState
                                   ),
                                   Center(
                                       child: Image.asset(
-                                          'lib/assets/images/empty.png')),
+                                          'lib/assets/images/empty.png',
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.65)),
                                 ],
                               ),
                             ),

@@ -68,15 +68,9 @@ class _RegisterInfoPageState
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Container(
-                height: MediaQuery.of(context).size.height * 0.3,
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage('lib/assets/images/personal.png'),
-                )),
-              ),
+              Image.asset('lib/assets/images/personal.png',
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.3),
               CustomInfoRegisterRow(
                 field: 'CLIENTE',
                 value: widget.contactsModel.name,
