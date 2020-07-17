@@ -109,7 +109,9 @@ class _ContactsByUserPageState
                                         child: Image.asset(
                                       'lib/assets/images/empty.png',
                                       width: MediaQuery.of(context).size.width,
-                                      height: MediaQuery.of(context).size.height * 0.65,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.65,
                                     )),
                                   ],
                                 ),
@@ -169,7 +171,7 @@ class _ContactsByUserPageState
                         );
                       }).toList(),
                       hint: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
+                        width: MediaQuery.of(context).size.width * 0.5,
                         child: Center(
                           child: Text("Vendedores",
                               style: TextStyle(
@@ -187,25 +189,32 @@ class _ContactsByUserPageState
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    RaisedButton(
-                      child: Text('Escolher dia',
-                          style: GoogleFonts.lato(
-                              fontWeight: FontWeight.bold, fontSize: 20)),
-                      color: AppThemeLight().getTheme().primaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18)),
-                      onPressed: () {
-                        _selectDate(context);
-                      },
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: RaisedButton(
+                        child: Text('Escolher dia',
+                            style: GoogleFonts.lato(
+                                fontWeight: FontWeight.bold, fontSize: 20)),
+                        color: AppThemeLight().getTheme().primaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18)),
+                        onPressed: () {
+                          _selectDate(context);
+                        },
+                      ),
                     ),
-                    Text(
-                      controller.store.dateChoiceBR != null
-                          ? "Data : " + controller.store.dateChoiceBR
-                          : "",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Flexible(
+                      child: Center(
+                        child: Text(
+                          controller.store.dateChoiceBR != null
+                              ? controller.store.dateChoiceBR
+                              : "",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ],
                 )

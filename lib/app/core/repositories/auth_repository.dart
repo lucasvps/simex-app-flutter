@@ -17,6 +17,8 @@ class AuthRepository implements IAuthRepository {
   Future login(UserModel userModel) async {
     String url = ApiEndpoints.MAIN_URL + ApiEndpoints.LOGIN_URL;
 
+    print(url);
+
     var dio = CustomDio().instance;
 
     

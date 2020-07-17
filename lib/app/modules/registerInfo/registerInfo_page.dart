@@ -140,7 +140,7 @@ class _RegisterInfoPageState
                           child: InkWell(
                             onTap: () {
                               FlutterOpenWhatsapp.sendSingleMessage(
-                                  widget.contactsModel.phone, "");
+                                  "+55" +widget.contactsModel.phone, "");
                             },
                             child: Container(
                               height:
