@@ -21,8 +21,6 @@ class AuthRepository implements IAuthRepository {
 
     var dio = CustomDio().instance;
 
-    
-
     return await dio
         .post(url, data: userModel.toJsonLogin())
         .then((value) async {
@@ -31,6 +29,7 @@ class AuthRepository implements IAuthRepository {
       iSharedLocalStorage.put('is_admin', value.data['is_admin']);
       iSharedLocalStorage.put('userName', value.data['name']);
       iSharedLocalStorage.put('userEmail', value.data['email']);
+      print(iSharedLocalStorage.get('token'));
       
     }).catchError((err) {
       print('login error ' + err);
@@ -47,7 +46,7 @@ class AuthRepository implements IAuthRepository {
     return await dio.get(url).then((value) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.clear();
-      //prefs.commit();
+      prefs.commit();
       Modular.to.pushNamedAndRemoveUntil(
           '/login', ModalRoute.withName('/home'));
     }).catchError((err) {

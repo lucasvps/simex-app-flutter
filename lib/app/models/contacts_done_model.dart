@@ -6,6 +6,8 @@ class ContactsDoneModel {
   String reason;
   String contactFrom;
   int productAmount;
+  String nextContact;
+  String dateContact;
 
   ContactsDoneModel(
       {this.status,
@@ -14,7 +16,9 @@ class ContactsDoneModel {
       this.observation,
       this.reason,
       this.contactFrom,
-      this.productAmount});
+      this.productAmount,
+      this.nextContact,
+      this.dateContact});
 
   ContactsDoneModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -24,6 +28,8 @@ class ContactsDoneModel {
     reason = json['reason'];
     contactFrom = json['contact_from'];
     productAmount = json['product_amount'];
+    nextContact = json['next_contact'];
+    dateContact = json['date_contact'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +41,8 @@ class ContactsDoneModel {
     data['reason'] = this.reason;
     data['contact_from'] = this.contactFrom;
     data['product_amount'] = this.productAmount;
+    data['next_contact'] = this.nextContact;
+    data['date_contact'] = this.dateContact;
     return data;
   }
 }

@@ -31,7 +31,7 @@ class _UpdateRegisterPageState
   //use 'controller' variable to access controller
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     print(controller.store.currentStep);
   }
@@ -243,9 +243,25 @@ class _UpdateRegisterPageState
                 : "0.0",
         contactFrom: controller.store.contactFrom);
 
+    var createRegisterModel = RegisterModel(
+        idClient: widget.nextContactsModel.idClient,
+        idUser: widget.nextContactsModel.idUser,
+        productId: null,
+        dateContact: formatted,
+        nextContact: controller.store.nextContact,
+        observation: "",
+        productAmount: controller.store.amountSold ?? "",
+        reason: "",
+        status: "Contato",
+        valueSold: '0.0',
+        contactFrom: controller.store.contactFrom);
+
     controller
         .updateRegister(registerModel, widget.nextContactsModel.id)
         .then((value) {
+      if (controller.store.efectiveSell || controller.store.lostSell) {
+        controller.createRegister(createRegisterModel);
+      }
       print(registerModel.toJson());
       ClientModel clientModelUpdate = ClientModel(
         adress: widget.nextContactsModel.adress,
@@ -339,7 +355,9 @@ class _UpdateRegisterPageState
         title: Text((widget.nextContactsModel.productId == null &&
                 controller.store.efectiveSell)
             ? "Produto/Campanha"
-            : "Pular Etapa"),
+            : controller.store.lostSell
+                ? "Motivo da Venda Perdida"
+                : "Pular Etapa"),
         isActive: controller.store.currentStep >= 3,
         content: (widget.nextContactsModel.productId == null &&
                 controller.store.efectiveSell)
@@ -374,7 +392,16 @@ class _UpdateRegisterPageState
                   return Container();
                 },
               )
-            : Text('Aperte Continuar'),
+            : controller.store.lostSell
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      reasonRadioButton('Estoque', 'Estoque'),
+                      reasonRadioButton('Interesse', 'Interesse'),
+                      reasonRadioButton('Preço', 'Preço'),
+                    ],
+                  )
+                : Text('Aperte Continuar'),
       ),
       Step(
           title: Text(controller.store.efectiveSell
@@ -385,13 +412,42 @@ class _UpdateRegisterPageState
               ? Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: controller.store.efectiveSell
-                      ? TextFormField(
-                          onChanged: (value) =>
-                              controller.store.setAmountSold(int.parse(value)),
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                              labelText: "Quantidade Vendida",
-                              border: OutlineInputBorder()),
+                      ? Column(
+                          children: <Widget>[
+                            TextFormField(
+                              onChanged: (value) => controller.store
+                                  .setAmountSold(int.parse(value)),
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  labelText: "Quantidade Vendida",
+                                  border: OutlineInputBorder()),
+                            ),
+                            controller.store.amountSold != null
+                                ? Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        8, 10, 10, 10),
+                                    child: Text(
+                                      widget.nextContactsModel.price != null
+                                          ? "Valor Total da Venda: " +
+                                              NumberFormat.simpleCurrency(
+                                                      locale: 'pt_Br')
+                                                  .format(controller.store.amountSold *
+                                                      double.parse(widget
+                                                          .nextContactsModel
+                                                          .price))
+                                          : controller.store.productPrice != null
+                                              ? "Valor Total da Venda: " +
+                                                  NumberFormat.simpleCurrency(
+                                                          locale: 'pt_Br')
+                                                      .format(controller.store
+                                                              .amountSold *
+                                                          double.parse(controller.store.productPrice))
+                                              : "",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  )
+                                : SizedBox()
+                          ],
                         )
                       : TextFormField(
                           onChanged: controller.store.setObservation,
@@ -403,85 +459,47 @@ class _UpdateRegisterPageState
               : Text('Marque a opção anterior.')),
       Step(
           isActive: controller.store.currentStep >= 4,
-          title: Text(controller.store.pendingSell
-              ? "Marcar Data Para Próximo Contato"
-              : controller.store.efectiveSell
-                  ? "Valor Final da Venda"
-                  : "Motivo da Venda Perdida"),
-          content: controller.store.pendingSell
-              ? Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: double.maxFinite,
-                        height: 50,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          color: AppThemeLight().getTheme().primaryColor,
-                          onPressed: () {
-                            _selectDate(context);
-                          },
-                          child: Text(
-                            'Agendar próximo contato!',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                      ),
+          title: Text("Marcar Data Para Próximo Contato"),
+          content: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: double.maxFinite,
+                  height: 50,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
                     ),
-                    Observer(builder: (_) {
-                      return Card(
-                        elevation: 20,
-                        child: controller.store.nextContactBR != null &&
-                                controller.store.pendingSell
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Próximo contato marcado para : " +
-                                      controller.store.nextContactBR,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )
-                            : SizedBox(),
-                      );
-                    }),
-                  ],
-                )
-              : controller.store.efectiveSell &&
-                      controller.store.amountSold != null
-                  ? Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 10, 10, 10),
-                      child: Text(
-                        widget.nextContactsModel.price != null
-                            ? "Valor Total da Venda: " +
-                                NumberFormat.simpleCurrency(locale: 'pt_Br')
-                                    .format(controller.store.amountSold *
-                                        double.parse(
-                                            widget.nextContactsModel.price))
-                            : controller.store.productPrice != null
-                                ? "Valor Total da Venda: " +
-                                    NumberFormat.simpleCurrency(locale: 'pt_Br')
-                                        .format(controller.store.amountSold *
-                                            double.parse(
-                                                controller.store.productPrice))
-                                : "",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    )
-                  : controller.store.lostSell
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            reasonRadioButton('Estoque', 'Estoque'),
-                            reasonRadioButton('Interesse', 'Interesse'),
-                            reasonRadioButton('Preço', 'Preço'),
-                          ],
+                    color: AppThemeLight().getTheme().primaryColor,
+                    onPressed: () {
+                      _selectDate(context);
+                    },
+                    child: Text(
+                      'Agendar próximo contato!',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ),
+              ),
+              Observer(builder: (_) {
+                return Card(
+                  elevation: 20,
+                  child: controller.store.nextContactBR != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Próximo contato marcado para : " +
+                                controller.store.nextContactBR,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
                         )
-                      : SizedBox()),
+                      : SizedBox(),
+                );
+              }),
+            ],
+          )),
       Step(
         title: Text('Salvar'),
         isActive: controller.store.currentStep >= 5,

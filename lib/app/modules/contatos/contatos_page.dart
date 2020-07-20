@@ -5,15 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simex_app/app/app_controller.dart';
-import 'package:simex_app/app/core/repositories/reportsRepositories/enterprise_report_repository.dart';
-import 'package:simex_app/app/core/repositories/reportsRepositories/products_report_repository.dart';
 import 'package:simex_app/app/core/stores/auth_store.dart';
 import 'package:simex_app/app/core/widgets.dart/custom_drawer.dart';
-import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/contacts_done_model.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
-import 'package:simex_app/app/modules/pdf/pdf_store.dart';
 import 'package:simex_app/app/modules/registerInfo/registerInfo_page.dart';
 import 'contatos_controller.dart';
 
@@ -130,13 +125,10 @@ class _ContatosPageState
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 ),
-                                Image.asset(
-                                    'lib/assets/images/empty.png',
-                                    width:
-                                        MediaQuery.of(context).size.width,
-                                    height:
-                                        MediaQuery.of(context).size.height *
-                                            0.65),
+                                Image.asset('lib/assets/images/empty.png',
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.65),
                               ],
                             ),
                           );
@@ -360,9 +352,10 @@ class _ContatosPageState
     return ListView.builder(
       itemCount: list.length,
       itemBuilder: (context, index) {
+        print(list[index].status);
         return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
+            padding: list[index].status == 'Contato' ? EdgeInsets.all(0) : EdgeInsets.all(8.0),
+            child: list[index].status == 'Contato' ? null : Card(
                 elevation: 20,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(12))),

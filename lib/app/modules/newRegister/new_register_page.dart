@@ -113,32 +113,38 @@ class _NewRegisterPageState
   Widget statusRadioButton(String value, String text) {
     return Observer(builder: (context) {
       return Flexible(
-        child: ListTile(
-          title: Text(
-            text,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-          leading: Radio(
-            value: value,
-            groupValue: controller.store.status,
-            onChanged: (value) {
-              controller.store.setStatus(value);
-              controller.store.setValueSold('0');
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              text,
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Radio(
+              value: value,
+              groupValue: controller.store.status,
+              onChanged: (value) {
+                controller.store.setStatus(value);
+                controller.store.setValueSold('0');
 
-              if (controller.store.status == "Venda Pendente") {
-                controller.store.pendingSell = true;
-                controller.store.setAmountSold(0);
-              } else {
-                controller.store.pendingSell = false;
-              }
+                if (controller.store.status == "Venda Pendente") {
+                  controller.store.pendingSell = true;
+                  controller.store.setAmountSold(0);
+                } else {
+                  controller.store.pendingSell = false;
+                }
 
-              if (controller.store.status == "Venda Efetiva") {
-                controller.store.efectiveSell = true;
-              } else {
-                controller.store.efectiveSell = false;
-              }
-            },
-          ),
+                if (controller.store.status == "Venda Efetiva") {
+                  controller.store.efectiveSell = true;
+                } else {
+                  controller.store.efectiveSell = false;
+                }
+              },
+            ),
+          ],
         ),
       );
     });
@@ -284,6 +290,7 @@ class _NewRegisterPageState
             ? Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     statusRadioButton('Venda Efetiva', 'Venda Efetiva'),
                     statusRadioButton('Venda Pendente', 'Venda Pendente'),
@@ -308,7 +315,7 @@ class _NewRegisterPageState
                                 value: controller.store.noProduct,
                                 onChanged: (value) {
                                   controller.store.changeNoProduct();
-                                  if (controller.store.noProduct){
+                                  if (controller.store.noProduct) {
                                     controller.store.setProdId(null);
                                   }
                                 }),
@@ -359,92 +366,95 @@ class _NewRegisterPageState
             ? "Quantidade Vendida"
             : "Descrição do contato"),
         isActive: controller.store.currentStep >= 3,
-        content: (controller.store.productName != null ||
-                controller.store.noProduct)
-            ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: controller.store.efectiveSell &&
-                        controller.store.productPrice != null
-                    ? TextFormField(
-                        onChanged: (value) =>
-                            controller.store.setAmountSold(int.parse(value)),
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            labelText: "Quantidade Vendida",
-                            border: OutlineInputBorder()),
-                      )
-                    : TextFormField(
-                        onChanged: controller.store.setObservation,
-                        maxLines: 3,
-                        decoration: InputDecoration(
-                            labelText: "Descrição do contato",
-                            border: OutlineInputBorder()),
-                      ))
-            : Text('Marque a opçao anterior.'),
+        content:
+            (controller.store.productName != null || controller.store.noProduct)
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: controller.store.efectiveSell &&
+                            controller.store.productPrice != null
+                        ? Column(
+                            children: <Widget>[
+                              TextFormField(
+                                onChanged: (value) => controller.store
+                                    .setAmountSold(int.parse(value)),
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                    labelText: "Quantidade Vendida",
+                                    border: OutlineInputBorder()),
+                              ),
+                              Observer(builder: (_) {
+                                return Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: controller.store.efectiveSell &&
+                                            controller.store.amountSold != 0 &&
+                                            controller.store.amountSold != null
+                                        ? Text(
+                                            "Valor da Venda : " +
+                                                NumberFormat.simpleCurrency(
+                                                        locale: 'pt_Br')
+                                                    .format(controller
+                                                            .store.amountSold *
+                                                        double.parse(controller
+                                                            .store
+                                                            .productPrice)),
+                                            style: TextStyle(fontSize: 20),
+                                          )
+                                        : SizedBox());
+                              }),
+                            ],
+                          )
+                        : TextFormField(
+                            onChanged: controller.store.setObservation,
+                            maxLines: 3,
+                            decoration: InputDecoration(
+                                labelText: "Descrição do contato",
+                                border: OutlineInputBorder()),
+                          ))
+                : Text('Marque a opçao anterior.'),
       ),
       Step(
-        isActive: controller.store.currentStep >= 4,
-        title: Text(controller.store.status == "Venda Pendente"
-            ? "Marcar Data Para Próximo Contato"
-            : "Valor Final da Venda"),
-        content: controller.store.status == "Venda Pendente"
-            ? Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: double.maxFinite,
-                      height: 50,
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        color: AppThemeLight().getTheme().primaryColor,
-                        onPressed: () {
-                          _selectDate(context);
-                        },
-                        child: Text(
-                          'Agendar próximo contato!',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
+          isActive: controller.store.currentStep >= 4,
+          title: Text("Marcar Data Para Próximo Contato"),
+          content: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: double.maxFinite,
+                  height: 50,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    color: AppThemeLight().getTheme().primaryColor,
+                    onPressed: () {
+                      _selectDate(context);
+                    },
+                    child: Text(
+                      'Agendar próximo contato!',
+                      style: TextStyle(fontSize: 20),
                     ),
                   ),
-                  Observer(builder: (_) {
-                    return Card(
-                      elevation: 20,
-                      child: controller.store.nextContactBR != null &&
-                              controller.store.pendingSell
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Próximo contato marcado para : " +
-                                    controller.store.nextContactBR,
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            )
-                          : SizedBox(),
-                    );
-                  }),
-                ],
-              )
-            : Observer(builder: (_) {
-                return Padding(
-                    padding: EdgeInsets.all(8),
-                    child: controller.store.efectiveSell &&
-                            controller.store.amountSold != 0 &&
-                            controller.store.amountSold != null
-                        ? Text(
-                            NumberFormat.simpleCurrency(locale: 'pt_Br').format(
-                                controller.store.amountSold *
-                                    double.parse(
-                                        controller.store.productPrice)),
-                            style: TextStyle(fontSize: 20),
-                          )
-                        : SizedBox());
+                ),
+              ),
+              Observer(builder: (_) {
+                return Card(
+                  elevation: 20,
+                  child: controller.store.nextContactBR != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Próximo contato marcado para : " +
+                                controller.store.nextContactBR,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      : SizedBox(),
+                );
               }),
-      ),
+            ],
+          )),
       Step(
           isActive: controller.store.currentStep >= 5,
           title: Text('Salvar'),
@@ -476,6 +486,7 @@ class _NewRegisterPageState
     ];
     return _steps;
   }
+  // AQUI
 
   // ***********************************************************************************
 
@@ -507,11 +518,28 @@ class _NewRegisterPageState
             : '0.0',
         contactFrom: controller.store.contactFrom);
 
+    var createRegisterModel = RegisterModel(
+        idClient: widget.clientModel.id,
+        idUser: controller.store.currentUserID,
+        productId: null,
+        dateContact: formatted,
+        nextContact: controller.store.nextContact,
+        observation: "",
+        productAmount: controller.store.amountSold ?? "",
+        reason: "",
+        status: "Contato",
+        valueSold: '0.0',
+        contactFrom: controller.store.contactFrom);
+
     print(registerModel.toJson());
 
     controller.store.repository.createRegister(registerModel).then((value) {
       controller.store.setCurrentStep(0);
       controller.store.cleanFields();
+
+      if (controller.store.efectiveSell) {
+        controller.store.repository.createRegister(createRegisterModel);
+      }
 
       ClientModel clientModelUpdate = ClientModel(
         adress: widget.clientModel.adress,

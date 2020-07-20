@@ -25,6 +25,7 @@ class CustomDio {
       Modular.to.pushNamedAndRemoveUntil(
           '/login', ModalRoute.withName(Modular.initialRoute));
     }
+    print('erro dio ' + e.message);
     print('erro dio ' + e.error);
     print('erro dio ' + e.type.toString());
     print('erro dio ' + e.response.toString());

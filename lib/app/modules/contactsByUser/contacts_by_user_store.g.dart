@@ -24,34 +24,67 @@ mixin _$ContactsByUserStore on _ContactsByUserStoreBase, Store {
     });
   }
 
-  final _$dateChoiceAtom = Atom(name: '_ContactsByUserStoreBase.dateChoice');
+  final _$initialDateChoiceAtom =
+      Atom(name: '_ContactsByUserStoreBase.initialDateChoice');
 
   @override
-  String get dateChoice {
-    _$dateChoiceAtom.reportRead();
-    return super.dateChoice;
+  String get initialDateChoice {
+    _$initialDateChoiceAtom.reportRead();
+    return super.initialDateChoice;
   }
 
   @override
-  set dateChoice(String value) {
-    _$dateChoiceAtom.reportWrite(value, super.dateChoice, () {
-      super.dateChoice = value;
+  set initialDateChoice(String value) {
+    _$initialDateChoiceAtom.reportWrite(value, super.initialDateChoice, () {
+      super.initialDateChoice = value;
     });
   }
 
-  final _$dateChoiceBRAtom =
-      Atom(name: '_ContactsByUserStoreBase.dateChoiceBR');
+  final _$initialDateChoiceBRAtom =
+      Atom(name: '_ContactsByUserStoreBase.initialDateChoiceBR');
 
   @override
-  String get dateChoiceBR {
-    _$dateChoiceBRAtom.reportRead();
-    return super.dateChoiceBR;
+  String get initialDateChoiceBR {
+    _$initialDateChoiceBRAtom.reportRead();
+    return super.initialDateChoiceBR;
   }
 
   @override
-  set dateChoiceBR(String value) {
-    _$dateChoiceBRAtom.reportWrite(value, super.dateChoiceBR, () {
-      super.dateChoiceBR = value;
+  set initialDateChoiceBR(String value) {
+    _$initialDateChoiceBRAtom.reportWrite(value, super.initialDateChoiceBR, () {
+      super.initialDateChoiceBR = value;
+    });
+  }
+
+  final _$finalDateChoiceAtom =
+      Atom(name: '_ContactsByUserStoreBase.finalDateChoice');
+
+  @override
+  String get finalDateChoice {
+    _$finalDateChoiceAtom.reportRead();
+    return super.finalDateChoice;
+  }
+
+  @override
+  set finalDateChoice(String value) {
+    _$finalDateChoiceAtom.reportWrite(value, super.finalDateChoice, () {
+      super.finalDateChoice = value;
+    });
+  }
+
+  final _$finalDateChoiceBRAtom =
+      Atom(name: '_ContactsByUserStoreBase.finalDateChoiceBR');
+
+  @override
+  String get finalDateChoiceBR {
+    _$finalDateChoiceBRAtom.reportRead();
+    return super.finalDateChoiceBR;
+  }
+
+  @override
+  set finalDateChoiceBR(String value) {
+    _$finalDateChoiceBRAtom.reportWrite(value, super.finalDateChoiceBR, () {
+      super.finalDateChoiceBR = value;
     });
   }
 
@@ -70,22 +103,44 @@ mixin _$ContactsByUserStore on _ContactsByUserStoreBase, Store {
   }
 
   @override
-  dynamic setDateChoice(String value) {
+  dynamic setInitialDateChoice(String value) {
     final _$actionInfo = _$_ContactsByUserStoreBaseActionController.startAction(
-        name: '_ContactsByUserStoreBase.setDateChoice');
+        name: '_ContactsByUserStoreBase.setInitialDateChoice');
     try {
-      return super.setDateChoice(value);
+      return super.setInitialDateChoice(value);
     } finally {
       _$_ContactsByUserStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic setDateChoiceBR(String value) {
+  dynamic setInitialDateChoiceBR(String value) {
     final _$actionInfo = _$_ContactsByUserStoreBaseActionController.startAction(
-        name: '_ContactsByUserStoreBase.setDateChoiceBR');
+        name: '_ContactsByUserStoreBase.setInitialDateChoiceBR');
     try {
-      return super.setDateChoiceBR(value);
+      return super.setInitialDateChoiceBR(value);
+    } finally {
+      _$_ContactsByUserStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setFinalDateChoice(String value) {
+    final _$actionInfo = _$_ContactsByUserStoreBaseActionController.startAction(
+        name: '_ContactsByUserStoreBase.setFinalDateChoice');
+    try {
+      return super.setFinalDateChoice(value);
+    } finally {
+      _$_ContactsByUserStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setFinalDateChoiceBR(String value) {
+    final _$actionInfo = _$_ContactsByUserStoreBaseActionController.startAction(
+        name: '_ContactsByUserStoreBase.setFinalDateChoiceBR');
+    try {
+      return super.setFinalDateChoiceBR(value);
     } finally {
       _$_ContactsByUserStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -95,8 +150,10 @@ mixin _$ContactsByUserStore on _ContactsByUserStoreBase, Store {
   String toString() {
     return '''
 userId: ${userId},
-dateChoice: ${dateChoice},
-dateChoiceBR: ${dateChoiceBR}
+initialDateChoice: ${initialDateChoice},
+initialDateChoiceBR: ${initialDateChoiceBR},
+finalDateChoice: ${finalDateChoice},
+finalDateChoiceBR: ${finalDateChoiceBR}
     ''';
   }
 }

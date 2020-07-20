@@ -16,16 +16,29 @@ abstract class _ContactsByUserStoreBase with Store {
   setUserId(String value) => userId = value;
 
   @observable
-  String dateChoice;
+  String initialDateChoice;
 
   @action
-  setDateChoice(String value) => dateChoice = value;
+  setInitialDateChoice(String value) => initialDateChoice = value;
 
   @observable
-  String dateChoiceBR;
+  String initialDateChoiceBR;
 
   @action
-  setDateChoiceBR(String value) => dateChoiceBR = value;
+  setInitialDateChoiceBR(String value) => initialDateChoiceBR = value;
+
+  @observable
+  String finalDateChoice;
+
+  @action
+  setFinalDateChoice(String value) => finalDateChoice = value;
+
+  @observable
+  String finalDateChoiceBR;
+
+  @action
+  setFinalDateChoiceBR(String value) => finalDateChoiceBR = value;
+
 
 
 

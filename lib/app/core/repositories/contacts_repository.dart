@@ -21,16 +21,19 @@ class ContactsRepository {
 
       return contactsToday;
     }).catchError((err) {
-      print('repo error contacts to do : ' + err.toString());
+      print('repo error contacts to do : ' + err);
     });
   }
 
   Future<List<ContactsDoneModel>> contactsDoneToday() async {
     String url = ApiEndpoints.MAIN_URL + ApiEndpoints.CONTACTS_DONE_TODAY;
 
+    print('done = ' + url);
+
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.get(url).then((value) {
+      //print(value.headers['Authorization']);
       List<ContactsDoneModel> contactsDoneToday = [];
 
       for (var item in value.data) {
@@ -40,7 +43,7 @@ class ContactsRepository {
 
       return contactsDoneToday;
     }).catchError((err) {
-      //print('repo erro ' + err.toString());
+      print('repo erro ' + err.toString());
       return err;
     });
   }

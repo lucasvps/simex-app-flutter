@@ -40,11 +40,14 @@ class UserRepository {
   }
 
   Future<List<ContactsDoneModel>> contactsDoneByUserSpecificDay(
-      {String id, String date}) async {
+      {String id, String initialDate, String finalDate}) async {
     String url = ApiEndpoints.MAIN_URL +
         ApiEndpoints.CONTACTS_DONE_BY_USER_SPECIFIC_DAY +
-        "/$date" +
+        "/$initialDate" +
+        "/$finalDate" +
         "/$id";
+
+    
 
     var dio = CustomDio.withAuthentication().instance;
 

@@ -8,6 +8,7 @@ import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/contacts_done_model.dart';
 import 'package:simex_app/app/models/user_model.dart';
 import 'contacts_by_user_controller.dart';
+import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
 class ContactsByUserPage extends StatefulWidget {
   final String title;
@@ -66,12 +67,13 @@ class _ContactsByUserPageState
               Expanded(
                 child: SizedBox(
                   child: FutureBuilder(
-                    future: (controller.store.dateChoice != null &&
+                    future: (controller.store.initialDateChoice != null &&
                             controller.store.userId != null)
                         ? controller.store.repository
                             .contactsDoneByUserSpecificDay(
                                 id: controller.store.userId,
-                                date: controller.store.dateChoice)
+                                initialDate: controller.store.initialDateChoice,
+                                finalDate: controller.store.finalDateChoice)
                         : null,
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       switch (snapshot.connectionState) {
@@ -201,15 +203,15 @@ class _ContactsByUserPageState
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18)),
                         onPressed: () {
-                          _selectDate(context);
+                          _selectRangeDate(context);
                         },
                       ),
                     ),
                     Flexible(
                       child: Center(
                         child: Text(
-                          controller.store.dateChoiceBR != null
-                              ? controller.store.dateChoiceBR
+                          controller.store.initialDateChoiceBR != null
+                              ? "${controller.store.initialDateChoiceBR} à ${controller.store.finalDateChoiceBR}"
                               : "",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
@@ -226,20 +228,23 @@ class _ContactsByUserPageState
     });
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+  Future<Null> _selectRangeDate(BuildContext context) async {
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
         context: context,
-        initialDate: controller.store.dateChoice != null
-            ? DateTime.parse(controller.store.dateChoice)
-            : DateTime.now(),
-        firstDate: DateTime.now().subtract(Duration(days: 365)),
+        initialFirstDate: new DateTime.now(),
+        initialLastDate: new DateTime.now(),
+        firstDate: new DateTime(2020),
         lastDate: DateTime.now().add(Duration(days: 365)));
 
     if (picked != null) {
-      var brDate = formatDate(picked, [dd, '/', mm, '/', yyyy]);
-      var usDate = formatDate(picked, [yyyy, '-', mm, '-', dd]);
-      controller.store.setDateChoice(usDate);
-      controller.store.setDateChoiceBR(brDate);
+      controller.store.setInitialDateChoiceBR(
+          formatDate(picked[0], [dd, '/', mm, '/', yyyy]));
+      controller.store.setFinalDateChoiceBR(
+          formatDate(picked[1], [dd, '/', mm, '/', yyyy]));
+      controller.store.setInitialDateChoice(
+          formatDate(picked[0], [yyyy, '-', mm, '-', dd]));
+      controller.store
+          .setFinalDateChoice(formatDate(picked[1], [yyyy, '-', mm, '-', dd]));
     }
   }
 
@@ -298,7 +303,7 @@ class _ContactsByUserPageState
                                     ),
                                   ),
                                 )
-                              : list[index].status == "Venda Pendente"
+                              : list[index].status == "Venda Pendente" || list[index].status == "Contato"
                                   ? Padding(
                                       padding: const EdgeInsets.all(6.0),
                                       child: Text(
@@ -326,26 +331,70 @@ class _ContactsByUserPageState
                                         ),
                                       ),
                                     ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              "Date de contato : " +
+                                  formatDate(
+                                      DateFormat("yyyy-MM-dd").parse(
+                                        list[index].dateContact,
+                                      ),
+                                      [dd, '/', mm, '/', yyyy]).toString(),
+                              style: GoogleFonts.pangolin(fontSize: 18),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                                list[index].nextContact != null
+                                    ? "Próximo contato : " +
+                                        formatDate(
+                                            DateFormat("yyyy-MM-dd").parse(
+                                              list[index].nextContact,
+                                            ),
+                                            [dd, '/', mm, '/', yyyy]).toString()
+                                    : "",
+                                style: GoogleFonts.pangolin(
+                                    fontSize: 18,
+                                    backgroundColor: list[index].nextContact !=
+                                            null
+                                        ? list[index].nextContact ==
+                                                formatDate(DateTime.now(),
+                                                    [yyyy, '-', mm, '-', dd])
+                                            ? Colors.blue
+                                            : (DateTime.parse(
+                                                        list[index].nextContact)
+                                                    .isBefore(DateTime.now()))
+                                                ? Colors.red
+                                                : Colors.blue
+                                        : Colors.transparent)),
+                          ),
                         ],
                       ),
                     ),
-                    Container(
-                        child: list[index].status == "Venda Efetiva"
-                            ? Icon(
-                                Icons.check_circle_outline,
-                                size: 80,
-                              )
-                            : list[index].status == 'Venda Pendente'
-                                ? Icon(
-                                    Icons.remove_circle_outline,
-                                    size: 80,
-                                    color: Colors.orange,
-                                  )
-                                : Icon(
-                                    Icons.close,
-                                    color: Colors.red,
-                                    size: 80,
-                                  )),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                          child: list[index].status == "Venda Efetiva"
+                              ? Icon(
+                                  Icons.check_circle_outline,
+                                  size: 80,
+                                )
+                              : list[index].status == 'Venda Pendente'
+                                  ? Icon(
+                                      Icons.remove_circle_outline,
+                                      size: 80,
+                                      color: Colors.orange,
+                                    )
+                                  : list[index].status == "Venda Perdida"
+                                      ? Icon(
+                                          Icons.close,
+                                          color: Colors.red,
+                                          size: 80,
+                                        )
+                                      : Icon(Icons.chat,
+                                          color: Colors.blue, size: 80)),
+                    ),
                   ],
                 )));
       },

@@ -1,9 +1,9 @@
 class ApiEndpoints {
 
 
-  //static const String MAIN_URL = 'http://10.0.3.2:8000/api/v1';
+  static const String MAIN_URL = 'http://10.0.3.2:8000/api/v1';
 
-  static const String MAIN_URL = 'https://agile-thicket-78858.herokuapp.com/api/v1';
+  //static const String MAIN_URL = 'https://agile-thicket-78858.herokuapp.com/api/v1';
 
   static const String LOGIN_URL = '/login';
 
@@ -23,7 +23,7 @@ class ApiEndpoints {
 
   static const String REFRESH_TOKEN = '/refresh';
 
-  static const String CONTACTS_TODO_TODAY = '/registers/user/today/1';
+  static const String CONTACTS_TODO_TODAY = '/registers/user/today';
 
   static const String CONTACTS_DONE_TODAY = '/registers/user/contactsDone/today';
 

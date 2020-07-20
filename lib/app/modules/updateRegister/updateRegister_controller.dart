@@ -18,4 +18,8 @@ abstract class _UpdateRegisterControllerBase with Store {
     return await store.repository.updateRegister(model, id);
   }
 
+  Future createRegister(RegisterModel model) async {
+    return await store.repository.createRegister(model);
+  }
+
 }

@@ -35,7 +35,7 @@ class RegisterRepository {
     String url =
         ApiEndpoints.MAIN_URL + ApiEndpoints.REGISTERS_DONE + "?page=$page";
 
-        //print(url);
+    print('done = ' + url);
 
     var dio = CustomDio.withAuthentication().instance;
 
@@ -47,9 +47,6 @@ class RegisterRepository {
 
         registers.add(done);
       }
-
-      // Modular.get<RegistersDoneStore>()
-      //     .setLastPage(value.data['last_page'].toString());
 
       return registers;
     });
