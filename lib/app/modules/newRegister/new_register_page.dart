@@ -9,7 +9,7 @@ import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/product_model.dart';
 import 'package:simex_app/app/models/register_model.dart';
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
+import 'package:simex_app/app/core/repositories/client_repository.dart';
 import '../../app_controller.dart';
 import 'new_register_controller.dart';
 
@@ -293,7 +293,7 @@ class _NewRegisterPageState
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     statusRadioButton('Venda Efetiva', 'Venda Efetiva'),
-                    statusRadioButton('Venda Pendente', 'Venda Pendente'),
+                    statusRadioButton('Venda Pendente', 'Venda Pendente\n ou Apenas Contato'),
                   ],
                 ),
               )

@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:simex_app/app/core/repositories/register_repository.dart';
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
+import 'package:simex_app/app/core/repositories/client_repository.dart';
 
 part 'updateRegister_store.g.dart';
 

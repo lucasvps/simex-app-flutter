@@ -1,7 +1,7 @@
 import 'package:simex_app/app/core/repositories/product_repository.dart';
 import 'package:simex_app/app/core/repositories/reportsRepositories/products_report_repository.dart';
 import 'package:simex_app/app/core/repositories/register_repository.dart';
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
+import 'package:simex_app/app/core/repositories/client_repository.dart';
 import 'package:simex_app/app/modules/contatos/contatos_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:simex_app/app/modules/contatos/contatos_page.dart';

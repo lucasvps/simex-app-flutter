@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:simex_app/app/models/client_model.dart';
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
+import 'package:simex_app/app/core/repositories/client_repository.dart';
 
 part 'infoClient_store.g.dart';
 

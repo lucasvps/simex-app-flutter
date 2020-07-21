@@ -11,7 +11,8 @@ import 'package:simex_app/app/core/services/shared_local_storage_service.dart';
 import 'package:simex_app/app/core/stores/auth_store.dart';
 import 'package:simex_app/app/modules/activesProducts/actives_products_module.dart';
 import 'package:simex_app/app/modules/clients/clients_module.dart';
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
+import 'package:simex_app/app/core/repositories/client_repository.dart';
+import 'package:simex_app/app/modules/clientsByStore/clients_by_store_module.dart';
 import 'package:simex_app/app/modules/contactsByUser/contacts_by_user_module.dart';
 import 'package:simex_app/app/modules/contatos/contatos_module.dart';
 import 'package:simex_app/app/modules/home/home_module.dart';
@@ -65,6 +66,7 @@ class AppModule extends MainModule {
         Router('/users', module: UsersModule()),
         Router('/contactsByUser', module: ContactsByUserModule()),
         Router('/newUser', module: NewUserModule()),
+        Router('/clientsByStore', module: ClientsByStoreModule()),
         //Router('/updateRegister', module: UpdateRegisterModule()),
         
       ];

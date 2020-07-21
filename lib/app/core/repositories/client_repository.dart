@@ -3,8 +3,54 @@ import 'package:simex_app/app/core/custom_dio.dart';
 import 'package:simex_app/app/core/endpoints.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/modules/clients/clients_store.dart';
+import 'package:simex_app/app/modules/clientsByStore/clients_by_store_store.dart';
 
 class ClientRepository {
+  Future searchUsersByStoreAndYear(
+      {String store, String year, String page}) async {
+    String url = ApiEndpoints.MAIN_URL +
+        ApiEndpoints.SEARCH_CLIENT_STORE_YEAR +
+        "/$store" +
+        "/$year" +
+        "?page=$page";
+
+    print(url);
+
+    var dio = CustomDio.withAuthentication().instance;
+
+    return await dio.get(url).then((value) {
+      List<ClientModel> client = [];
+
+      for (var item in value.data['data']) {
+        ClientModel clientModel = ClientModel.fromJson(item);
+        client.add(clientModel);
+      }
+
+      //lastPageClientsByStore(store, year);
+
+      return client;
+    }).catchError((err) {
+      return null;
+    });
+  }
+
+  Future<int> lastPageClientsByStore(String store, String year) async {
+    String url = ApiEndpoints.MAIN_URL +
+        ApiEndpoints.SEARCH_CLIENT_STORE_YEAR +
+        "/$store" +
+        "/$year?page=1";
+
+        print(url);
+
+    var dio = CustomDio.withAuthentication().instance;
+
+    return await dio.get(url).then((value) {
+      // Modular.get<ClientsByStoreStore>()
+      //     .setLastPage(value.data['last_page'].toString());
+      return value.data['last_page'];
+    });
+  }
+
   Future searchedUserByDoc(String doc) async {
     String url = ApiEndpoints.MAIN_URL +
         ApiEndpoints.SEARCHED_CLIENT_INFO +
@@ -53,13 +99,15 @@ class ClientRepository {
   }
 
   Future lastPageClientsByName(String name) async {
-    String url = ApiEndpoints.MAIN_URL + ApiEndpoints.SEARCH_CLIENT_NAME + "/$name?page=1" ;
-
+    String url = ApiEndpoints.MAIN_URL +
+        ApiEndpoints.SEARCH_CLIENT_NAME +
+        "/$name?page=1";
 
     var dio = CustomDio.withAuthentication().instance;
 
     return await dio.get(url).then((value) {
-      Modular.get<ClientStore>().setLastPage(value.data['last_page'].toString());
+      Modular.get<ClientStore>()
+          .setLastPage(value.data['last_page'].toString());
       return value.data['last_page'];
     });
   }

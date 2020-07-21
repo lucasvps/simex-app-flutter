@@ -6,6 +6,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/client_model.dart';
+import 'package:simex_app/app/models/store_model.dart';
 import 'package:simex_app/app/modules/newClient/widgets/custom_text_field.dart';
 import 'package:simex_app/app/modules/newRegister/new_register_page.dart';
 import 'new_client_controller.dart';
@@ -131,10 +132,35 @@ class _NewClientPageState
                       ),
                     ],
                   ),
-                  CustomTextField(
-                    label: "Loja",
-                    error: controller.store.validateStore,
-                    onChangedFunction: controller.store.setStore,
+                  FutureBuilder(
+                    future: controller.store.storeRepository.getAllStore(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                          break;
+                        case ConnectionState.none:
+                          return Text("No connection has been made");
+                          break;
+                        case ConnectionState.done:
+                          if (snapshot.hasError) {
+                            return Text(snapshot.error.toString());
+                          }
+                          if (!snapshot.hasData) {
+                            return Text("No data");
+                          } else {
+                            return Center(
+                              child: SingleChildScrollView(
+                                  child: dropDownMenu(snapshot.data)),
+                            );
+                          }
+                          break;
+                      }
+                      return Container();
+                    },
                   ),
                   CustomTextFieldOptional(
                     label: "Email",
@@ -204,7 +230,7 @@ class _NewClientPageState
                                 controller.store
                                     .registerClient(newClient)
                                     .then((value) {
-                                      Modular.to.pop();
+                                  Modular.to.pop();
                                   // clientAlert(
                                   //     context,
                                   //     'ATENÇÃO!',
@@ -273,5 +299,65 @@ class _NewClientPageState
             ],
           );
         });
+  }
+
+  //! ------------------------------------
+
+  // ***********************************************************************************
+
+  Widget dropDownMenu(List<StoreModel> stores) {
+    return Observer(builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    items: stores.map((item) {
+                      return DropdownMenuItem(
+                        child: Text(
+                          item.storeName,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        value: item.storeName.toString(),
+                      );
+                    }).toList(),
+                    hint: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.60,
+                      child: Center(
+                        child: Text("Loja",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontFamily: 'Indie')),
+                      ),
+                    ),
+                    onChanged: (_) async {
+                      controller.store.setStore(_);
+                    },
+                    icon: Icon(
+                      Icons.arrow_downward,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                    value: controller.store.store,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    });
   }
 }

@@ -1,4 +1,5 @@
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
+import 'package:simex_app/app/core/repositories/store_repository.dart';
+import 'package:simex_app/app/core/repositories/client_repository.dart';
 import 'package:simex_app/app/modules/newClient/new_client_store.dart';
 
 import 'new_client_controller.dart';
@@ -9,8 +10,9 @@ class NewClientModule extends ChildModule {
   @override
   List<Bind> get binds => [
         Bind((i) => NewClientController(i.get())),
-        Bind((i) => NewClientStore(i.get())),
+        Bind((i) => NewClientStore(i.get(), i.get())),
         Bind((i) => ClientRepository()),
+        Bind((i) => StoreRepository()),
       ];
 
   @override

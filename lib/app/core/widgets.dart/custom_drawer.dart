@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simex_app/app/app_controller.dart';
 import 'package:simex_app/app/core/stores/auth_store.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -39,8 +37,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
         customListTile(
             icon: Icons.people,
             title: 'Clientes',
-            subtitle: 'Buscar ou registrar novo cliente.',
+            subtitle: 'Buscar clientes por nome ou registrar novo cliente.',
             pageTo: '/clients'),
+        customListTile(
+            icon: Icons.search,
+            title: 'Clientes',
+            subtitle: 'Buscar clientes por loja e por ano de última compra.',
+            pageTo: '/clientsByStore'),
         customListTile(
             icon: Icons.folder,
             title: 'Registros',
@@ -54,20 +57,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
         customListTile(
             icon: Icons.print,
             title: 'Relatórios',
-            subtitle: "Gerar Relatórios e PDF's",
+            subtitle: "Gerar Relatórios e PDF's.",
             pageTo: '/reports'),
         Modular.get<AuthStore>().isAdmin == 1
             ? customListTile(
                 icon: Icons.person_add,
                 title: 'Vendedores',
-                subtitle: "Cadastrar e ver lista de vendedores",
+                subtitle: "Cadastrar e ver lista de vendedores.",
                 pageTo: '/users')
             : SizedBox(),
         Modular.get<AuthStore>().isAdmin == 1
             ? customListTile(
                 icon: Icons.info,
                 title: 'Contatos por Vendedor',
-                subtitle: "Contatos que cada vendedor fez",
+                subtitle: "Contatos que cada vendedor fez.",
                 pageTo: '/contactsByUser')
             : SizedBox()
       ]));

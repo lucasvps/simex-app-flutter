@@ -1,4 +1,4 @@
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
+import 'package:simex_app/app/core/repositories/client_repository.dart';
 import 'package:simex_app/app/modules/infoClient/infoClient_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:simex_app/app/modules/infoClient/infoClient_page.dart';

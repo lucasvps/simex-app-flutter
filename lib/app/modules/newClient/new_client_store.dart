@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
+import 'package:simex_app/app/core/repositories/store_repository.dart';
 import 'package:simex_app/app/models/client_model.dart';
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
+import 'package:simex_app/app/core/repositories/client_repository.dart';
 
 part 'new_client_store.g.dart';
 
@@ -8,7 +9,8 @@ class NewClientStore = _NewClientStoreBase with _$NewClientStore;
 
 abstract class _NewClientStoreBase with Store {
 final ClientRepository repository;
-_NewClientStoreBase(this.repository);
+final StoreRepository storeRepository;
+_NewClientStoreBase(this.repository, this.storeRepository);
 
 Future registerClient(ClientModel model) async {
   return repository.createClient(model);

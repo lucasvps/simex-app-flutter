@@ -11,7 +11,7 @@ import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
 import 'package:simex_app/app/models/product_model.dart';
 import 'package:simex_app/app/models/register_model.dart';
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
+import 'package:simex_app/app/core/repositories/client_repository.dart';
 import 'updateRegister_controller.dart';
 
 class UpdateRegisterPage extends StatefulWidget {

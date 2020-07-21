@@ -93,121 +93,103 @@ class _ContatosPageState
               ),
               centerTitle: true,
             ),
-            body: TabBarView(
-              children: <Widget>[
-                FutureBuilder(
-                  future: controller.contactsToday(id),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.active:
-                      case ConnectionState.waiting:
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                        break;
-                      case ConnectionState.none:
-                        return Text('erro 1');
-                        break;
-                      case ConnectionState.done:
-                        if (snapshot.hasError) {
-                          return Center(child: Text('Ocorreu um erro!'));
-                        }
-                        if (!snapshot.hasData) {
+            body: Container(
+              child: TabBarView(
+                children: <Widget>[
+                  FutureBuilder(
+                    future: controller.contactsToday(id),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
                           return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    'Você nao tem contatos pra serem feitos hoje!',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                                Image.asset('lib/assets/images/empty.png',
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.65),
-                              ],
-                            ),
+                            child: CircularProgressIndicator(),
                           );
-                        }
-
-                        if (snapshot.data.length == 0) {
-                          return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    'Você nao tem contatos pra serem feitos hoje!',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                                Image.asset('lib/assets/images/empty.png',
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.65),
-                              ],
-                            ),
-                          );
-                        }
-
-                        return listViewTodo(snapshot.data);
-                        break;
-                    }
-                    return Container();
-                  },
-                ),
-                FutureBuilder(
-                  future: controller.contactsDoneToday(),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.active:
-                      case ConnectionState.waiting:
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                        break;
-                      case ConnectionState.none:
-                        return Text('erro 1');
-                        break;
-                      case ConnectionState.done:
-                        if (snapshot.hasError) {
-                          return Center(child: Text('Ocorreu um erro!'));
-                        }
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    'Você não realizou contatos hoje!',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                                Center(
-                                    child: Image.asset(
-                                        'lib/assets/images/empty.png',
+                          break;
+                        case ConnectionState.none:
+                          return Text('erro 1');
+                          break;
+                        case ConnectionState.done:
+                          if (snapshot.hasError) {
+                            return Center(child: Text('Ocorreu um erro!'));
+                          }
+                          if (!snapshot.hasData) {
+                            return SingleChildScrollView(
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Text(
+                                        'Você nao tem contatos pra serem feitos hoje!',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                                    Image.asset('lib/assets/images/empty.png',
                                         width:
                                             MediaQuery.of(context).size.width,
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                0.65)),
-                              ],
-                            ),
-                          );
-                        }
+                                                0.65),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
 
-                        if (snapshot.data.length == 0) {
+                          if (snapshot.data.length == 0) {
+                            return SingleChildScrollView(
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Text(
+                                        'Você nao tem contatos pra serem feitos hoje!',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                                    Image.asset('lib/assets/images/empty.png',
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.65),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+
+                          return listViewTodo(snapshot.data);
+                          break;
+                      }
+                      return Container();
+                    },
+                  ),
+                  FutureBuilder(
+                    future: controller.contactsDoneToday(),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
                           return Center(
-                            child: SingleChildScrollView(
+                            child: CircularProgressIndicator(),
+                          );
+                          break;
+                        case ConnectionState.none:
+                          return Text('erro 1');
+                          break;
+                        case ConnectionState.done:
+                          if (snapshot.hasError) {
+                            return Center(child: Text('Ocorreu um erro!'));
+                          }
+                          if (!snapshot.hasData) {
+                            return Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -230,17 +212,47 @@ class _ContatosPageState
                                               0.65)),
                                 ],
                               ),
-                            ),
-                          );
-                        }
+                            );
+                          }
 
-                        return listViewDone(snapshot.data);
-                        break;
-                    }
-                    return Container();
-                  },
-                ),
-              ],
+                          if (snapshot.data.length == 0) {
+                            return Center(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Text(
+                                        'Você não realizou contatos hoje!',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                                    Center(
+                                        child: Image.asset(
+                                            'lib/assets/images/empty.png',
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.65)),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+
+                          return listViewDone(snapshot.data);
+                          break;
+                      }
+                      return Container();
+                    },
+                  ),
+                ],
+              ),
             )));
   }
 
@@ -354,97 +366,101 @@ class _ContatosPageState
       itemBuilder: (context, index) {
         print(list[index].status);
         return Padding(
-            padding: list[index].status == 'Contato' ? EdgeInsets.all(0) : EdgeInsets.all(8.0),
-            child: list[index].status == 'Contato' ? null : Card(
-                elevation: 20,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12))),
-                color: Colors.white,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Text(
-                              'Cliente : ' + list[index].name,
-                              style: GoogleFonts.pangolin(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Text(
-                              'Status : ' + list[index].status,
-                              style: GoogleFonts.pangolin(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          list[index].status == "Venda Perdida"
-                              ? Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Text(
-                                    'Razão : ' + list[index].reason,
-                                    style: GoogleFonts.pangolin(
-                                      fontSize: 18,
-                                    ),
+            padding: list[index].status == 'Contato'
+                ? EdgeInsets.all(0)
+                : EdgeInsets.all(8.0),
+            child: list[index].status == 'Contato'
+                ? null
+                : Card(
+                    elevation: 20,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12))),
+                    color: Colors.white,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Text(
+                                  'Cliente : ' + list[index].name,
+                                  style: GoogleFonts.pangolin(
+                                    fontSize: 18,
                                   ),
-                                )
-                              : list[index].status == "Venda Pendente"
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Text(
+                                  'Status : ' + list[index].status,
+                                  style: GoogleFonts.pangolin(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                              list[index].status == "Venda Perdida"
                                   ? Padding(
                                       padding: const EdgeInsets.all(6.0),
                                       child: Text(
-                                        list[index].observation != null
-                                            ? 'Observação : ' +
-                                                list[index].observation
-                                            : "Nenhuma observação!",
+                                        'Razão : ' + list[index].reason,
                                         style: GoogleFonts.pangolin(
                                           fontSize: 18,
                                         ),
                                       ),
                                     )
-                                  : Padding(
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: Text(
-                                        'Valor de Venda : ' +
-                                            NumberFormat.simpleCurrency(
-                                                    locale: 'pt_Br')
-                                                .format(
-                                              double.parse(
-                                                  list[index].valueSold),
+                                  : list[index].status == "Venda Pendente"
+                                      ? Padding(
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: Text(
+                                            list[index].observation != null
+                                                ? 'Observação : ' +
+                                                    list[index].observation
+                                                : "Nenhuma observação!",
+                                            style: GoogleFonts.pangolin(
+                                              fontSize: 18,
                                             ),
-                                        style: GoogleFonts.pangolin(
-                                          fontSize: 18,
+                                          ),
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: Text(
+                                            'Valor de Venda : ' +
+                                                NumberFormat.simpleCurrency(
+                                                        locale: 'pt_Br')
+                                                    .format(
+                                                  double.parse(
+                                                      list[index].valueSold),
+                                                ),
+                                            style: GoogleFonts.pangolin(
+                                              fontSize: 18,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                        child: list[index].status == "Venda Efetiva"
-                            ? Icon(
-                                Icons.check_circle_outline,
-                                size: 80,
-                              )
-                            : list[index].status == 'Venda Pendente'
+                            ],
+                          ),
+                        ),
+                        Container(
+                            child: list[index].status == "Venda Efetiva"
                                 ? Icon(
-                                    Icons.remove_circle_outline,
+                                    Icons.check_circle_outline,
                                     size: 80,
-                                    color: Colors.orange,
                                   )
-                                : Icon(
-                                    Icons.close,
-                                    color: Colors.red,
-                                    size: 80,
-                                  )),
-                  ],
-                )));
+                                : list[index].status == 'Venda Pendente'
+                                    ? Icon(
+                                        Icons.remove_circle_outline,
+                                        size: 80,
+                                        color: Colors.orange,
+                                      )
+                                    : Icon(
+                                        Icons.close,
+                                        color: Colors.red,
+                                        size: 80,
+                                      )),
+                      ],
+                    )));
       },
     );
   }

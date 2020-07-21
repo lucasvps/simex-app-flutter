@@ -10,7 +10,7 @@ import 'package:simex_app/app/modules/infoClient/infoClient_store.dart';
 import 'package:simex_app/app/modules/newRegister/new_register_controller.dart';
 import 'package:simex_app/app/modules/newRegister/new_register_store.dart';
 
-import 'repositories/client_repository.dart';
+import '../../core/repositories/client_repository.dart';
 
 class ClientsModule extends ChildModule {
   @override

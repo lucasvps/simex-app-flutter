@@ -1,6 +1,6 @@
 import 'package:simex_app/app/core/repositories/product_repository.dart';
 import 'package:simex_app/app/core/repositories/register_repository.dart';
-import 'package:simex_app/app/modules/clients/repositories/client_repository.dart';
+import 'package:simex_app/app/core/repositories/client_repository.dart';
 import 'package:simex_app/app/modules/registerInfo/registerInfo_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:simex_app/app/modules/registerInfo/registerInfo_page.dart';
