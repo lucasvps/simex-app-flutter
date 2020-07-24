@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:simex_app/app/core/repositories/user_repository.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/user_model.dart';
 import 'reports_controller.dart';
@@ -32,9 +31,9 @@ class _ReportsPageState extends ModularState<ReportsPage, ReportsController> {
           Observer(builder: (context) {
             return FlatButton(
                 onPressed: () {
-                  Modular.to.pushNamedAndRemoveUntil(
+                  Modular.to.pushNamed(
                       '/pdfCreate/${controller.store.choice}',
-                      ModalRoute.withName('/pdfCreate'));
+                     );
                 },
                 child: ((controller.store.clientsWithoutContact &&
                                 controller.pdfStore.daysContactsURL != null &&

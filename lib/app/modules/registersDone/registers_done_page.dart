@@ -68,12 +68,16 @@ class _RegistersDonePageState
                           if (!snapshot.hasData) {
                             return Center(
                                 child: Text(
-                                    'Você não possui registros anteriores!'));
+                              'Você não possui registros anteriores!',
+                              style: TextStyle(fontSize: 20),
+                            ));
                           } else {
                             if (snapshot.data.toString() == '[]') {
                               return Center(
                                   child: Text(
-                                      'Você não possui registros anteriores!'));
+                                'Você não possui registros anteriores!',
+                                style: TextStyle(fontSize: 20),
+                              ));
                             }
                             return customList(snapshot.data);
                           }

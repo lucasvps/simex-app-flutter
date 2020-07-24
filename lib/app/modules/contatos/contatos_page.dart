@@ -364,7 +364,7 @@ class _ContatosPageState
     return ListView.builder(
       itemCount: list.length,
       itemBuilder: (context, index) {
-        print(list[index].status);
+        //print(list[index].status);
         return Padding(
             padding: list[index].status == 'Contato'
                 ? EdgeInsets.all(0)

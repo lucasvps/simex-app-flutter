@@ -16,6 +16,8 @@ class ClientModel {
   int totalCombine;
   String lastContact;
   String lastPurchase;
+  String yearLastPurchase;
+  bool isSelected;
 
   ClientModel(
       {this.id,
@@ -34,7 +36,8 @@ class ClientModel {
       this.totalTractor,
       this.totalCombine,
       this.lastContact,
-      this.lastPurchase});
+      this.yearLastPurchase,
+      this.lastPurchase, this.isSelected = false});
 
   ClientModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -54,6 +57,7 @@ class ClientModel {
     totalCombine = json['total_combine'];
     lastContact = json['last_contact'];
     lastPurchase = json['last_purchase'];
+    yearLastPurchase = json['year_last_purchase'];
   }
 
   Map<String, dynamic> toJson() {
@@ -75,6 +79,7 @@ class ClientModel {
     data['total_combine'] = this.totalCombine;
     data['last_contact'] = this.lastContact;
     data['last_purchase'] = this.lastPurchase;
+    data['year_last_purchase'] = this.yearLastPurchase;
     return data;
   }
 }

@@ -6,12 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:simex_app/app/core/repositories/product_repository.dart';
 import 'package:simex_app/app/core/themes/light_theme.dart';
-import 'package:simex_app/app/core/widgets.dart/components.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/next_contacts_model.dart';
 import 'package:simex_app/app/models/product_model.dart';
 import 'package:simex_app/app/models/register_model.dart';
-import 'package:simex_app/app/core/repositories/client_repository.dart';
 import 'updateRegister_controller.dart';
 
 class UpdateRegisterPage extends StatefulWidget {
@@ -306,7 +304,7 @@ class _UpdateRegisterPageState
         initialDate: DateTime.now(),
         //locale: Locale('pt'),
         firstDate: DateTime.now().subtract(Duration(days: 1)),
-        lastDate: DateTime.now().add(Duration(days: 365)));
+        lastDate: DateTime.now().add(Duration(days: 180)));
 
     if (picked != null) {
       var brDate = formatDate(picked, [dd, '/', mm, '/', yyyy]);

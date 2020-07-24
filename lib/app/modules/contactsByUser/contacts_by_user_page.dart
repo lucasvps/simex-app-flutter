@@ -103,7 +103,7 @@ class _ContactsByUserPageState
                                     Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Text(
-                                        'Este vendedor não realizou contatos nesta data!',
+                                        'Este vendedor não realizou e não possui contatos para estas datas!',
                                         style: TextStyle(fontSize: 20),
                                       ),
                                     ),

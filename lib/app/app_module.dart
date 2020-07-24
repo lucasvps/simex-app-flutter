@@ -25,6 +25,7 @@ import 'package:simex_app/app/modules/newUser/new_user_module.dart';
 import 'package:simex_app/app/modules/pdf/pdf_module.dart';
 import 'package:simex_app/app/modules/registersDone/registers_done_module.dart';
 import 'package:simex_app/app/modules/reports/reports_module.dart';
+import 'package:simex_app/app/modules/setContactToUser/set_contact_to_user_module.dart';
 import 'package:simex_app/app/modules/splash/splash_module.dart';
 import 'package:simex_app/app/modules/updateRegister/updateRegister_controller.dart';
 import 'package:simex_app/app/modules/updateRegister/updateRegister_store.dart';
@@ -67,6 +68,7 @@ class AppModule extends MainModule {
         Router('/contactsByUser', module: ContactsByUserModule()),
         Router('/newUser', module: NewUserModule()),
         Router('/clientsByStore', module: ClientsByStoreModule()),
+        Router('/setContactToUser', module: SetContactToUserModule()),
         //Router('/updateRegister', module: UpdateRegisterModule()),
         
       ];

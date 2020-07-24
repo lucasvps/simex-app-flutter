@@ -2,35 +2,37 @@ import 'package:simex_app/app/core/repositories/client_repository.dart';
 import 'package:simex_app/app/core/repositories/product_repository.dart';
 import 'package:simex_app/app/core/repositories/register_repository.dart';
 import 'package:simex_app/app/core/repositories/store_repository.dart';
+import 'package:simex_app/app/core/repositories/user_repository.dart';
 import 'package:simex_app/app/modules/clientsByStore/clients_by_store_store.dart';
-import 'package:simex_app/app/modules/infoClient/infoClient_controller.dart';
-import 'package:simex_app/app/modules/infoClient/infoClient_store.dart';
 import 'package:simex_app/app/modules/newRegister/new_register_controller.dart';
 import 'package:simex_app/app/modules/newRegister/new_register_store.dart';
+import 'package:simex_app/app/modules/setContactToUser/set_contact_to_user_store.dart';
 
-import 'clients_by_store_controller.dart';
+import 'set_contact_to_user_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'clients_by_store_page.dart';
+import 'set_contact_to_user_page.dart';
 
-class ClientsByStoreModule extends ChildModule {
+class SetContactToUserModule extends ChildModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => ClientsByStoreController(i.get(), i.get())),
-        Bind((i) => ClientsByStoreStore(i.get())),
-        Bind((i) => StoreRepository()),
-        Bind((i) => ClientRepository()),
+        Bind((i) => SetContactToUserController(i.get(), i.get())),
         Bind((i) => NewRegisterController(i.get())),
         Bind((i) => NewRegisterStore(i.get(), i.get())),
         Bind((i) => ProductRepository()),
         Bind((i) => RegisterRepository()),
-        Bind((i) => InfoClientController(i.get())),
-        Bind((i) => InfoClientStore(i.get())),
+        Bind((i) => StoreRepository()),
+        Bind((i) => SetContactsToUserStore(i.get(), i.get(), i.get())),
+        Bind((i) => ClientRepository()),
+        Bind((i) => UserRepository()),
+        
+
       ];
 
   @override
   List<Router> get routers => [
-        Router('/', child: (_, args) => ClientsByStorePage()),
+        Router('/',
+            child: (_, args) => SetContactToUserPage()),
       ];
 
-  static Inject get to => Inject<ClientsByStoreModule>.of();
+  static Inject get to => Inject<SetContactToUserModule>.of();
 }

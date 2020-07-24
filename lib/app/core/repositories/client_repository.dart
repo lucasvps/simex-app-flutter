@@ -6,7 +6,7 @@ import 'package:simex_app/app/modules/clients/clients_store.dart';
 import 'package:simex_app/app/modules/clientsByStore/clients_by_store_store.dart';
 
 class ClientRepository {
-  Future searchUsersByStoreAndYear(
+  Future<List<ClientModel>> searchUsersByStoreAndYear(
       {String store, String year, String page}) async {
     String url = ApiEndpoints.MAIN_URL +
         ApiEndpoints.SEARCH_CLIENT_STORE_YEAR +
@@ -23,6 +23,7 @@ class ClientRepository {
 
       for (var item in value.data['data']) {
         ClientModel clientModel = ClientModel.fromJson(item);
+        clientModel.isSelected = false;
         client.add(clientModel);
       }
 

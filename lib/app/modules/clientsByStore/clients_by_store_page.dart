@@ -8,6 +8,7 @@ import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:simex_app/app/core/themes/light_theme.dart';
 import 'package:simex_app/app/models/client_model.dart';
 import 'package:simex_app/app/models/store_model.dart';
 import 'package:simex_app/app/models/years_model.dart';
@@ -32,8 +33,8 @@ class _ClientsByStorePageState
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
-          centerTitle: true,
+          title: Text('Clientes por loja e ano de última compra'),
+          centerTitle: false,
         ),
         body: Observer(builder: (context) {
           return Container(
@@ -77,8 +78,10 @@ class _ClientsByStorePageState
                     keyboardType: TextInputType.datetime,
                     onChanged: controller.store.setLastPurchaseYear,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Ano de última compra"),
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(60))),
+                        labelText: "Ano de última compra do cliente"),
                   ),
                 ),
                 Flexible(
@@ -194,19 +197,6 @@ class _ClientsByStorePageState
 
   // !-----------------------------------------------------------------------
 
-  Future<Null> _yearPicker(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        initialDatePickerMode: DatePickerMode.year,
-        selectableDayPredicate: (DateTime val) =>
-            val.year == true ? false : true,
-        context: context,
-        initialDate: DateTime.now(),
-        //locale: Locale('pt'),
-        firstDate: DateTime.now().subtract(Duration(days: 1)),
-        lastDate: DateTime.now().add(Duration(days: 365)));
-
-    if (picked != null) {}
-  }
 
   // ***********************************************************************************
 
@@ -215,6 +205,7 @@ class _ClientsByStorePageState
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
+          color: AppThemeLight().getTheme().primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
@@ -224,14 +215,14 @@ class _ClientsByStorePageState
               children: <Widget>[
                 DropdownButtonHideUnderline(
                   child: DropdownButton(
+                    isDense: false,
+                    dropdownColor: AppThemeLight().getTheme().primaryColor,
                     items: stores.map((item) {
                       return DropdownMenuItem(
                         child: Text(
                           item.storeName,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
+                          style: TextStyle(fontSize: 15, color: Colors.white),
                         ),
                         value: item.storeName.toString(),
                       );
@@ -242,7 +233,7 @@ class _ClientsByStorePageState
                         child: Text("Loja",
                             style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontFamily: 'Indie')),
                       ),
                     ),
@@ -252,66 +243,10 @@ class _ClientsByStorePageState
                     icon: Icon(
                       Icons.arrow_downward,
                       size: 20,
-                      color: Colors.black,
+                      color: Colors.white,
                     ),
                     style: TextStyle(fontSize: 20, color: Colors.black),
                     value: controller.store.clientStore,
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      );
-    });
-  }
-
-  Widget dropDownMenuYear(List<YearsModel> years) {
-    return Observer(builder: (context) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                    items: years.map((item) {
-                      return DropdownMenuItem(
-                        child: Text(
-                          item.year,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                        value: item.year.toString(),
-                      );
-                    }).toList(),
-                    hint: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.60,
-                      child: Center(
-                        child: Text("Ano de Última Compra",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontFamily: 'Indie')),
-                      ),
-                    ),
-                    onChanged: (_) async {
-                      controller.store.setLastPurchaseYear(_);
-                    },
-                    icon: Icon(
-                      Icons.arrow_downward,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                    value: controller.store.lastPurchaseYear,
                   ),
                 )
               ],

@@ -70,8 +70,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ? customListTile(
                 icon: Icons.info,
                 title: 'Contatos por Vendedor',
-                subtitle: "Contatos que cada vendedor fez.",
+                subtitle: "Calendário e histórico de um vendedor.",
                 pageTo: '/contactsByUser')
+            : SizedBox(),
+        Modular.get<AuthStore>().isAdmin == 1
+            ? customListTile(
+                icon: Icons.schedule,
+                title: 'Agendar Contatos',
+                subtitle: "Agendar contatos para vendedores.",
+                pageTo: '/setContactToUser')
             : SizedBox()
       ]));
     });

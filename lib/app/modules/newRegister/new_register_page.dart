@@ -58,6 +58,7 @@ class _NewRegisterPageState
     Modular.get<AppController>().authStore.getCurrentUser().then((value) async {
       await controller.store.setCurrentUserID(value['id']);
     });
+    print(widget.clientModel.toJson());
     super.initState();
   }
 
@@ -185,7 +186,7 @@ class _NewRegisterPageState
         initialDate: DateTime.now(),
         //locale: Locale('pt'),
         firstDate: DateTime.now().subtract(Duration(days: 1)),
-        lastDate: DateTime.now().add(Duration(days: 365)));
+        lastDate: DateTime.now().add(Duration(days: 180)));
 
     if (picked != null) {
       var brDate = formatDate(picked, [dd, '/', mm, '/', yyyy]);
@@ -293,7 +294,8 @@ class _NewRegisterPageState
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     statusRadioButton('Venda Efetiva', 'Venda Efetiva'),
-                    statusRadioButton('Venda Pendente', 'Venda Pendente\n ou Apenas Contato'),
+                    statusRadioButton(
+                        'Venda Pendente', 'Venda Pendente\n ou Apenas Contato'),
                   ],
                 ),
               )
@@ -495,8 +497,6 @@ class _NewRegisterPageState
     var formatter = new DateFormat('yyyy-MM-dd');
     String formatted = formatter.format(now);
 
-    print(controller.store.productPrice);
-
     var registerModel = RegisterModel(
         idClient: widget.clientModel.id,
         idUser: controller.store.currentUserID,
@@ -525,47 +525,50 @@ class _NewRegisterPageState
         dateContact: formatted,
         nextContact: controller.store.nextContact,
         observation: "",
-        productAmount: controller.store.amountSold ?? "",
+        productAmount: 0,
         reason: "",
         status: "Contato",
         valueSold: '0.0',
         contactFrom: controller.store.contactFrom);
 
-    print(registerModel.toJson());
-
     controller.store.repository.createRegister(registerModel).then((value) {
       controller.store.setCurrentStep(0);
       controller.store.cleanFields();
 
-      if (controller.store.efectiveSell) {
-        controller.store.repository.createRegister(createRegisterModel);
-      }
-
       ClientModel clientModelUpdate = ClientModel(
-        adress: widget.clientModel.adress,
-        city: widget.clientModel.city,
-        code: widget.clientModel.code,
-        cpf: widget.clientModel.cpf,
-        cultureOne: widget.clientModel.cultureOne,
-        cultureTwo: widget.clientModel.cultureTwo,
-        email: widget.clientModel.email,
-        name: widget.clientModel.name,
-        phone: widget.clientModel.phone,
-        state: widget.clientModel.state,
-        store: widget.clientModel.store,
-        totalCombine: widget.clientModel.totalCombine,
-        totalTractor: widget.clientModel.totalTractor,
-        contactsDone: widget.clientModel.contactsDone + 1,
-        lastContact: formatted,
+        adress: widget.clientModel.adress ?? "",
+        city: widget.clientModel.city ?? "",
+        code: widget.clientModel.code ?? "",
+        cpf: widget.clientModel.cpf ?? "",
+        cultureOne: widget.clientModel.cultureOne ?? "",
+        cultureTwo: widget.clientModel.cultureTwo ?? "",
+        email: widget.clientModel.email ?? "",
+        name: widget.clientModel.name ?? "",
+        phone: widget.clientModel.phone ?? "",
+        state: widget.clientModel.state ?? "",
+        store: widget.clientModel.store ?? "",
+        totalCombine: widget.clientModel.totalCombine ?? 0,
+        totalTractor: widget.clientModel.totalTractor ?? 0,
+        contactsDone: widget.clientModel.contactsDone != null ? widget.clientModel.contactsDone + 1 : 1,
+        lastContact: formatted ?? "",
+        yearLastPurchase: controller.store.efectiveSell ? DateTime.now().year.toString() : widget.clientModel.yearLastPurchase,
+
         lastPurchase: controller.store.efectiveSell
             ? formatted
             : widget.clientModel.lastPurchase,
       );
 
+      print(clientModelUpdate.toJson());
+
       Modular.get<ClientRepository>()
           .updateClient(widget.clientModel.id, clientModelUpdate)
-          .then((value) {})
-          .catchError((err) {
+          .then((value) {
+        if (controller.store.efectiveSell) {
+          controller.store.repository.createRegister(createRegisterModel);
+        }
+        print('maohe');
+        //Modular.to.pushReplacementNamed('/contacts');
+      }).catchError((err) {
         print('erro update' + err);
       });
     }).catchError((err) {

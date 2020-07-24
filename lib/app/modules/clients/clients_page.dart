@@ -62,20 +62,28 @@ class _ClientsPageState extends ModularState<ClientsPage, ClientsController> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: TextFormField(
-                //inputFormatters: [maskTextInputFormatter],
-                controller: controllerText,
-                decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                        icon: Icon(Icons.search),
-                        onPressed: () {
-                          //controller.clientStore.clientRepository.lastPageClientsByName("Alberto");
-                          controller.clientStore.setSearch(controllerText.text);
-                          controller.clientStore.clientRepository.lastPageClientsByName(controllerText.text);
-                          controllerText.text = '';
-                        }),
-                    labelText: "Pesquisar cliente pelo nome",
-                    border: OutlineInputBorder()),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[350],
+                    borderRadius: BorderRadius.all(Radius.circular(60))),
+                child: TextFormField(
+                  //inputFormatters: [maskTextInputFormatter],
+                  controller: controllerText,
+                  decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          onPressed: () {
+                            //controller.clientStore.clientRepository.lastPageClientsByName("Alberto");
+                            controller.clientStore
+                                .setSearch(controllerText.text);
+                            controller.clientStore.clientRepository
+                                .lastPageClientsByName(controllerText.text);
+                            controllerText.text = '';
+                          }),
+                      labelText: "Pesquisar cliente pelo nome",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(60)))),
+                ),
               ),
             ),
             Flexible(
